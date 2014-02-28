@@ -1,3 +1,4 @@
+import java.io.File;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.ArrayList;
@@ -8,20 +9,17 @@ import java.util.ArrayList;
  */
 public class Study extends Observable {
 	private ArrayList<Image> Images;
+	private File directory; 
 	
-	/**
-	 * 
-	 */
-	public Study() {
+	public Study(ArrayList<Image> Images) {
 		// TODO Auto-generated constructor stub
+		this.Images = Images;
 	}
-
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+	
+	public Study open() {
+		openCommandObject = new OpenCommand(this.directory);
+		
 	}
+	
 
 }
