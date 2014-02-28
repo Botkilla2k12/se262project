@@ -2,13 +2,14 @@
  * 
  */
 import java.awt.image.*;
+import java.io.File;
 
 /**
  * @author derek
  *
  */
 public class Image {
-	private String fileName;
+	private File fileName;
 	/**
 	 * 
 	 */

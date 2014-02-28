@@ -11,15 +11,20 @@ public class Study extends Observable {
 	private ArrayList<Image> Images;
 	private File directory; 
 	
+	/*
 	public Study(ArrayList<Image> Images) {
 		// TODO Auto-generated constructor stub
 		this.Images = Images;
-	}
+	}*/
 	
 	public Study open() {
-		//openCommandObject = new OpenCommand(this.directory);
-		return null;
+		openCommndObject = new OpenCommand();
 	}
+	
+	public void sort() {
+		sortCommandObject = new SortCommand();
+	}
+	
 	
 
 }
