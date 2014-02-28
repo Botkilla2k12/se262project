@@ -9,4 +9,8 @@ public class ImagePanel extends JPanel implements Observer {
 	public void update(Observable subject, Object data) {
 		// TODO Auto-generated method stub
 	}
+	
+	public void scale() {
+		
+	}
 }
