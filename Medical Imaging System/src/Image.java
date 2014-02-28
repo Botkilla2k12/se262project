@@ -13,12 +13,17 @@ public class Image {
 	/**
 	 * 
 	 */
-	public Image(String fileName) {
+	public Image(File fileName) {
 		// TODO Auto-generated constructor stub
 		this.fileName = fileName;
 	}
 
 	public String toString() {
-		return fileName;
+		return fileName.toString();
 	}
+}
+
+for ( i = 0 ; i < directory.listFiles(); i++) {
+	
+	
 }

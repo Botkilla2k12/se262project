@@ -1,3 +1,4 @@
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Observable;
 import java.util.Observer;
@@ -8,21 +9,22 @@ import java.util.ArrayList;
  *
  */
 public class Study extends Observable {
-	private ArrayList<Image> Images;
+	private ArrayList<BufferedImage> images;
 	private File directory; 
 	
 	/*
 	public Study(ArrayList<Image> Images) {
 		// TODO Auto-generated constructor stub
-		this.Images = Images;
+		this.images = images;
 	}*/
 	
-	public Study open() {
-		openCommndObject = new OpenCommand();
+	public ArrayList<BufferedImage> open() {
+		openCommandObject = new OpenCommand(this.directory);
+		this.images = openCommandObject.getImages();
 	}
 	
 	public void sort() {
-		sortCommandObject = new SortCommand();
+		sortCommandObject = new SortCommand(this.images);
 	}
 	
 	
