@@ -32,8 +32,10 @@ public class Study extends Observable {
 		} catch (IOException e){
 			throw e;
 		}
-		
-		
+	}
+	
+	public String toString(){
+		return this.toString();
 	}
 	
 }

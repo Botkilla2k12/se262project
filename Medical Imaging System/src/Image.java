@@ -1,5 +1,5 @@
 /**
- * 
+ * @author Derek Leung
  */
 import java.awt.image.*;
 import java.io.File;
@@ -10,9 +10,7 @@ import java.io.File;
  */
 public class Image {
 	private File fileName;
-	/**
-	 * 
-	 */
+
 	public Image(File fileName) {
 		// TODO Auto-generated constructor stub
 		this.fileName = fileName;
