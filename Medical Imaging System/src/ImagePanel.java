@@ -8,10 +8,10 @@ import javax.swing.JPanel;
 public class ImagePanel extends JPanel implements Observer {
 	private int displayMode;
 	
-	public ImagePanel(Settings settings) {
+	public ImagePanel() {
 		this.setBackground(Color.BLACK);
 		
-		this.displayMode = settings.getDisplayMode();
+		//this.displayMode = settings.getDisplayMode();
 	}
 	
 	@Override
