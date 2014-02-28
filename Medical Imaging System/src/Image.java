@@ -22,8 +22,3 @@ public class Image {
 		return fileName.toString();
 	}
 }
-
-for ( i = 0 ; i < directory.listFiles(); i++) {
-	
-	
-}
