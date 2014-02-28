@@ -6,7 +6,7 @@ import java.util.Observer;
 import java.util.ArrayList;
 
 /**
- * @author derek
+ * @author Derek Leung
  *
  */
 public class Study extends Observable {
@@ -21,7 +21,7 @@ public class Study extends Observable {
 	
 	/**
 	 * Creates an OpenCommand to open the directory. Open command returns an
-	 * ArrayList of images
+	 * ArrayList of images. The study's images are then updated.
 	 * 
 	 * @throws IOException
 	 */
