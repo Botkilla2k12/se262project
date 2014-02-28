@@ -6,8 +6,12 @@ import javax.swing.JPanel;
 
 
 public class ImagePanel extends JPanel implements Observer {
-	public ImagePanel() {
+	private int displayMode;
+	
+	public ImagePanel(Settings settings) {
 		this.setBackground(Color.BLACK);
+		
+		this.displayMode = settings.getDisplayMode();
 	}
 	
 	@Override
