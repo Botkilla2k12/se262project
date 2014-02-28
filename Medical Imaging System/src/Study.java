@@ -1,5 +1,6 @@
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.ArrayList;
@@ -18,12 +19,15 @@ public class Study extends Observable {
 		this.images = images;
 	}*/
 	
-	public ArrayList<BufferedImage> open() {
-		OpenCommand openCommandObject = new OpenCommand(this.directory);
-		this.images = openCommandObject.getImages();
+	public void open() throws IOException {
+		try{
+			OpenCommand openCommandObject = new OpenCommand(this.directory);
+			this.images = openCommandObject.getImages();
+		} catch (IOException e){
+			throw e;
+		}
+		
+		
 	}
 	
-	public void sort() {
-		sortCommandObject = new SortCommand(this.images);
-	}
 }
