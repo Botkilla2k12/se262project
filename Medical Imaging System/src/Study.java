@@ -17,8 +17,8 @@ public class Study extends Observable {
 	}
 	
 	public Study open() {
-		openCommandObject = new OpenCommand(this.directory);
-		
+		//openCommandObject = new OpenCommand(this.directory);
+		return null;
 	}
 	
 
