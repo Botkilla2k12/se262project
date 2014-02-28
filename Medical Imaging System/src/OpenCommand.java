@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 
@@ -21,7 +22,7 @@ public class OpenCommand {
 	private File directory;
 	private ArrayList<BufferedImage> images;
 	
-	public OpenCommand(File directory) throws IOException {
+	private OpenCommand(File directory) throws IOException {
 		this.directory = directory;
 		open(directory);
 	}
@@ -32,6 +33,7 @@ public class OpenCommand {
 	
 	private ArrayList<BufferedImage> open(File directory) throws IOException {
 		File[] files = directory.listFiles();
+		Arrays.sort(files);
 		
 		for(int i = 0; i < files.length; i++){
 			try{
