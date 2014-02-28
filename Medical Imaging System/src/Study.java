@@ -26,7 +26,4 @@ public class Study extends Observable {
 	public void sort() {
 		sortCommandObject = new SortCommand(this.images);
 	}
-	
-	
-
 }
