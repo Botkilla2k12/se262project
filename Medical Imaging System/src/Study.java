@@ -19,6 +19,12 @@ public class Study extends Observable {
 		this.images = images;
 	}*/
 	
+	/**
+	 * Creates an OpenCommand to open the directory. Open command returns an
+	 * ArrayList of images
+	 * 
+	 * @throws IOException
+	 */
 	public void open() throws IOException {
 		try{
 			OpenCommand openCommandObject = new OpenCommand(this.directory);
