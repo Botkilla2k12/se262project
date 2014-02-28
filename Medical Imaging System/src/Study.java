@@ -19,7 +19,7 @@ public class Study extends Observable {
 	}*/
 	
 	public ArrayList<BufferedImage> open() {
-		openCommandObject = new OpenCommand(this.directory);
+		OpenCommand openCommandObject = new OpenCommand(this.directory);
 		this.images = openCommandObject.getImages();
 	}
 	

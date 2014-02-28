@@ -21,7 +21,7 @@ public class OpenCommand {
 	private File directory;
 	private ArrayList<BufferedImage> images;
 	
-	private OpenCommand(File directory) throws IOException {
+	public OpenCommand(File directory) throws IOException {
 		this.directory = directory;
 		open(directory);
 	}
