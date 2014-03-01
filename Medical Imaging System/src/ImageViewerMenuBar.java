@@ -2,10 +2,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.Arrays;
+
+import javax.swing.ButtonGroup;
 import javax.swing.JFileChooser;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class ImageViewerMenuBar extends JMenuBar {
@@ -38,11 +41,15 @@ public class ImageViewerMenuBar extends JMenuBar {
 
 		JMenu displayMode = new JMenu("Change Display Mode");
 		settingsMenu.add(displayMode);
-		JMenuItem displayMode1 = new JMenuItem("Single Image");
-		JMenuItem displayMode4 = new JMenuItem("Four Images");
+		ButtonGroup bGroup= new ButtonGroup();
+		JMenuItem displayMode1 = new JRadioButtonMenuItem("Single Image");
+		bGroup.add(displayMode1);
+		displayMode1.setSelected(true);
+		JMenuItem displayMode4 = new JRadioButtonMenuItem("Four Images");
+		bGroup.add(displayMode4);
 		displayMode.add(displayMode1);
 		displayMode.add(displayMode4);
-		displayMode.addActionListener(new ChangeDisplayMode());
+		//displayMode.addActionListener(new ChangeDisplayMode());
 		
 		
 		add(fileMenu);
@@ -102,10 +109,5 @@ public class ImageViewerMenuBar extends JMenuBar {
 			
 		}
 	}
-	static class ChangeDisplayMode implements ActionListener{
-        public void actionPerformed(ActionEvent e){
-            System.exit(0);
-        }
-    }
 	
 }
