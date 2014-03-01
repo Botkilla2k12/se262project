@@ -47,7 +47,7 @@ public class Study extends Observable {
 	}
 	
 	public String toString(){
-		return this.toString();
+		return this.directory.getAbsolutePath();
 	}
 	
 	public ArrayList<BufferedImage> getImages(){
