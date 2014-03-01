@@ -37,6 +37,7 @@ public class ImageViewerMenuBar extends JMenuBar {
 		add(editMenu);
 		add(settingsMenu);
 	}
+
 	static class exitProgram implements ActionListener{
         public void actionPerformed(ActionEvent e){
             System.exit(0);

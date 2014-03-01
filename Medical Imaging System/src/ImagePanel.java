@@ -14,7 +14,7 @@ public class ImagePanel extends JPanel implements Observer {
 	
 	public ImagePanel() {
 		this.layout = new GridLayout(2, 2, 5, 5);
-		
+
 		this.setLayout(this.layout);
 		this.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		
