@@ -44,4 +44,8 @@ public class Study extends Observable {
 		return this.toString();
 	}
 	
+	public ArrayList<BufferedImage> getImages(){
+		return this.images;
+	}
+
 }
