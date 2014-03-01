@@ -1,6 +1,8 @@
 import java.io.BufferedWriter;
 import java.io.File;
+
 import java.io.FileWriter;
+
 import java.io.PrintWriter;
 import java.util.Scanner;
 
@@ -17,11 +19,18 @@ public class StudySettings {
 	
 	public StudySettings(File directory) {
 		this.directory = directory;
+		Scanner sc = null;
 		try {
-			Scanner sc = new Scanner(
-				new File(directory.getAbsolutePath() + "\\" + CONFIG_FILE)
-			);
+			File configFile =
+				new File(directory.getAbsolutePath() + "\\" + CONFIG_FILE);
 			
+			if(!configFile.exists()) {
+				configFile.createNewFile();
+				
+				setDisplayMode(DISPLAY_MODE_VALUE.ONE_IMAGE);
+			}
+			
+			sc = new Scanner(configFile);
 			String displayModeVal = sc.nextLine();
 			
 			if(displayModeVal.equals("ONE_IMAGE")) {
@@ -31,6 +40,8 @@ public class StudySettings {
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
+		} finally {
+			sc.close();
 		}
 	}
 
@@ -49,7 +60,6 @@ public class StudySettings {
 		} finally {
 			writer.close();
 		}
-		
 		
 	}
 }
