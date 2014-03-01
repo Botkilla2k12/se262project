@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public class Study extends Observable {
 	private ArrayList<BufferedImage> images;
 	private File directory; 
+	private Settings settings;
 	
 	/*
 	public Study(ArrayList<Image> Images) {
@@ -32,6 +33,10 @@ public class Study extends Observable {
 		} catch (IOException e){
 			throw e;
 		}
+	}
+	
+	public File getDirectory(){
+		return this.directory;
 	}
 	
 	public String toString(){
