@@ -8,10 +8,11 @@ import java.util.Scanner;
  */
 public class StudySettings {
 	private static final String CONFIG_FILE = "study.cfg";
-	
+	private File directory;
 	private DISPLAY_MODE_VALUE displayMode;
 	
 	public StudySettings(File directory) {
+		this.directory = directory;
 		try {
 			Scanner sc = new Scanner(
 				new File(directory.getAbsolutePath() + "\\" + CONFIG_FILE)
