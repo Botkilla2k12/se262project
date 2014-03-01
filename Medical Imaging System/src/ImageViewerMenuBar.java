@@ -1,10 +1,12 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.JFileChooser;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class ImageViewerMenuBar extends JMenuBar {
 	
@@ -50,7 +52,15 @@ public class ImageViewerMenuBar extends JMenuBar {
 	static class openFile implements ActionListener{
 		public void actionPerformed(ActionEvent e){
 			JFileChooser chooser = new JFileChooser();
-			chooser.showOpenDialog(chooser);
+			FileNameExtensionFilter filter = new FileNameExtensionFilter("JPEG file", "jpg", "jpeg");
+			chooser.addChoosableFileFilter(filter);
+			int returnVal = chooser.showOpenDialog(null);
+			if(returnVal==JFileChooser.APPROVE_OPTION){
+				File file = chooser.getSelectedFile();
+			}
+			else{
+				System.exit(0);
+			}
         }
 		
 	}
