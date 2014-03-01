@@ -14,12 +14,15 @@ public class ImageViewerWindow extends JFrame {
 	//private Settings settings;
 	//private BrowseCommand browse;
 
-	public ImageViewerWindow() {
+	public ImageViewerWindow(Study studyModel) {
 		this.menuBar = new ImageViewerMenuBar();
 		this.imagePanel = new ImagePanel();
 		this.notifications = new NotificationPanel();
 		this.prevButton = new JButton("Previous");
 		this.nextButton = new JButton("Next");
+
+		studyModel.addObserver(this.imagePanel);
+		studyModel.addObserver(this.notifications);
 		
 		this.setJMenuBar(this.menuBar);
 		

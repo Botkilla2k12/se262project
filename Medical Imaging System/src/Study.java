@@ -13,14 +13,13 @@ public class Study extends Observable {
 	private ArrayList<BufferedImage> images;
 	private File directory; 
 	private StudySettings studySettings;
-	private int index;
+	private SystemSettings systemSettings;
 	
-	public Study(File directory) {
+	/*
+	public Study(ArrayList<Image> Images) {
 		// TODO Auto-generated constructor stub
-		this.index = 0;
-		this.directory = directory;
-		this.studySettings = new StudySettings();
-	}
+		this.images = images;
+	}*/
 	
 	/**
 	 * Creates an OpenCommand to open the directory. Open command returns an
@@ -45,8 +44,4 @@ public class Study extends Observable {
 		return this.toString();
 	}
 	
-	public ArrayList<BufferedImage> getImages(){
-		return this.images;
-	}
-
 }
