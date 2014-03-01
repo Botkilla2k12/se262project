@@ -1,4 +1,3 @@
-import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -20,7 +19,7 @@ public class ImagePanel extends JPanel implements Observer {
 		setDisplayMode(displayMode);
 
 		this.setLayout(this.layout);
-		this.setBackground(Color.WHITE);
+		
 		this.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 	}
 	
@@ -28,25 +27,17 @@ public class ImagePanel extends JPanel implements Observer {
 	public void update(Observable subject, Object data) {
 		Study study = (Study) subject;
 		
+		System.out.println(study.getIndex());
+		
 		setDisplayMode(study.getStudySettings().getDisplayMode());
-		int numEntries = DISPLAY_MODE_VALUE.getValue(displayMode);
 		
 		ArrayList<BufferedImage> images = study.getCurrentImages();
-		
-		super.removeAll();
 		
 		//for each image, render the image in a JPanel
 		for(BufferedImage img: images) {
 			super.add(new JLabel(new ImageIcon(img)));
 		}
 		
-		if(images.size() < numEntries) {
-			for(int i = 0; i < numEntries - images.size(); i++) {
-				super.add(new JLabel());
-			}
-		}
-		
-		super.revalidate();
 		super.repaint();
 	}
 	
@@ -60,7 +51,7 @@ public class ImagePanel extends JPanel implements Observer {
 		if(mode == DISPLAY_MODE_VALUE.ONE_IMAGE) {
 			configLayout(1, 1);
 		} else {
-			configLayout(2, 2);
+			configLayout(2, 1);
 		}
 	}
 	

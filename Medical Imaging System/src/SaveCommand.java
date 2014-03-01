@@ -15,21 +15,17 @@ import java.io.File;
 public class SaveCommand {
 
 	private Study study;
-	private String newName;
+	private String newFile;
 	
-	public SaveCommand(Study study, String newName) {
+	public SaveCommand(Study study, String newFile) {
 		this.study = study;
-		this.newName = newName;
+		this.newFile = newFile;
 		save();
 	}
 	
 	private void save() {
 		File currentFile = study.getDirectory();
-		String configPath = currentFile.getAbsolutePath() + "\\study.cfg";
-		File configFile = new File(configPath);
-		currentFile.renameTo(new File(newName));
-		String newPath = currentFile.getAbsolutePath() + "\\study.cfg";
-		configFile.renameTo(new File(newPath));
+		currentFile.renameTo(new File(newFile));
 	}
 	
 }

@@ -16,9 +16,8 @@ public class SystemSettings {
 	private Study defaultStudy;
 	
 	public SystemSettings() {
-		Scanner sc = null;
 		try {
-			sc = new Scanner(new File(CONFIG_FILE));
+			Scanner sc = new Scanner(new File(CONFIG_FILE));
 	
 			this.defaultPath = sc.nextLine();
 			
@@ -29,8 +28,6 @@ public class SystemSettings {
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
-		} finally {
-			sc.close();
 		}
 	}
 	

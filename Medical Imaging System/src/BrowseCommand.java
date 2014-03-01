@@ -33,7 +33,7 @@ public class BrowseCommand {
 	
 	public boolean isEnd() { //moving to right
 		if (displayMode == DISPLAY_MODE_VALUE.ONE_IMAGE) {
-			return (index >= images.size() - 1) ;
+			return (index == images.size() - 1) ;
 		}
 		else {
 			return (index + 4 >= images.size());
@@ -56,7 +56,7 @@ public class BrowseCommand {
 	public BufferedImage next() throws IndexOutOfBoundsException { //moving to right
 		if (displayMode == DISPLAY_MODE_VALUE.ONE_IMAGE && !isEnd()) {
 			BufferedImage newImage = images.get(index + 1);
-			study.setIndex(++index);
+			study.setIndex(index++);
 			return newImage;
 		}
 		else if (displayMode == DISPLAY_MODE_VALUE.FOUR_IMAGE && !isEnd()) {
@@ -70,7 +70,7 @@ public class BrowseCommand {
 	public BufferedImage prev() throws IndexOutOfBoundsException { //moving to left
 		if (displayMode == DISPLAY_MODE_VALUE.ONE_IMAGE && !isBeginning()) {
 			BufferedImage newImage = images.get(index - 1);
-			study.setIndex(--index);
+			study.setIndex(index--);
 			return newImage;
 		}
 		else if (displayMode == DISPLAY_MODE_VALUE.FOUR_IMAGE && !isBeginning()) {
