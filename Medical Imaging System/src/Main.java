@@ -1,20 +1,15 @@
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
 
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-
 
 public class Main {
 	public static void main(String[] args) {
 		try {
-			Scanner sc = new Scanner(new File("defaultstudy.cfg"));
-
-			String defaultPath = sc.nextLine();
 			SystemSettings settings = new SystemSettings();
+			Study study = null;
 			
-			if(defaultPath.equals("null")) {
-				//prompt
+			if(!settings.hasDefaultStudy()) {
 				int result = JOptionPane.showOptionDialog(
 					null,
 					"Would you like to select a default study?",
@@ -26,18 +21,27 @@ public class Main {
 					null
 				);
 				
-				if(result == JOptionPane.YES_OPTION) {
-					
+				JFileChooser chooser = new MedicalImageFileChooser();
+
+				int returnVal = chooser.showOpenDialog(null);
+				String filePath = null;
+				if(returnVal==JFileChooser.APPROVE_OPTION){
+					filePath = chooser.getSelectedFile().getPath();		
 				}
+				
+				study = new Study(new File(filePath));
+				
+				if(result == JOptionPane.YES_OPTION) {
+					settings.setDefaultStudy(study);
+				}
+				
+				new ImageViewerWindow(study);
 			} else {
-				settings.setDefaultStudy(new Study(new File(defaultPath)));
+				new ImageViewerWindow(
+					settings.getDefaultStudy()
+				);
 			}
-			
-			ImageViewerWindow win = new ImageViewerWindow(
-				settings.getDefaultStudy()
-			);
-			
-		} catch (FileNotFoundException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	

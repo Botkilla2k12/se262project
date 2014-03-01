@@ -60,27 +60,22 @@ public class ImageViewerMenuBar extends JMenuBar {
 		
 		
 	}
+
 	static class ExitProgram implements ActionListener{
         public void actionPerformed(ActionEvent e){
             System.exit(0);
         }
     }
 
-
 	static class OpenFile implements ActionListener{
 		public void actionPerformed(ActionEvent e){
-			JFileChooser chooser = new JFileChooser();
-			chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			JFileChooser chooser = new MedicalImageFileChooser();
 
 			//FileNameExtensionFilter filter = new FileNameExtensionFilter("JPEG file", ".jpg", ".jpeg");
 			//chooser.setFileFilter(filter);
-			chooser.setAcceptAllFileFilterUsed(false);
 			int returnVal = chooser.showOpenDialog(null);
 			if(returnVal==JFileChooser.APPROVE_OPTION){
 				String filePath = chooser.getSelectedFile().getPath();		
-			}
-			else{
-				System.exit(0);
 			}
         }
 	}
