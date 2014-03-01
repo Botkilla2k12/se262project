@@ -1,5 +1,5 @@
-/StudySettings.class
-/SystemSettings.class
-/ImageViewerMenuBar$exitProgram.class
-/DISPLAY_MODE_VALUE.class
-/BrowseCommand.class
+/ImageViewerMenuBar$ChangeDisplayMode.class
+/ImageViewerMenuBar$CreateStudy.class
+/ImageViewerMenuBar$DefaultStudy.class
+/ImageViewerMenuBar$ExitProgram.class
+/ImageViewerMenuBar$OpenFile.class
