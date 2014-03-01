@@ -49,9 +49,9 @@ public class ImagePanel extends JPanel implements Observer {
 		this.displayMode = mode;
 		
 		if(mode == DISPLAY_MODE_VALUE.ONE_IMAGE) {
-			configLayout(1, 0);
+			configLayout(1, 1);
 		} else {
-			configLayout(2, 0);
+			configLayout(2, 1);
 		}
 	}
 	
