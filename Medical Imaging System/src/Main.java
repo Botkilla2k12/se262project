@@ -27,9 +27,7 @@ public class Main {
 				);
 				
 				if(result == JOptionPane.YES_OPTION) {
-					//show file chooser and select directory
-				} else {
-					settings.setDefaultStudy(new Study(null));
+					
 				}
 			} else {
 				settings.setDefaultStudy(new Study(new File(defaultPath)));
@@ -38,6 +36,7 @@ public class Main {
 			ImageViewerWindow win = new ImageViewerWindow(
 				settings.getDefaultStudy()
 			);
+			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
