@@ -1,8 +1,10 @@
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
+
 import javax.imageio.ImageIO;
+
 import java.awt.image.BufferedImage;
 
 /**
@@ -31,13 +33,24 @@ public class OpenCommand {
 		return directory;
 	}
 	
+	public boolean checkFileType(File f) {
+		String name = f.getName().toLowerCase();
+        return (name.endsWith(".jpg") || name.endsWith(".jpeg"));
+	}
+	
 	private ArrayList<BufferedImage> open(File directory) throws IOException {
 		File[] files = directory.listFiles();
-		Arrays.sort(files);
+		ArrayList<File> newFiles = new ArrayList<File>();
+		for (int i = 0; i < files.length; i++) {
+			if (checkFileType(files[i])) {
+				newFiles.add(files[i]);
+			}
+		}
+		Collections.sort(newFiles);
 		
-		for(int i = 0; i < files.length; i++){
+		for(int i = 0; i < newFiles.size(); i++){
 			try{
-				BufferedImage image = ImageIO.read(files[i]);
+				BufferedImage image = ImageIO.read(newFiles.get(i));
 				images.add(image);
 		    }
 		    catch(IOException e) {
