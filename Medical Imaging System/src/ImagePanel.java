@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ public class ImagePanel extends JPanel implements Observer {
 		setDisplayMode(displayMode);
 
 		this.setLayout(this.layout);
-		
+		this.setBackground(Color.WHITE);
 		this.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 	}
 	
@@ -28,6 +29,7 @@ public class ImagePanel extends JPanel implements Observer {
 		Study study = (Study) subject;
 		
 		setDisplayMode(study.getStudySettings().getDisplayMode());
+		int numEntries = DISPLAY_MODE_VALUE.getValue(displayMode);
 		
 		ArrayList<BufferedImage> images = study.getCurrentImages();
 		
@@ -36,6 +38,12 @@ public class ImagePanel extends JPanel implements Observer {
 		//for each image, render the image in a JPanel
 		for(BufferedImage img: images) {
 			super.add(new JLabel(new ImageIcon(img)));
+		}
+		
+		if(images.size() < numEntries) {
+			for(int i = 0; i < numEntries - images.size(); i++) {
+				super.add(new JLabel());
+			}
 		}
 		
 		super.revalidate();

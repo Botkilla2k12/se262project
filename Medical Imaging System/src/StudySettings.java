@@ -14,9 +14,14 @@ public class StudySettings {
 	public StudySettings(File directory) {
 		this.directory = directory;
 		try {
-			Scanner sc = new Scanner(
-				new File(directory.getAbsolutePath() + "\\" + CONFIG_FILE)
-			);
+			File configFile =
+				new File(directory.getAbsolutePath() + "\\" + CONFIG_FILE);
+			
+			Scanner sc = new Scanner(configFile);
+			
+			if(!configFile.exists()) {
+				configFile.createNewFile();
+			}
 			
 			String displayModeVal = sc.nextLine();
 			

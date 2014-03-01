@@ -16,7 +16,7 @@ public class Study extends Observable {
 	private int index;
 	
 	
-	public Study(File directory, StudySettings studySettings) {
+	public Study(File directory) {
 		this.index = 0;
 		this.directory = directory;
 		this.studySettings = new StudySettings(directory);
