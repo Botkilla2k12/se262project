@@ -1,10 +1,15 @@
-import java.io.File;
 
+import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+
 public class Main {
 	public static void main(String[] args) {
+
+		//Study studyModel = new Study();
+		//ImageViewerWindow win = new ImageViewerWindow(studyModel);
+
 		try {
 			SystemSettings settings = new SystemSettings();
 			Study study = null;
@@ -45,5 +50,6 @@ public class Main {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
+
 	}
 }

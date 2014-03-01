@@ -1,46 +1,54 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import java.io.File;
 import java.util.Arrays;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JFileChooser;
+
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
 public class ImageViewerMenuBar extends JMenuBar {
 	
 	private JMenu fileMenu;
 	private JMenu editMenu;
 	private JMenu settingsMenu;
-	
-	
+	//private JMenuItem open;
+	//private JMenuItem exit;
+	//private JMenuItem createStudy;
+	//private JMenuItem settingPlaceholder;
+
 	public ImageViewerMenuBar(){
 		this.fileMenu=new JMenu("File");
 		JMenuItem openImage = new JMenuItem("Open...");
 		JMenuItem exitApp=new JMenuItem("Exit");
 		fileMenu.add(openImage);
 		fileMenu.add(exitApp);
-		exitApp.addActionListener(new ExitProgram());
-		openImage.addActionListener(new OpenFile());
+		exitApp.addActionListener(new exitProgram());
 		
 		this.editMenu=new JMenu("Edit");
 		JMenuItem createStudy = new JMenuItem("Create Study");
 		editMenu.add(createStudy);
-		createStudy.addActionListener(new CreateStudy());
-		
 		
 		this.settingsMenu=new JMenu("Settings");
 		JMenuItem defaultStudy = new JMenuItem("Choose Default Study");
+		JMenuItem displayMode = new JMenuItem("Change Display Mode");
 		settingsMenu.add(defaultStudy);
-		defaultStudy.addActionListener(new DefaultStudy());
-		
-
-		JMenu displayMode = new JMenu("Change Display Mode");
 		settingsMenu.add(displayMode);
+
+		ButtonGroup bGroup= new ButtonGroup();
+		JMenuItem displayMode1 = new JRadioButtonMenuItem("Single Image");
+		bGroup.add(displayMode1);
+		displayMode1.setSelected(true);
+		JMenuItem displayMode4 = new JRadioButtonMenuItem("Four Images");
+		bGroup.add(displayMode4);
 		ButtonGroup bGroup= new ButtonGroup();
 		JMenuItem displayMode1 = new JRadioButtonMenuItem("Single Image");
 		bGroup.add(displayMode1);
@@ -51,21 +59,25 @@ public class ImageViewerMenuBar extends JMenuBar {
 		displayMode.add(displayMode4);
 		//displayMode.addActionListener(new ChangeDisplayMode());
 		
+
 		
 		add(fileMenu);
 		add(editMenu);
 		add(settingsMenu);
-		
-		
-		
-		
 	}
 
+
+	static class exitProgram implements ActionListener{
+
+
 	static class ExitProgram implements ActionListener{
+
         public void actionPerformed(ActionEvent e){
             System.exit(0);
         }
     }
+<<<<<<< HEAD
+=======
 
 	static class OpenFile implements ActionListener{
 		public void actionPerformed(ActionEvent e){
@@ -102,7 +114,6 @@ public class ImageViewerMenuBar extends JMenuBar {
 				System.exit(0);
 			}
 			
-		}
 	}
 	
 }
