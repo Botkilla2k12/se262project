@@ -15,14 +15,12 @@ import java.util.ArrayList;
 
 public class BrowseCommand {
 
-	private boolean direction; //true = right
 	private Study study;
 	private ArrayList<BufferedImage> images;
 	private DISPLAY_MODE_VALUE displayMode;
 	private int index = study.getIndex();
 	
-	public BrowseCommand(boolean direction, Study study) {
-		this.direction = direction;
+	public BrowseCommand(Study study) {
 		this.study = study;
 		this.images = study.getImages();
 		this.displayMode = study.getStudySettings().getDisplayMode();
@@ -32,22 +30,21 @@ public class BrowseCommand {
 		return images.get(0);
 	}
 	
-	public boolean isDone() {
+	public boolean isEnd() { //moving to right
 		if (displayMode == DISPLAY_MODE_VALUE.ONE_IMAGE) {
-			if (direction) { //moving to right by one image
-				return (index == images.size() - 1) ;
-			}
-			else { //moving to left by one image
-				return (index == 0);
-			}
+			return (index == images.size() - 1) ;
 		}
 		else {
-			if (direction) { //moving to right by four images
-				return (index + 4 >= images.size());
-			}
-			else { //moving to left by four images
-				return (index - 4 <= 0);
-			}
+			return (index + 4 >= images.size());
+		}
+	}
+	
+	public boolean isBeginning() { //moving to left
+		if (displayMode == DISPLAY_MODE_VALUE.ONE_IMAGE) {
+			return (index <= 0);
+		}
+		else {
+			return (index - 4 <= 0);
 		}
 	}
 	
@@ -55,30 +52,30 @@ public class BrowseCommand {
 		return images.get(index);
 	}
 	
-	public BufferedImage next() throws IndexOutOfBoundsException{
-		if (displayMode == DISPLAY_MODE_VALUE.ONE_IMAGE) {
-			if (direction && !isDone()) { //moving to right by one image
-				BufferedImage newImage = images.get(index + 1);
-				study.setIndex(index++);
-				return newImage;
-			}
-			else if (!direction && !isDone()){ //moving to left by one image
-				BufferedImage newImage = images.get(index - 1);
-				study.setIndex(index--);
-				return newImage;
-			}
+	public BufferedImage next() throws IndexOutOfBoundsException { //moving to right
+		if (displayMode == DISPLAY_MODE_VALUE.ONE_IMAGE && !isEnd()) {
+			BufferedImage newImage = images.get(index + 1);
+			study.setIndex(index++);
+			return newImage;
 		}
-		else {
-			if (direction && !isDone()) { //moving to right by four images
-				BufferedImage newImage = images.get(index + 4);
-				study.setIndex(index += 4);
-				return newImage;
-			}
-			else if (!direction && !isDone()) { //moving to left by four images
-				BufferedImage newImage = images.get(index - 4);
-				study.setIndex(index -= 4);
-				return newImage;
-			}
+		else if (displayMode == DISPLAY_MODE_VALUE.FOUR_IMAGE && !isEnd()) {
+			BufferedImage newImage = images.get(index + 4);
+			study.setIndex(index += 4);
+			return newImage;
+		}
+		throw new IndexOutOfBoundsException();
+	}
+	
+	public BufferedImage prev() throws IndexOutOfBoundsException { //moving to left
+		if (displayMode == DISPLAY_MODE_VALUE.ONE_IMAGE && !isBeginning()) {
+			BufferedImage newImage = images.get(index - 1);
+			study.setIndex(index--);
+			return newImage;
+		}
+		else if (displayMode == DISPLAY_MODE_VALUE.FOUR_IMAGE && !isBeginning()) {
+			BufferedImage newImage = images.get(index - 4);
+			study.setIndex(index -= 4);
+			return newImage;
 		}
 		throw new IndexOutOfBoundsException();
 	}

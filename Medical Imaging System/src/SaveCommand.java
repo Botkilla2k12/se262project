@@ -15,9 +15,9 @@ import java.io.File;
 public class SaveCommand {
 
 	private Study study;
-	private File newFile;
+	private String newFile;
 	
-	public SaveCommand(Study study, File newFile) {
+	public SaveCommand(Study study, String newFile) {
 		this.study = study;
 		this.newFile = newFile;
 		save();
@@ -25,7 +25,7 @@ public class SaveCommand {
 	
 	private void save() {
 		File currentFile = study.getDirectory();
-		currentFile.renameTo(newFile);
+		currentFile.renameTo(new File(newFile));
 	}
 	
 }
