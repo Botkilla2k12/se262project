@@ -9,10 +9,13 @@ import javax.swing.border.EtchedBorder;
 
 
 public class ImagePanel extends JPanel implements Observer {
+	private GridLayout layout;
 	private int displayMode;
 	
 	public ImagePanel() {
-		this.setLayout(new GridLayout(2, 2, 5, 5));
+		this.layout = new GridLayout(2, 2, 5, 5);
+		
+		this.setLayout(this.layout);
 		this.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		
 		this.add(new JLabel("Image 1"));
