@@ -21,7 +21,8 @@ public class ImageViewerMenuBar extends JMenuBar {
 		this.editMenu=new JMenu("Edit");
 		editMenu.add(new JMenuItem("Create Study"));
 		this.settingsMenu=new JMenu("Settings");
-		settingsMenu.add(new JMenuItem("Settings stuff goes here..."));
+		settingsMenu.add(new JMenuItem("Choose Default Study"));
+		settingsMenu.add(new JMenuItem("Change Display Mode"));
 		add(fileMenu);
 		add(editMenu);
 		add(settingsMenu);
