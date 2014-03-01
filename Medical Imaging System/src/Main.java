@@ -1,17 +1,15 @@
-<<<<<<< HEAD
-=======
-import java.io.File;
 
+import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
->>>>>>> branch 'master' of https://github.com/Botkilla2k12/se262project.git
+
 
 public class Main {
 	public static void main(String[] args) {
-<<<<<<< HEAD
-		Study studyModel = new Study();
-		ImageViewerWindow win = new ImageViewerWindow(studyModel);
-=======
+
+		//Study studyModel = new Study();
+		//ImageViewerWindow win = new ImageViewerWindow(studyModel);
+
 		try {
 			SystemSettings settings = new SystemSettings();
 			Study study = null;
@@ -52,6 +50,6 @@ public class Main {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
->>>>>>> branch 'master' of https://github.com/Botkilla2k12/se262project.git
+
 	}
 }

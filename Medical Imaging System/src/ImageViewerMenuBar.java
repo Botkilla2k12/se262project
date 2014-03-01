@@ -1,25 +1,20 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-<<<<<<< HEAD
 
-=======
 import java.io.File;
 import java.util.Arrays;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JFileChooser;
->>>>>>> branch 'master' of https://github.com/Botkilla2k12/se262project.git
+
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-<<<<<<< HEAD
-=======
+
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.filechooser.FileNameExtensionFilter;
->>>>>>> branch 'master' of https://github.com/Botkilla2k12/se262project.git
-
 public class ImageViewerMenuBar extends JMenuBar {
 	
 	private JMenu fileMenu;
@@ -47,8 +42,7 @@ public class ImageViewerMenuBar extends JMenuBar {
 		JMenuItem displayMode = new JMenuItem("Change Display Mode");
 		settingsMenu.add(defaultStudy);
 		settingsMenu.add(displayMode);
-<<<<<<< HEAD
-=======
+
 		ButtonGroup bGroup= new ButtonGroup();
 		JMenuItem displayMode1 = new JRadioButtonMenuItem("Single Image");
 		bGroup.add(displayMode1);
@@ -65,20 +59,19 @@ public class ImageViewerMenuBar extends JMenuBar {
 		displayMode.add(displayMode4);
 		//displayMode.addActionListener(new ChangeDisplayMode());
 		
->>>>>>> branch 'master' of https://github.com/Botkilla2k12/se262project.git
+
 		
 		add(fileMenu);
 		add(editMenu);
 		add(settingsMenu);
 	}
 
-<<<<<<< HEAD
+
 	static class exitProgram implements ActionListener{
-=======
 
 
 	static class ExitProgram implements ActionListener{
->>>>>>> branch 'master' of https://github.com/Botkilla2k12/se262project.git
+
         public void actionPerformed(ActionEvent e){
             System.exit(0);
         }
@@ -121,8 +114,6 @@ public class ImageViewerMenuBar extends JMenuBar {
 				System.exit(0);
 			}
 			
-		}
 	}
 	
->>>>>>> branch 'master' of https://github.com/Botkilla2k12/se262project.git
 }
