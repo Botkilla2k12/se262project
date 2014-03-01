@@ -31,7 +31,7 @@ public class ImageViewerMenuBar extends JMenuBar {
 		JMenuItem exitApp=new JMenuItem("Exit");
 		fileMenu.add(openImage);
 		fileMenu.add(exitApp);
-		exitApp.addActionListener(new exitProgram());
+		exitApp.addActionListener(new ExitProgram());
 		
 		this.editMenu=new JMenu("Edit");
 		JMenuItem createStudy = new JMenuItem("Create Study");
@@ -49,11 +49,6 @@ public class ImageViewerMenuBar extends JMenuBar {
 		displayMode1.setSelected(true);
 		JMenuItem displayMode4 = new JRadioButtonMenuItem("Four Images");
 		bGroup.add(displayMode4);
-		ButtonGroup bGroup= new ButtonGroup();
-		JMenuItem displayMode1 = new JRadioButtonMenuItem("Single Image");
-		bGroup.add(displayMode1);
-		displayMode1.setSelected(true);
-		JMenuItem displayMode4 = new JRadioButtonMenuItem("Four Images");
 		bGroup.add(displayMode4);
 		displayMode.add(displayMode1);
 		displayMode.add(displayMode4);
@@ -67,7 +62,6 @@ public class ImageViewerMenuBar extends JMenuBar {
 	}
 
 
-	static class exitProgram implements ActionListener{
 
 
 	static class ExitProgram implements ActionListener{
@@ -76,8 +70,6 @@ public class ImageViewerMenuBar extends JMenuBar {
             System.exit(0);
         }
     }
-<<<<<<< HEAD
-=======
 
 	static class OpenFile implements ActionListener{
 		public void actionPerformed(ActionEvent e){
@@ -113,7 +105,6 @@ public class ImageViewerMenuBar extends JMenuBar {
 			else{
 				System.exit(0);
 			}
-			
+		}
 	}
-	
 }

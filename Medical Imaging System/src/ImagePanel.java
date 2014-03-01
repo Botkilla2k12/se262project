@@ -27,17 +27,18 @@ public class ImagePanel extends JPanel implements Observer {
 	public void update(Observable subject, Object data) {
 		Study study = (Study) subject;
 		
-		System.out.println(study.getIndex());
-		
 		setDisplayMode(study.getStudySettings().getDisplayMode());
 		
 		ArrayList<BufferedImage> images = study.getCurrentImages();
+		
+		super.removeAll();
 		
 		//for each image, render the image in a JPanel
 		for(BufferedImage img: images) {
 			super.add(new JLabel(new ImageIcon(img)));
 		}
 		
+		super.revalidate();
 		super.repaint();
 	}
 	
@@ -51,7 +52,7 @@ public class ImagePanel extends JPanel implements Observer {
 		if(mode == DISPLAY_MODE_VALUE.ONE_IMAGE) {
 			configLayout(1, 1);
 		} else {
-			configLayout(2, 1);
+			configLayout(2, 2);
 		}
 	}
 	
