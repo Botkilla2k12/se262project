@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.PrintWriter;
 import java.util.Scanner;
 
 /**
@@ -13,16 +14,18 @@ public class StudySettings {
 	
 	public StudySettings(File directory) {
 		this.directory = directory;
+		Scanner sc = null;
 		try {
 			File configFile =
 				new File(directory.getAbsolutePath() + "\\" + CONFIG_FILE);
 			
-			Scanner sc = new Scanner(configFile);
-			
 			if(!configFile.exists()) {
 				configFile.createNewFile();
+				
+				setDisplayMode(DISPLAY_MODE_VALUE.ONE_IMAGE);
 			}
 			
+			sc = new Scanner(configFile);
 			String displayModeVal = sc.nextLine();
 			
 			if(displayModeVal.equals("ONE_IMAGE")) {
@@ -32,6 +35,8 @@ public class StudySettings {
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
+		} finally {
+			sc.close();
 		}
 	}
 
@@ -41,5 +46,22 @@ public class StudySettings {
 	
 	public void setDisplayMode(DISPLAY_MODE_VALUE newDisplayMode) {
 		this.displayMode = newDisplayMode;
+		
+		PrintWriter writer = null;;
+		try {
+			writer = new PrintWriter(
+				directory.getAbsolutePath() + "\\" +  CONFIG_FILE, "UTF-8"
+			);
+			
+			if(displayMode == DISPLAY_MODE_VALUE.ONE_IMAGE) {
+				writer.println("ONE_IMAGE");
+			} else {
+				writer.println("FOUR_IMAGE");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			writer.close();
+		}
 	}
 }
