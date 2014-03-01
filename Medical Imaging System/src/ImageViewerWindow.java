@@ -13,7 +13,7 @@ public class ImageViewerWindow extends JFrame {
 	private ImagePanel imagePanel;
 	private ImageViewerMenuBar menuBar;
 	private JButton prevButton, nextButton;
-	private BrowseCommand prevCommand, nextCommand;
+	private BrowseCommand browseCommand;
 	//private Settings settings;
 
 	public ImageViewerWindow(Study studyModel) {
@@ -50,8 +50,7 @@ public class ImageViewerWindow extends JFrame {
 			e.printStackTrace();
 		}
 		
-		this.prevCommand = new BrowseCommand(false, studyModel);
-		this.nextCommand = new BrowseCommand(true, studyModel);
+		this.browseCommand = new BrowseCommand(studyModel);
 		
 		this.setVisible(true);
 		this.setSize(600, 600);
@@ -64,13 +63,13 @@ public class ImageViewerWindow extends JFrame {
 			// TODO Auto-generated method stub
 			if(e.getSource() == prevButton) {
 				try {
-					prevCommand.next();
+					browseCommand.prev();
 				} catch(IndexOutOfBoundsException ex) {
 					JOptionPane.showMessageDialog(null, "First image!");
 				}
 			} else if(e.getSource() == nextButton) {
 				try {
-					nextCommand.next();
+					browseCommand.next();
 				} catch(IndexOutOfBoundsException ex) {
 					JOptionPane.showMessageDialog(null, "Last image!");
 				}
