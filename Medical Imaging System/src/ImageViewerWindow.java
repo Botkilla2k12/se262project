@@ -2,6 +2,7 @@ import java.awt.BorderLayout;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 
@@ -31,6 +32,7 @@ public class ImageViewerWindow extends JFrame {
 		buttonPanel.setLayout(new BorderLayout());
 		
 		buttonPanel.add(this.prevButton, BorderLayout.WEST);
+		buttonPanel.add(new JLabel("Display Mode"), BorderLayout.CENTER);
 		buttonPanel.add(this.nextButton, BorderLayout.EAST);
 		
 		this.add(buttonPanel, BorderLayout.SOUTH);
