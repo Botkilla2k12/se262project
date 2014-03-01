@@ -15,6 +15,7 @@ public class Study extends Observable {
 	private StudySettings studySettings;
 	private int index;
 	
+	
 	public Study(File directory) {
 		// TODO Auto-generated constructor stub
 		this.index = 0;
