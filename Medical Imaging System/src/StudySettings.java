@@ -1,4 +1,7 @@
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.Scanner;
 
 /**
@@ -10,6 +13,7 @@ public class StudySettings {
 	private static final String CONFIG_FILE = "study.cfg";
 	private File directory;
 	private DISPLAY_MODE_VALUE displayMode;
+	
 	
 	public StudySettings(File directory) {
 		this.directory = directory;
@@ -36,5 +40,16 @@ public class StudySettings {
 	
 	public void setDisplayMode(DISPLAY_MODE_VALUE newDisplayMode) {
 		this.displayMode = newDisplayMode;
+		PrintWriter writer = null;
+		try{
+			writer = new PrintWriter(CONFIG_FILE, "UTF-8");
+			writer.println(this.displayMode);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			writer.close();
+		}
+		
+		
 	}
 }
