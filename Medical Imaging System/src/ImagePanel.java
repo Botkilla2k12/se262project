@@ -27,6 +27,8 @@ public class ImagePanel extends JPanel implements Observer {
 	public void update(Observable subject, Object data) {
 		Study study = (Study) subject;
 		
+		System.out.println(study.getIndex());
+		
 		setDisplayMode(study.getStudySettings().getDisplayMode());
 		
 		ArrayList<BufferedImage> images = study.getCurrentImages();

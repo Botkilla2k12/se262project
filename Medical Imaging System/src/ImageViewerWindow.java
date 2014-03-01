@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 
@@ -26,9 +27,6 @@ public class ImageViewerWindow extends JFrame {
 		
 		this.nextButton = new JButton("Next");
 		this.nextButton.addActionListener(new ButtonListener());
-
-		this.prevCommand = new BrowseCommand(false, studyModel);
-		this.nextCommand = new BrowseCommand(true, studyModel);
 		
 		studyModel.addObserver(this.imagePanel);
 		
@@ -52,20 +50,30 @@ public class ImageViewerWindow extends JFrame {
 			e.printStackTrace();
 		}
 		
+		this.prevCommand = new BrowseCommand(false, studyModel);
+		this.nextCommand = new BrowseCommand(true, studyModel);
+		
 		this.setVisible(true);
 		this.setSize(600, 600);
 		this.setTitle("Medical Image Viewing System");
 	}
 	
 	private class ButtonListener implements ActionListener {
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			if(e.getSource() == prevButton) {
-				prevCommand.next();
+				try {
+					prevCommand.next();
+				} catch(IndexOutOfBoundsException ex) {
+					JOptionPane.showMessageDialog(null, "First image!");
+				}
 			} else if(e.getSource() == nextButton) {
-				nextCommand.next();
+				try {
+					nextCommand.next();
+				} catch(IndexOutOfBoundsException ex) {
+					JOptionPane.showMessageDialog(null, "Last image!");
+				}
 			}
 		}
 		

@@ -36,10 +36,10 @@ public class BrowseCommand {
 	public boolean isDone() {
 		if (displayMode == DISPLAY_MODE_VALUE.ONE_IMAGE) {
 			if (direction) { //moving to right by one image
-				return (index == images.size() - 1) ;
+				return (index >= images.size() - 1) ;
 			}
 			else { //moving to left by one image
-				return (index == 0);
+				return (index <= 0);
 			}
 		}
 		else {
@@ -60,24 +60,32 @@ public class BrowseCommand {
 		if (displayMode == DISPLAY_MODE_VALUE.ONE_IMAGE) {
 			if (direction && !isDone()) { //moving to right by one image
 				BufferedImage newImage = images.get(index + 1);
-				study.setIndex(index++);
+				study.setIndex(index + 1);
+				index++;
+				
 				return newImage;
 			}
 			else if (!direction && !isDone()){ //moving to left by one image
 				BufferedImage newImage = images.get(index - 1);
-				study.setIndex(index--);
+				study.setIndex(index - 1);
+				index--;
+				
 				return newImage;
 			}
 		}
 		else {
 			if (direction && !isDone()) { //moving to right by four images
 				BufferedImage newImage = images.get(index + 4);
-				study.setIndex(index += 4);
+				study.setIndex(index + 4);
+				index += 4;
+				
 				return newImage;
 			}
 			else if (!direction && !isDone()) { //moving to left by four images
 				BufferedImage newImage = images.get(index - 4);
-				study.setIndex(index -= 4);
+				study.setIndex(index - 4);
+				index -= 4;
+				
 				return newImage;
 			}
 		}
