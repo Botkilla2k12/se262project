@@ -1,47 +1,73 @@
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 
 public class ImageViewerWindow extends JFrame {
 	private ImagePanel imagePanel;
 	private ImageViewerMenuBar menuBar;
-	private NotificationPanel notifications;
 	private JButton prevButton, nextButton;
+	private BrowseCommand prevCommand, nextCommand;
 	//private Settings settings;
-	//private BrowseCommand browse;
 
 	public ImageViewerWindow(Study studyModel) {
 		this.menuBar = new ImageViewerMenuBar();
-		this.imagePanel = new ImagePanel();
-		this.notifications = new NotificationPanel();
-		this.prevButton = new JButton("Previous");
-		this.nextButton = new JButton("Next");
+		this.imagePanel = new ImagePanel(
+			studyModel.getStudySettings().getDisplayMode()
+		);
 
+		this.prevButton = new JButton("Previous");
+		this.prevButton.addActionListener(new ButtonListener());
+		
+		this.nextButton = new JButton("Next");
+		this.nextButton.addActionListener(new ButtonListener());
+
+		this.prevCommand = new BrowseCommand(false, studyModel);
+		this.nextCommand = new BrowseCommand(true, studyModel);
+		
 		studyModel.addObserver(this.imagePanel);
-		studyModel.addObserver(this.notifications);
 		
 		this.setJMenuBar(this.menuBar);
 		
 		this.setLayout(new BorderLayout());
 
-		this.add(this.imagePanel, BorderLayout.CENTER);
-		this.add(this.notifications, BorderLayout.EAST);
-		
+		this.add(this.imagePanel, BorderLayout.CENTER);		
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new BorderLayout());
 		
 		buttonPanel.add(this.prevButton, BorderLayout.WEST);
-		buttonPanel.add(new JLabel("Display Mode"), BorderLayout.CENTER);
 		buttonPanel.add(this.nextButton, BorderLayout.EAST);
 		
 		this.add(buttonPanel, BorderLayout.SOUTH);
 		
+		try {
+			studyModel.open();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		this.setVisible(true);
-		this.setSize(800, 600);
+		this.setSize(600, 600);
 		this.setTitle("Medical Image Viewing System");
+	}
+	
+	private class ButtonListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			if(e.getSource() == prevButton) {
+				prevCommand.next();
+			} else if(e.getSource() == nextButton) {
+				nextCommand.next();
+			}
+		}
+		
 	}
 }

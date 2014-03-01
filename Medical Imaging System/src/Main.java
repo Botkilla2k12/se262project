@@ -37,10 +37,10 @@ public class Main {
 				
 				new ImageViewerWindow(study);
 			} else {
-				new ImageViewerWindow(
-					settings.getDefaultStudy()
-				);
+				study = settings.getDefaultStudy();
 			}
+			
+			new ImageViewerWindow(study);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

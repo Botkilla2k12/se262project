@@ -19,11 +19,12 @@ public class BrowseCommand {
 	private Study study;
 	private ArrayList<BufferedImage> images;
 	private DISPLAY_MODE_VALUE displayMode;
-	private int index = study.getIndex();
+	private int index;
 	
 	public BrowseCommand(boolean direction, Study study) {
 		this.direction = direction;
 		this.study = study;
+		this.index = study.getIndex();
 		this.images = study.getImages();
 		this.displayMode = study.getStudySettings().getDisplayMode();
 	}
@@ -51,7 +52,7 @@ public class BrowseCommand {
 		}
 	}
 	
-	public BufferedImage currentItem() {
+	public BufferedImage currentItems() {		
 		return images.get(index);
 	}
 	

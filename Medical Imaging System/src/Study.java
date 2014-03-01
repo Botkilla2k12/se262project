@@ -16,10 +16,9 @@ public class Study extends Observable {
 	private int index;
 	
 	public Study(File directory) {
-		// TODO Auto-generated constructor stub
 		this.index = 0;
 		this.directory = directory;
-		this.studySettings = new StudySettings();
+		this.studySettings = new StudySettings(directory);
 	}
 	
 	/**
@@ -29,11 +28,16 @@ public class Study extends Observable {
 	 * @throws IOException
 	 */
 	public void open() throws IOException {
-		try{
-			OpenCommand openCommandObject = new OpenCommand(this.directory);
-			this.images = openCommandObject.getImages();
-		} catch (IOException e){
-			throw e;
+		if(this.directory != null) {
+			try{
+				OpenCommand openCommandObject = new OpenCommand(this.directory);
+				this.images = openCommandObject.getImages();
+				
+				super.setChanged();
+				super.notifyObservers();
+			} catch (IOException e){
+				throw e;
+			}
 		}
 	}
 	
@@ -49,16 +53,39 @@ public class Study extends Observable {
 		return this.images;
 	}
 	
+	public ArrayList<BufferedImage> getCurrentImages() {
+		ArrayList<BufferedImage> currImgs = new ArrayList<BufferedImage>();
+		int offset =
+			this.studySettings.getDisplayMode() == DISPLAY_MODE_VALUE.ONE_IMAGE ?
+			1 : 4;
+		
+		for(int i = index; i < this.images.size() && i < index + offset; i++) {
+			currImgs.add(this.images.get(i));
+		}
+		
+		return currImgs;
+	}
+	
 	public int getIndex(){
 		return this.index;
 	}
 	
 	public void setIndex(int newIndex){
 		this.index = newIndex;
+		
+		super.setChanged();
+		super.notifyObservers();
 	}
 	
 	public StudySettings getStudySettings() {
 		return this.studySettings;
 	}
 
+	public static class Metadata {
+		public String changeType;
+		
+		public Metadata(String changeType) {
+			this.changeType = changeType;
+		}
+	}
 }
