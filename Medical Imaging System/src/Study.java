@@ -12,7 +12,8 @@ import java.util.ArrayList;
 public class Study extends Observable {
 	private ArrayList<BufferedImage> images;
 	private File directory; 
-	private Settings settings;
+	private StudySettings studySettings;
+	private SystemSettings systemSettings;
 	
 	/*
 	public Study(ArrayList<Image> Images) {
