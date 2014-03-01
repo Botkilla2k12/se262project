@@ -1,0 +1,4 @@
+
+public enum DISPLAY_MODE_VALUE {
+	ONE_IMAGE, FOUR_IMAGE
+}
