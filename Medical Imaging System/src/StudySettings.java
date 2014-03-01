@@ -4,7 +4,6 @@
  *
  */
 public class StudySettings {
-	public static final int ONE_IMAGE = 1, FOUR_IMAGES = 4;
 	private DISPLAY_MODE_VALUE displayMode;
 	
 	public StudySettings() {
