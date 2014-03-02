@@ -30,6 +30,7 @@ public class ImageViewerWindow extends JFrame {
 		this.numberLabel = new NumberLabel();
 		
 		setupNewStudy(studyModel);
+		setPanelDisplayMode(studyModel.getStudySettings().getDisplayMode());
 		
 		this.prevButton = new JButton("Previous");
 		this.prevButton.addActionListener(new ButtonListener());
