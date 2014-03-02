@@ -21,12 +21,43 @@ public class Main {
 					null,
 					null
 				);
-				
-				JFileChooser chooser = new MedicalImageFileChooser();
 
-				int returnVal = chooser.showOpenDialog(null);
-				String filePath = null;
-				if(returnVal==JFileChooser.APPROVE_OPTION){
+				if(result == JOptionPane.YES_OPTION) {
+					JFileChooser chooser = new MedicalImageFileChooser();
+					
+					int retval = chooser.showOpenDialog(null);
+					
+					if(retval == JFileChooser.APPROVE_OPTION) {
+						//set default study
+						String path = chooser.getSelectedFile().getAbsolutePath();
+						study = new Study(new File(path));
+						settings.setDefaultStudy(study);
+					} else {
+						retval = chooser.showOpenDialog(null);
+						
+						if(retval == JFileChooser.APPROVE_OPTION) {
+							String path = chooser.getSelectedFile().getAbsolutePath();
+							study = new Study(new File(path));
+						} else {
+							study = new Study(null);
+						}
+					}
+				} else {
+					JFileChooser chooser = new MedicalImageFileChooser();
+					
+					int retval = chooser.showOpenDialog(null);
+					
+					if(retval == JFileChooser.APPROVE_OPTION) {
+						//set default study
+						String path = chooser.getSelectedFile().getAbsolutePath();
+						study = new Study(new File(path));
+					} else {
+						study = new Study(null);
+					}
+				}
+				
+				/*try {
+					if(returnVal == JFileChooser.APPROVE_OPTION){
 						filePath = chooser.getSelectedFile().getPath();
 						System.out.println(study);
 						study = new Study(new File(filePath));
@@ -35,10 +66,12 @@ public class Main {
 							settings.setDefaultStudy(study);
 	
 						} 
-				
-				
-				
-				}
+					} else {
+						
+					}
+				} catch(NullPointerException e) {
+					
+				}*/
 			} else {
 				//System.out.println(settings.getDefaultStudy());
 				study = settings.getDefaultStudy();

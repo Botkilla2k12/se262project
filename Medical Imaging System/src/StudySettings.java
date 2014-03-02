@@ -22,9 +22,7 @@ public class StudySettings {
 		Scanner sc = null;
 		try {
 			File configFile =
-	
 				new File(directory.getAbsolutePath() + "\\" + CONFIG_FILE);
-				
 			
 			if(!configFile.exists()) {
 				configFile.createNewFile();
