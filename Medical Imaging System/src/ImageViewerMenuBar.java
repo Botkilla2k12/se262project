@@ -112,8 +112,13 @@ public class ImageViewerMenuBar extends JMenuBar {
             chooser.setAcceptAllFileFilterUsed(false);
             
             SystemSettings sysSettings = new SystemSettings();
-            Study defStudy = chooseStudy(chooser);
-            sysSettings.setDefaultStudy(defStudy);
+            try{
+            	Study defStudy = chooseStudy(chooser);
+            	sysSettings.setDefaultStudy(defStudy);
+            } catch (NullPointerException i){
+            }
+            	
+
         }
     }
     
@@ -137,13 +142,15 @@ public class ImageViewerMenuBar extends JMenuBar {
     
     
     private Study chooseStudy(JFileChooser chooser){
+
         int returnVal = chooser.showOpenDialog(null);
         if(returnVal!=JFileChooser.APPROVE_OPTION){
             chooser.cancelSelection();
         }
-        String chPath = chooser.getSelectedFile().getAbsolutePath();
-        Study chStudy= new Study(new File(chPath));
-        return chStudy;    
+        	String chPath = chooser.getSelectedFile().getAbsolutePath();
+            Study chStudy= new Study(new File(chPath));
+            return chStudy;
+           
     }
     
     static Study SaveNewStudy(JFileChooser chooser){
