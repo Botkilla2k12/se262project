@@ -77,12 +77,16 @@ public class ImageViewerMenuBar extends JMenuBar {
         public void actionPerformed(ActionEvent e){
             JFileChooser chooser = new MedicalImageFileChooser();
             chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            Study opStudy = chooseStudy(chooser);
+            try{
+            	Study opStudy = chooseStudy(chooser);
+                
+                ImageViewerWindow parentWin =
+                	(ImageViewerWindow) getTopLevelAncestor();
+                
+                parentWin.setupNewStudy(opStudy);	
+            } catch (NullPointerException i) {
+            }
             
-            ImageViewerWindow parentWin =
-            	(ImageViewerWindow) getTopLevelAncestor();
-            
-            parentWin.setupNewStudy(opStudy);
         }
     }
     
@@ -96,11 +100,15 @@ public class ImageViewerMenuBar extends JMenuBar {
             if(returnVal!=JFileChooser.APPROVE_OPTION){
                 chooser.cancelSelection();
             }
+            try{
+            	File chFile = chooser.getSelectedFile();
+                Study saveStudy= new Study(chFile);
+                SaveCommand save = new SaveCommand(saveStudy, chFile.getName());
+                save.save();	
+            }catch (NullPointerException i) {
+            	
+            }
             
-            File chFile = chooser.getSelectedFile();
-            Study saveStudy= new Study(chFile);
-            SaveCommand save = new SaveCommand(saveStudy, chFile.getName());
-            save.save();
         }
     }
     
@@ -141,7 +149,7 @@ public class ImageViewerMenuBar extends JMenuBar {
     }
     
     
-    private Study chooseStudy(JFileChooser chooser){
+    private Study chooseStudy(JFileChooser chooser)throws NullPointerException{
 
         int returnVal = chooser.showOpenDialog(null);
         if(returnVal!=JFileChooser.APPROVE_OPTION){
@@ -153,7 +161,7 @@ public class ImageViewerMenuBar extends JMenuBar {
            
     }
     
-    static Study SaveNewStudy(JFileChooser chooser){
+    static Study SaveNewStudy(JFileChooser chooser) throws NullPointerException{
         int returnVal = chooser.showSaveDialog(null);
         if(returnVal!=JFileChooser.APPROVE_OPTION){
             chooser.cancelSelection();
