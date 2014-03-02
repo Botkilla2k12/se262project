@@ -54,17 +54,6 @@ public class ImageViewerWindow extends JFrame {
 		super.setVisible(true);
 		super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		if(this.studyModel.getImageWidth() == 0 ||
-			this.studyModel.getImageHeight() == 0
-		){
-			super.setSize(600, 600);
-		} else {
-			super.setSize(
-				(this.studyModel.getImageWidth() * 2) + 20,
-				(this.studyModel.getImageHeight() * 2) + 80
-			);
-		}
-		
 		this.setTitle("Medical Image Viewing System");
 	}
 	
@@ -107,6 +96,17 @@ public class ImageViewerWindow extends JFrame {
 			this.studyModel.open();
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+		
+		if(this.studyModel.getImageWidth() == 0 ||
+			this.studyModel.getImageHeight() == 0
+		){
+			super.setSize(600, 600);
+		} else {
+			super.setSize(
+				(this.studyModel.getImageWidth() * 2) + 20,
+				(this.studyModel.getImageHeight() * 2) + 80
+			);
 		}
 		
 		this.browseCommand = new BrowseCommand(this.studyModel);
