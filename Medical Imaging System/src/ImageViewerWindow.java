@@ -64,12 +64,14 @@ public class ImageViewerWindow extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			if(e.getSource() == prevButton) {
 				try {
+					browseCommand.setIndex(studyModel.getIndex());
 					browseCommand.prev();
 				} catch(IndexOutOfBoundsException ex) {
 					JOptionPane.showMessageDialog(null, "First image!");
 				}
 			} else if(e.getSource() == nextButton) {
 				try {
+					browseCommand.setIndex(studyModel.getIndex());
 					browseCommand.next();
 				} catch(IndexOutOfBoundsException ex) {
 					JOptionPane.showMessageDialog(null, "Last image!");
