@@ -40,8 +40,6 @@ public class StudySettings {
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
-		} finally {
-			sc.close();
 		}
 	}
 
