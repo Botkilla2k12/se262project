@@ -26,12 +26,16 @@ public class Main {
 
 				int returnVal = chooser.showOpenDialog(null);
 				String filePath = null;
+				try{
 				if(returnVal==JFileChooser.APPROVE_OPTION){
-					filePath = chooser.getSelectedFile().getPath();		
+						filePath = chooser.getSelectedFile().getPath();	
+	
 				}
 				
 				study = new Study(new File(filePath));
-				
+				} catch (NullPointerException i){
+					
+				}
 				if(result == JOptionPane.YES_OPTION) {
 					settings.setDefaultStudy(study);
 				}

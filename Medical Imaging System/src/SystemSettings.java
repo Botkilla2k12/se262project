@@ -47,8 +47,11 @@ public class SystemSettings {
 	
 	public void setDefaultStudy(Study study) {
 		this.defaultStudy = study;
-		
-		setDefaultPath(study.getDirectory().getPath());
+		try{
+			setDefaultPath(study.getDirectory().getPath());
+		} catch(NullPointerException i){
+			
+		}
 	}
 	
 	public void setDefaultPath(String newPath) {
