@@ -75,8 +75,5 @@ public class SystemSettings {
 	
 	public Study getDefaultStudy() {
 		return this.defaultStudy;
-		
-		
 	}
-
 }

@@ -81,4 +81,7 @@ public class BrowseCommand {
 		throw new IndexOutOfBoundsException();
 	}
 	
+	public void setDisplayMode(DISPLAY_MODE_VALUE mode) {
+		this.displayMode = mode;
+	}
 }
