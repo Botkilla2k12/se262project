@@ -22,7 +22,9 @@ public class StudySettings {
 		Scanner sc = null;
 		try {
 			File configFile =
+	
 				new File(directory.getAbsolutePath() + "\\" + CONFIG_FILE);
+				
 			
 			if(!configFile.exists()) {
 				configFile.createNewFile();
@@ -40,9 +42,13 @@ public class StudySettings {
 					this.displayMode = DISPLAY_MODE_VALUE.FOUR_IMAGE;
 				}
 			}
+			
+		} catch (NullPointerException i) {
+			
 		} catch(Exception e) {
-			e.printStackTrace();
+			e.printStackTrace(); 
 		}
+		
 	}
 
 	public DISPLAY_MODE_VALUE getDisplayMode() {

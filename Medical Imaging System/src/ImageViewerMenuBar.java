@@ -91,7 +91,7 @@ public class ImageViewerMenuBar extends JMenuBar {
     }
     
     static class SaveStudy implements ActionListener{
-        public void actionPerformed(ActionEvent e){
+        public void actionPerformed(ActionEvent e)throws NullPointerException{
             JFileChooser chooser = new JFileChooser();
             chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             chooser.setAcceptAllFileFilterUsed(false);
