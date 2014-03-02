@@ -29,20 +29,25 @@ public class StudySettings {
 				
 				setDisplayMode(DISPLAY_MODE_VALUE.ONE_IMAGE);
 			}
-			
-			sc = new Scanner(configFile);
-			if (sc.hasNextLine()){
-				String displayModeVal = sc.nextLine();
-			
-				if(displayModeVal.equals("ONE_IMAGE")) {
-					this.displayMode = DISPLAY_MODE_VALUE.ONE_IMAGE;
-				} else {
-					this.displayMode = DISPLAY_MODE_VALUE.FOUR_IMAGE;
+			else {
+				sc = new Scanner(configFile);
+				if (sc.hasNextLine()){
+					String displayModeVal = sc.nextLine();
+				
+					if(displayModeVal.equals("ONE_IMAGE")) {
+						this.displayMode = DISPLAY_MODE_VALUE.ONE_IMAGE;
+					} else {
+						this.displayMode = DISPLAY_MODE_VALUE.FOUR_IMAGE;
+					}
 				}
 			}
+			
+		} catch (NullPointerException i) {
+			
 		} catch(Exception e) {
-			e.printStackTrace();
+			e.printStackTrace(); 
 		}
+		
 	}
 
 	public DISPLAY_MODE_VALUE getDisplayMode() {

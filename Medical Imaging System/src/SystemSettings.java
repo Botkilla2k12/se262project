@@ -19,7 +19,6 @@ public class SystemSettings {
 		Scanner sc = null;
 		try {
 			File configFile = new File(CONFIG_FILE);
-			sc = new Scanner(configFile);
 			
 			if(!configFile.exists()) {
 				configFile.createNewFile();
@@ -27,6 +26,7 @@ public class SystemSettings {
 				setDefaultPath("null");
 			}
 			
+			sc = new Scanner(configFile);
 			if (sc.hasNextLine()){
 				this.defaultPath = sc.nextLine();
 				
@@ -47,8 +47,11 @@ public class SystemSettings {
 	
 	public void setDefaultStudy(Study study) {
 		this.defaultStudy = study;
-		
-		setDefaultPath(study.getDirectory().getPath());
+		try{
+			setDefaultPath(study.getDirectory().getPath());
+		} catch(NullPointerException i){
+			
+		}
 	}
 	
 	public void setDefaultPath(String newPath) {
@@ -72,8 +75,5 @@ public class SystemSettings {
 	
 	public Study getDefaultStudy() {
 		return this.defaultStudy;
-		
-		
 	}
-
 }

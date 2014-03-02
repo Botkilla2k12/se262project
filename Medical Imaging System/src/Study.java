@@ -13,13 +13,17 @@ public class Study extends Observable {
 	private ArrayList<BufferedImage> images;
 	private File directory; 
 	private StudySettings studySettings;
-	private int index;
+	private int index, defaultImageHeight, defaultImageWidth;
 	
 	
 	public Study(File directory) {
 		this.index = 0;
+		this.defaultImageHeight = 0;
+		this.defaultImageWidth = 0;
+		
 		this.directory = directory;
 		this.studySettings = new StudySettings(directory);
+		this.images = new ArrayList<BufferedImage>();
 	}
 	
 	/**
@@ -34,6 +38,11 @@ public class Study extends Observable {
 				OpenCommand openCommandObject = new OpenCommand(this.directory);
 				this.images = openCommandObject.getImages();
 				
+				if(this.images.size() > 0) {
+					this.defaultImageHeight = images.get(0).getHeight();
+					this.defaultImageWidth = images.get(0).getWidth();
+				}
+				
 				super.setChanged();
 				super.notifyObservers();
 			} catch (IOException e){
@@ -47,7 +56,8 @@ public class Study extends Observable {
 	}
 	
 	public String toString(){
-		return this.directory.getAbsolutePath();
+		return this.directory == null ?  "null" :
+			this.directory.getAbsolutePath();
 	}
 	
 	public ArrayList<BufferedImage> getImages(){
@@ -71,6 +81,14 @@ public class Study extends Observable {
 		return this.index;
 	}
 	
+	public int getImageWidth() {
+		return this.defaultImageWidth;
+	}
+	
+	public int getImageHeight() {
+		return this.defaultImageHeight;
+	}
+	
 	public void setIndex(int newIndex){
 		this.index = newIndex;
 		
@@ -81,19 +99,15 @@ public class Study extends Observable {
 	public void setDisplayMode(DISPLAY_MODE_VALUE mode) {
 		this.studySettings.setDisplayMode(mode);
 		
-		super.setChanged();
-		super.notifyObservers();
+		if(mode == DISPLAY_MODE_VALUE.FOUR_IMAGE) {
+			this.setIndex(4 * (int)Math.floor((this.index - 1)/4) + 1);
+		} else {
+			super.setChanged();
+			super.notifyObservers();
+		}
 	}
 	
 	public StudySettings getStudySettings() {
 		return this.studySettings;
-	}
-
-	public static class Metadata {
-		public String changeType;
-		
-		public Metadata(String changeType) {
-			this.changeType = changeType;
-		}
 	}
 }
