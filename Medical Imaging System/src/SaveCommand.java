@@ -1,4 +1,9 @@
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
 
 /**
  *
@@ -14,21 +19,36 @@ import java.io.File;
 
 public class SaveCommand {
 
-	private Study study;
+	private String oldName;
 	private String newName;
 	
-	public SaveCommand(Study study, String newName) {
-		this.study = study;
+	public SaveCommand(String oldName, String newName) {
+		this.oldName = oldName;
 		this.newName = newName;
 	}
 
 	public void save() {
-		File currentFile = study.getDirectory();
-		String configPath = currentFile.getAbsolutePath() + "\\study.cfg";
+		File newFile = new File(newName);
+		newFile.mkdir();
+		
+		String configPath = oldName + "\\study.cfg";
 		File configFile = new File(configPath);
-		currentFile.renameTo(new File(newName));
-		String newPath = currentFile.getAbsolutePath() + "\\study.cfg";
-		configFile.renameTo(new File(newPath));
+		String newConfigPath = newFile.getAbsolutePath() + "\\study.cfg";
+		configFile.renameTo(new File(newConfigPath));
+		
+		try {
+			OpenCommand openCommand = new OpenCommand(new File(oldName));
+			ArrayList<BufferedImage> images = openCommand.getImages();
+			
+			for (int i = 0; i < images.size() - 1; i++) {
+				BufferedImage image = images.get(i);
+				
+				String newImagePath = newFile.getAbsolutePath() + "\\" + i + ".jpg";
+				ImageIO.write(image, "jpg", new File(newImagePath));
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }
