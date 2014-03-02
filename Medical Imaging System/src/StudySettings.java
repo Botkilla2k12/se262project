@@ -31,12 +31,14 @@ public class StudySettings {
 			}
 			
 			sc = new Scanner(configFile);
-			String displayModeVal = sc.nextLine();
+			if (sc.hasNextLine()) {
+				String displayModeVal = sc.nextLine();
 			
-			if(displayModeVal.equals("ONE_IMAGE")) {
-				this.displayMode = DISPLAY_MODE_VALUE.ONE_IMAGE;
-			} else {
-				this.displayMode = DISPLAY_MODE_VALUE.FOUR_IMAGE;
+				if(displayModeVal.equals("ONE_IMAGE")) {
+					this.displayMode = DISPLAY_MODE_VALUE.ONE_IMAGE;
+				} else {
+					this.displayMode = DISPLAY_MODE_VALUE.FOUR_IMAGE;
+				}
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
