@@ -17,12 +17,14 @@ public class Study extends Observable {
 	
 	
 	public Study(File directory) {
-		this.index = 0;
+		this.studySettings = new StudySettings(directory);
+		
+		this.index = this.studySettings.getLastImageIndex();
 		this.defaultImageHeight = 0;
 		this.defaultImageWidth = 0;
 		
 		this.directory = directory;
-		this.studySettings = new StudySettings(directory);
+		
 		this.images = new ArrayList<BufferedImage>();
 	}
 	
@@ -91,6 +93,8 @@ public class Study extends Observable {
 	
 	public void setIndex(int newIndex){
 		this.index = newIndex;
+		
+		this.studySettings.setLastImageIndex(newIndex);
 		
 		super.setChanged();
 		super.notifyObservers();
