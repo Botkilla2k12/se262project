@@ -29,8 +29,6 @@ public class SystemSettings {
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
-		} finally {
-			sc.close();
 		}
 	}
 	
