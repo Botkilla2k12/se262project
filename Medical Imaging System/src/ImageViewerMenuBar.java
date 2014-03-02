@@ -56,11 +56,19 @@ public class ImageViewerMenuBar extends JMenuBar {
         JMenuItem displayMode1 = new JRadioButtonMenuItem("Single Image");
         bGroup.add(displayMode1);
         displayMode1.addActionListener(new ToDispMode1());
-        displayMode1.setSelected(true);
-        
         JMenuItem displayMode4 = new JRadioButtonMenuItem("Four Images");
         bGroup.add(displayMode4);
         displayMode4.addActionListener(new ToDispMode4());
+        
+        
+        ImageViewerWindow parentWin =
+        			(ImageViewerWindow) getTopLevelAncestor();
+    	if(parentWin.getPanelDisplayMode()==DISPLAY_MODE_VALUE.ONE_IMAGE){
+    		displayMode1.setSelected(true);
+    	}
+    	else{
+    		displayMode4.setSelected(true);
+    	}
         
         displayMode.add(displayMode1);
         displayMode.add(displayMode4);
@@ -112,13 +120,8 @@ public class ImageViewerMenuBar extends JMenuBar {
             chooser.setAcceptAllFileFilterUsed(false);
             
             SystemSettings sysSettings = new SystemSettings();
-            try{
-            	Study defStudy = chooseStudy(chooser);
-            	sysSettings.setDefaultStudy(defStudy);
-            } catch (NullPointerException i){
-            }
-            	
-
+            Study defStudy = chooseStudy(chooser);
+            sysSettings.setDefaultStudy(defStudy);
         }
     }
     
@@ -142,15 +145,13 @@ public class ImageViewerMenuBar extends JMenuBar {
     
     
     private Study chooseStudy(JFileChooser chooser){
-
         int returnVal = chooser.showOpenDialog(null);
         if(returnVal!=JFileChooser.APPROVE_OPTION){
             chooser.cancelSelection();
         }
-        	String chPath = chooser.getSelectedFile().getAbsolutePath();
-            Study chStudy= new Study(new File(chPath));
-            return chStudy;
-           
+        String chPath = chooser.getSelectedFile().getAbsolutePath();
+        Study chStudy= new Study(new File(chPath));
+        return chStudy;    
     }
     
     static Study SaveNewStudy(JFileChooser chooser){

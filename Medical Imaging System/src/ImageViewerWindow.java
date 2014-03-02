@@ -88,4 +88,7 @@ public class ImageViewerWindow extends JFrame {
 	public void setPanelDisplayMode(DISPLAY_MODE_VALUE mode) {
 		this.studyModel.setDisplayMode(mode);
 	}
+	public DISPLAY_MODE_VALUE getPanelDisplayMode() {
+		return this.studyModel.getStudySettings().getDisplayMode();
+	}
 }
