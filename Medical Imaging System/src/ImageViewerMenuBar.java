@@ -119,7 +119,7 @@ public class ImageViewerMenuBar extends JMenuBar {
             try{
             	File chFile = chooser.getSelectedFile();
                 Study saveStudy= new Study(chFile);
-                SaveCommand save = new SaveCommand(saveStudy, chFile.getName());
+                SaveCommand save = new SaveCommand(saveStudy, chFile.getAbsolutePath());
                 save.save();	
             }catch (NullPointerException i) {
             	
