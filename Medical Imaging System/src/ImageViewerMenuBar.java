@@ -97,7 +97,6 @@ public class ImageViewerMenuBar extends JMenuBar {
             }
             File chFile = chooser.getSelectedFile();
             Study saveStudy= new Study(chFile);
-            //Study saveStudy = chooseStudy(chooser);
             SaveCommand save = new SaveCommand(saveStudy, chFile.getName());
         }
     }
@@ -110,9 +109,7 @@ public class ImageViewerMenuBar extends JMenuBar {
             chooser.setAcceptAllFileFilterUsed(false);
             
             SystemSettings sysSettings = new SystemSettings();
-            
             Study defStudy = chooseStudy(chooser);
-            
             sysSettings.setDefaultStudy(defStudy);
         }
     }
