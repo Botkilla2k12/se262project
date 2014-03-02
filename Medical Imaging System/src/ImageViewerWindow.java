@@ -17,6 +17,7 @@ public class ImageViewerWindow extends JFrame {
 	private Study studyModel;
 
 	public ImageViewerWindow(Study studyModel) {
+		this.studyModel = studyModel;
 		this.menuBar = new ImageViewerMenuBar();
 		this.imagePanel = new ImagePanel(
 			studyModel.getStudySettings().getDisplayMode()
