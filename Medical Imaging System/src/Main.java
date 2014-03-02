@@ -6,10 +6,6 @@ import javax.swing.JOptionPane;
 
 public class Main {
 	public static void main(String[] args) {
-
-		//Study studyModel = new Study();
-		//ImageViewerWindow win = new ImageViewerWindow(studyModel);
-
 		try {
 			SystemSettings settings = new SystemSettings();
 			Study study = null;
@@ -45,7 +41,6 @@ public class Main {
 			
 			new ImageViewerWindow(study);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
 
