@@ -62,6 +62,7 @@ public class SystemSettings {
 		try {
 			writer = new PrintWriter(CONFIG_FILE, "UTF-8");
 			writer.println(this.defaultPath);
+			writer.flush();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

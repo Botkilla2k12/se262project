@@ -55,28 +55,10 @@ public class Main {
 						study = new Study(null);
 					}
 				}
-				
-				/*try {
-					if(returnVal == JFileChooser.APPROVE_OPTION){
-						filePath = chooser.getSelectedFile().getPath();
-						System.out.println(study);
-						study = new Study(new File(filePath));
-						if(result == JOptionPane.YES_OPTION) {
-							//System.out.println(study);
-							settings.setDefaultStudy(study);
-	
-						} 
-					} else {
-						
-					}
-				} catch(NullPointerException e) {
-					
-				}*/
 			} else {
-				//System.out.println(settings.getDefaultStudy());
 				study = settings.getDefaultStudy();
 			}
-			//System.out.println(study);
+	
 			new ImageViewerWindow(study);
 		}catch (NullPointerException i) {
 			System.out.println(i.getMessage() + "NullPointerException");

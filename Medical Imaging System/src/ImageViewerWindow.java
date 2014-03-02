@@ -1,6 +1,7 @@
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
@@ -30,6 +31,7 @@ public class ImageViewerWindow extends JFrame {
 		this.numberLabel = new NumberLabel();
 		
 		setupNewStudy(studyModel);
+		setPanelDisplayMode(studyModel.getStudySettings().getDisplayMode());
 		
 		this.prevButton = new JButton("Previous");
 		this.prevButton.addActionListener(new ButtonListener());
@@ -146,5 +148,8 @@ public class ImageViewerWindow extends JFrame {
 	}
 	public DISPLAY_MODE_VALUE getPanelDisplayMode() {
 		return this.studyModel.getStudySettings().getDisplayMode();
+	}
+	public File getDirectory(){
+		return this.studyModel.getDirectory();
 	}
 }
