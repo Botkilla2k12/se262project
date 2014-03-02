@@ -116,7 +116,6 @@ public class ImageViewerMenuBar extends JMenuBar {
             	Study defStudy = chooseStudy(chooser);
             	sysSettings.setDefaultStudy(defStudy);
             } catch (NullPointerException i){
-            	i.printStackTrace();
             }
             	
 
