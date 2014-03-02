@@ -51,16 +51,26 @@ public class ImageViewerWindow extends JFrame {
 		
 		this.add(buttonPanel, BorderLayout.SOUTH);
 		
-		this.setVisible(true);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize(600, 600);
+		super.setVisible(true);
+		super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		if(this.studyModel.getImageWidth() == 0 ||
+			this.studyModel.getImageHeight() == 0
+		){
+			super.setSize(600, 600);
+		} else {
+			super.setSize(
+				(this.studyModel.getImageWidth() * 2) + 20,
+				(this.studyModel.getImageHeight() * 2) + 80
+			);
+		}
+		
 		this.setTitle("Medical Image Viewing System");
 	}
 	
 	private class ButtonListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
 			if(e.getSource() == prevButton) {
 				try {
 					browseCommand.prev();
@@ -79,13 +89,19 @@ public class ImageViewerWindow extends JFrame {
 	}
 
 	public void setupNewStudy(Study study) {
-		this.studyModel = study;
+		if(this.studyModel != null) {
+			this.studyModel.deleteObserver(imagePanel);
+			this.studyModel.deleteObserver(numberLabel);
+		}
 		
-		this.studyModel.deleteObserver(imagePanel);
-		this.studyModel.deleteObserver(numberLabel);
+		this.studyModel = study;
 		
 		this.studyModel.addObserver(imagePanel);
 		this.studyModel.addObserver(numberLabel);
+		
+		this.menuBar.activateRadioButtonFromDisplayMode(
+			study.getStudySettings().getDisplayMode()
+		);
 		
 		try {
 			this.studyModel.open();

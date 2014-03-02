@@ -10,6 +10,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EtchedBorder;
 
 
@@ -19,6 +20,7 @@ public class ImagePanel extends JPanel implements Observer {
 	
 	public ImagePanel(DISPLAY_MODE_VALUE displayMode) {
 		setDisplayMode(displayMode);
+	
 		this.displayMode = displayMode;
 		this.setLayout(this.layout);
 		this.setBackground(Color.WHITE);
@@ -33,8 +35,6 @@ public class ImagePanel extends JPanel implements Observer {
 		int numEntries = DISPLAY_MODE_VALUE.getValue(displayMode);
 		
 		ArrayList<BufferedImage> images = study.getCurrentImages();
-		
-		scale(images.get(0));
 		
 		super.removeAll();
 		
@@ -51,10 +51,6 @@ public class ImagePanel extends JPanel implements Observer {
 		
 		super.revalidate();
 		super.repaint();
-	}
-	
-	public void scale(BufferedImage image) {
-		super.setSize(image.getWidth() * 2, image.getWidth() * 2);
 	}
 	
 	private void setDisplayMode(DISPLAY_MODE_VALUE mode) {

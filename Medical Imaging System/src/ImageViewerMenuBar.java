@@ -17,6 +17,8 @@ public class ImageViewerMenuBar extends JMenuBar {
     private JMenu editMenu;
     private JMenu settingsMenu;
     
+    private JRadioButtonMenuItem displayMode1, displayMode4;
+    
     public ImageViewerMenuBar(){
         InitFileMenu();
         InitEditMenu();
@@ -27,8 +29,17 @@ public class ImageViewerMenuBar extends JMenuBar {
         add(settingsMenu);
     }
 
-
-    public void InitFileMenu(){
+    public void activateRadioButtonFromDisplayMode(DISPLAY_MODE_VALUE mode) {
+    	if(mode == DISPLAY_MODE_VALUE.ONE_IMAGE) {
+    		this.displayMode1.setSelected(true);
+    		this.displayMode4.setSelected(false);
+    	} else {
+    		this.displayMode4.setSelected(true);
+    		this.displayMode1.setSelected(false);
+    	}
+    }
+    
+    private void InitFileMenu(){
         this.fileMenu=new JMenu("File");
         JMenuItem openImage = new JMenuItem("Open...");
         JMenuItem exitApp=new JMenuItem("Exit");
@@ -38,14 +49,14 @@ public class ImageViewerMenuBar extends JMenuBar {
         exitApp.addActionListener(new ExitProgram());
     }
     
-    public void InitEditMenu(){
+    private void InitEditMenu(){
         this.editMenu=new JMenu("Edit");
         JMenuItem saveStudy = new JMenuItem("Save Study");
         saveStudy.addActionListener(new SaveStudy());
         editMenu.add(saveStudy);
     }
     
-    public void InitSettingsMenu(){
+    private void InitSettingsMenu(){
         this.settingsMenu=new JMenu("Settings");
         JMenuItem defaultStudy = new JMenuItem("Choose Default Study");
         JMenu displayMode = new JMenu("Change Display Mode");
@@ -53,12 +64,12 @@ public class ImageViewerMenuBar extends JMenuBar {
         defaultStudy.addActionListener(new DefaultStudy());
         
         ButtonGroup bGroup= new ButtonGroup();
-        JMenuItem displayMode1 = new JRadioButtonMenuItem("Single Image");
+        displayMode1 = new JRadioButtonMenuItem("Single Image");
         bGroup.add(displayMode1);
         displayMode1.addActionListener(new ToDispMode1());
         displayMode1.setSelected(true);
         
-        JMenuItem displayMode4 = new JRadioButtonMenuItem("Four Images");
+        displayMode4 = new JRadioButtonMenuItem("Four Images");
         bGroup.add(displayMode4);
         displayMode4.addActionListener(new ToDispMode4());
         
@@ -90,7 +101,7 @@ public class ImageViewerMenuBar extends JMenuBar {
         }
     }
     
-    static class SaveStudy implements ActionListener{
+    class SaveStudy implements ActionListener{
         public void actionPerformed(ActionEvent e)throws NullPointerException{
             JFileChooser chooser = new JFileChooser();
             chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -150,15 +161,15 @@ public class ImageViewerMenuBar extends JMenuBar {
     
     
     private Study chooseStudy(JFileChooser chooser)throws NullPointerException{
-
         int returnVal = chooser.showOpenDialog(null);
+
         if(returnVal!=JFileChooser.APPROVE_OPTION){
             chooser.cancelSelection();
         }
-        	String chPath = chooser.getSelectedFile().getAbsolutePath();
-            Study chStudy= new Study(new File(chPath));
-            return chStudy;
-           
+
+    	String chPath = chooser.getSelectedFile().getAbsolutePath();
+        Study chStudy= new Study(new File(chPath));
+        return chStudy;
     }
     
     static Study SaveNewStudy(JFileChooser chooser) throws NullPointerException{
