@@ -79,10 +79,13 @@ public class ImageViewerWindow extends JFrame {
 		try {
 			this.studyModel.open();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		this.browseCommand = new BrowseCommand(this.studyModel);
+	}
+	
+	public void setPanelDisplayMode(DISPLAY_MODE_VALUE mode) {
+		this.studyModel.setDisplayMode(mode);
 	}
 }

@@ -78,6 +78,13 @@ public class Study extends Observable {
 		super.notifyObservers();
 	}
 	
+	public void setDisplayMode(DISPLAY_MODE_VALUE mode) {
+		this.studySettings.setDisplayMode(mode);
+		
+		super.setChanged();
+		super.notifyObservers();
+	}
+	
 	public StudySettings getStudySettings() {
 		return this.studySettings;
 	}
