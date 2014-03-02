@@ -19,13 +19,16 @@ public class SystemSettings {
 		Scanner sc = null;
 		try {
 			sc = new Scanner(new File(CONFIG_FILE));
-	
-			this.defaultPath = sc.nextLine();
-			
-			if(defaultPath.equals("null")) {
-				this.defaultStudy = null;
-			} else {
-				this.defaultStudy = new Study(new File(this.defaultPath));
+			if (sc.hasNextLine()){
+					
+				
+				this.defaultPath = sc.nextLine();
+				
+				if(defaultPath.equals("null")) {
+					this.defaultStudy = null;
+				} else {
+					this.defaultStudy = new Study(new File(this.defaultPath));
+				}
 			}
 		} catch(Exception e) {
 			e.printStackTrace();

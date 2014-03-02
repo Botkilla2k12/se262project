@@ -111,8 +111,13 @@ public class ImageViewerMenuBar extends JMenuBar {
             chooser.setAcceptAllFileFilterUsed(false);
             
             SystemSettings sysSettings = new SystemSettings();
+            try{
             	Study defStudy = chooseStudy(chooser);
             	sysSettings.setDefaultStudy(defStudy);
+            } catch (NullPointerException i){
+            	i.printStackTrace();
+            }
+            	
 
         }
     }
