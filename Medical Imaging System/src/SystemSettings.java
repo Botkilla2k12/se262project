@@ -19,7 +19,6 @@ public class SystemSettings {
 		Scanner sc = null;
 		try {
 			File configFile = new File(CONFIG_FILE);
-			sc = new Scanner(configFile);
 			
 			if(!configFile.exists()) {
 				configFile.createNewFile();
@@ -27,6 +26,7 @@ public class SystemSettings {
 				setDefaultPath("null");
 			}
 			
+			sc = new Scanner(configFile);
 			if (sc.hasNextLine()){
 				this.defaultPath = sc.nextLine();
 				
