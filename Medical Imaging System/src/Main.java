@@ -26,25 +26,29 @@ public class Main {
 
 				int returnVal = chooser.showOpenDialog(null);
 				String filePath = null;
-				try{
 				if(returnVal==JFileChooser.APPROVE_OPTION){
-						filePath = chooser.getSelectedFile().getPath();	
+						filePath = chooser.getSelectedFile().getPath();
+						System.out.println(study);
+						study = new Study(new File(filePath));
+						if(result == JOptionPane.YES_OPTION) {
+							//System.out.println(study);
+							settings.setDefaultStudy(study);
 	
-				}
+						} 
 				
-				study = new Study(new File(filePath));
-				} catch (NullPointerException i){
-					
-				}
-				if(result == JOptionPane.YES_OPTION) {
-					settings.setDefaultStudy(study);
+				
+				
 				}
 			} else {
+				//System.out.println(settings.getDefaultStudy());
 				study = settings.getDefaultStudy();
 			}
-			
+			//System.out.println(study);
 			new ImageViewerWindow(study);
-		} catch (Exception e) {
+		}catch (NullPointerException i) {
+			System.out.println(i.getMessage() + "NullPointerException");
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		}	
 

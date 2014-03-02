@@ -19,7 +19,7 @@ public class ImagePanel extends JPanel implements Observer {
 	
 	public ImagePanel(DISPLAY_MODE_VALUE displayMode) {
 		setDisplayMode(displayMode);
-
+		this.displayMode = displayMode;
 		this.setLayout(this.layout);
 		this.setBackground(Color.WHITE);
 		this.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
