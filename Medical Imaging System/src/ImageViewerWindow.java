@@ -14,7 +14,7 @@ public class ImageViewerWindow extends JFrame {
 	private ImageViewerMenuBar menuBar;
 	private JButton prevButton, nextButton;
 	private BrowseCommand browseCommand;
-	//private Settings settings;
+	private Study studyModel;
 
 	public ImageViewerWindow(Study studyModel) {
 		this.menuBar = new ImageViewerMenuBar();
@@ -22,14 +22,14 @@ public class ImageViewerWindow extends JFrame {
 			studyModel.getStudySettings().getDisplayMode()
 		);
 
+		setupNewStudy(studyModel);
+		
 		this.prevButton = new JButton("Previous");
 		this.prevButton.addActionListener(new ButtonListener());
 		
 		this.nextButton = new JButton("Next");
 		this.nextButton.addActionListener(new ButtonListener());
-		
-		studyModel.addObserver(this.imagePanel);
-		
+				
 		this.setJMenuBar(this.menuBar);
 		
 		this.setLayout(new BorderLayout());
@@ -42,15 +42,6 @@ public class ImageViewerWindow extends JFrame {
 		buttonPanel.add(this.nextButton, BorderLayout.EAST);
 		
 		this.add(buttonPanel, BorderLayout.SOUTH);
-		
-		try {
-			studyModel.open();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		this.browseCommand = new BrowseCommand(studyModel);
 		
 		this.setVisible(true);
 		this.setSize(600, 600);
@@ -76,5 +67,22 @@ public class ImageViewerWindow extends JFrame {
 			}
 		}
 		
+	}
+
+	public void setupNewStudy(Study study) {
+		this.studyModel = study;
+		
+		this.studyModel.deleteObserver(imagePanel);
+		
+		this.studyModel.addObserver(imagePanel);
+		
+		try {
+			this.studyModel.open();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		this.browseCommand = new BrowseCommand(this.studyModel);
 	}
 }

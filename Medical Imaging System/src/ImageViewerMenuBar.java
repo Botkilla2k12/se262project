@@ -67,22 +67,22 @@ public class ImageViewerMenuBar extends JMenuBar {
         settingsMenu.add(displayMode);
     }
     
-    static class ExitProgram implements ActionListener{
+    class ExitProgram implements ActionListener{
         public void actionPerformed(ActionEvent e){
             System.exit(0);
         }
     }
 
-    static class OpenFile implements ActionListener{
+    class OpenFile implements ActionListener{
         public void actionPerformed(ActionEvent e){
             JFileChooser chooser = new MedicalImageFileChooser();
             chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             Study opStudy = chooseStudy(chooser);
-            try {
-                opStudy.open();
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
+            
+            ImageViewerWindow parentWin =
+            	(ImageViewerWindow) getTopLevelAncestor();
+            
+            parentWin.setupNewStudy(opStudy);
         }
     }
     
@@ -91,10 +91,12 @@ public class ImageViewerMenuBar extends JMenuBar {
             JFileChooser chooser = new JFileChooser();
             chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             chooser.setAcceptAllFileFilterUsed(false);
+            
             int returnVal = chooser.showSaveDialog(null);
             if(returnVal!=JFileChooser.APPROVE_OPTION){
                 chooser.cancelSelection();
             }
+            
             File chFile = chooser.getSelectedFile();
             Study saveStudy= new Study(chFile);
             SaveCommand save = new SaveCommand(saveStudy, chFile.getName());
