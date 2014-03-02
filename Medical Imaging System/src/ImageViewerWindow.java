@@ -2,9 +2,12 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -13,6 +16,7 @@ public class ImageViewerWindow extends JFrame {
 	private ImagePanel imagePanel;
 	private ImageViewerMenuBar menuBar;
 	private JButton prevButton, nextButton;
+	private NumberLabel numberLabel;
 	private BrowseCommand browseCommand;
 	private Study studyModel;
 
@@ -23,6 +27,8 @@ public class ImageViewerWindow extends JFrame {
 			studyModel.getStudySettings().getDisplayMode()
 		);
 
+		this.numberLabel = new NumberLabel();
+		
 		setupNewStudy(studyModel);
 		
 		this.prevButton = new JButton("Previous");
@@ -40,6 +46,7 @@ public class ImageViewerWindow extends JFrame {
 		buttonPanel.setLayout(new BorderLayout());
 		
 		buttonPanel.add(this.prevButton, BorderLayout.WEST);
+		buttonPanel.add(this.numberLabel, BorderLayout.CENTER);
 		buttonPanel.add(this.nextButton, BorderLayout.EAST);
 		
 		this.add(buttonPanel, BorderLayout.SOUTH);
@@ -74,8 +81,10 @@ public class ImageViewerWindow extends JFrame {
 		this.studyModel = study;
 		
 		this.studyModel.deleteObserver(imagePanel);
+		this.studyModel.deleteObserver(numberLabel);
 		
 		this.studyModel.addObserver(imagePanel);
+		this.studyModel.addObserver(numberLabel);
 		
 		try {
 			this.studyModel.open();
@@ -88,5 +97,34 @@ public class ImageViewerWindow extends JFrame {
 	
 	public void setPanelDisplayMode(DISPLAY_MODE_VALUE mode) {
 		this.studyModel.setDisplayMode(mode);
+		this.browseCommand.setDisplayMode(mode);
+	}
+	
+	private static class NumberLabel extends JLabel implements Observer {
+		public NumberLabel() {
+			super.setHorizontalAlignment(JLabel.CENTER);
+		}
+
+		@Override
+		public void update(Observable subj, Object data) {
+			Study study = (Study) subj;
+			
+			DISPLAY_MODE_VALUE mode = study.getStudySettings().getDisplayMode();
+			
+			if(mode == DISPLAY_MODE_VALUE.ONE_IMAGE) {
+				super.setText(
+					String.format("Current Image: %d", study.getIndex() + 1)
+				);
+				
+			} else {
+				super.setText(
+					String.format(
+						"Current Images: %d - %d",
+						study.getIndex() + 1,
+						study.getIndex() + study.getCurrentImages().size()
+					)
+				);
+			}
+		}
 	}
 }
