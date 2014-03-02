@@ -18,10 +18,16 @@ public class SystemSettings {
 	public SystemSettings() {
 		Scanner sc = null;
 		try {
-			sc = new Scanner(new File(CONFIG_FILE));
+			File configFile = new File(CONFIG_FILE);
+			sc = new Scanner(configFile);
+			
+			if(!configFile.exists()) {
+				configFile.createNewFile();
+
+				setDefaultPath("null");
+			}
+			
 			if (sc.hasNextLine()){
-					
-				
 				this.defaultPath = sc.nextLine();
 				
 				if(defaultPath.equals("null")) {
