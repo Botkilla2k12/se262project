@@ -7,6 +7,7 @@ import java.util.Observer;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
@@ -33,6 +34,8 @@ public class ImagePanel extends JPanel implements Observer {
 		
 		ArrayList<BufferedImage> images = study.getCurrentImages();
 		
+		scale(images.get(0));
+		
 		super.removeAll();
 		
 		//for each image, render the image in a JPanel
@@ -50,8 +53,8 @@ public class ImagePanel extends JPanel implements Observer {
 		super.repaint();
 	}
 	
-	public void scale() {
-		
+	public void scale(BufferedImage image) {
+		super.setSize(image.getWidth() * 2, image.getWidth() * 2);
 	}
 	
 	private void setDisplayMode(DISPLAY_MODE_VALUE mode) {

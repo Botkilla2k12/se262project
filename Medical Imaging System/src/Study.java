@@ -81,8 +81,12 @@ public class Study extends Observable {
 	public void setDisplayMode(DISPLAY_MODE_VALUE mode) {
 		this.studySettings.setDisplayMode(mode);
 		
-		super.setChanged();
-		super.notifyObservers();
+		if(mode == DISPLAY_MODE_VALUE.FOUR_IMAGE) {
+			this.setIndex(4 * (int)Math.floor((this.index - 1)/4) + 1);
+		} else {
+			super.setChanged();
+			super.notifyObservers();
+		}
 	}
 	
 	public StudySettings getStudySettings() {

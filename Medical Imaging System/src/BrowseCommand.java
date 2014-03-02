@@ -36,7 +36,7 @@ public class BrowseCommand {
 			return (index >= images.size() - 1) ;
 		}
 		else {
-			return (index + 4 >= images.size());
+			return (index + 4 > images.size());
 		}
 	}
 	
@@ -45,7 +45,7 @@ public class BrowseCommand {
 			return (index <= 0);
 		}
 		else {
-			return (index - 4 <= 0);
+			return (index - 4 < 0);
 		}
 	}
 	
