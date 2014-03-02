@@ -100,11 +100,12 @@ public class ImageViewerMenuBar extends JMenuBar {
             File chFile = chooser.getSelectedFile();
             Study saveStudy= new Study(chFile);
             SaveCommand save = new SaveCommand(saveStudy, chFile.getName());
+            save.save();
         }
     }
     
     
-    static class DefaultStudy implements ActionListener{
+    class DefaultStudy implements ActionListener{
         public void actionPerformed(ActionEvent e){
             JFileChooser chooser = new JFileChooser();
             chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -116,20 +117,26 @@ public class ImageViewerMenuBar extends JMenuBar {
         }
     }
     
-    static class ToDispMode1 implements ActionListener{
+    class ToDispMode1 implements ActionListener{
         public void actionPerformed(ActionEvent e){
+        	ImageViewerWindow parentWin =
+            	(ImageViewerWindow) getTopLevelAncestor();
             
+            parentWin.setPanelDisplayMode(DISPLAY_MODE_VALUE.ONE_IMAGE);
         }
     }
     
-    static class ToDispMode4 implements ActionListener{
+    class ToDispMode4 implements ActionListener{
         public void actionPerformed(ActionEvent e){
+        	ImageViewerWindow parentWin =
+            	(ImageViewerWindow) getTopLevelAncestor();
             
+            parentWin.setPanelDisplayMode(DISPLAY_MODE_VALUE.FOUR_IMAGE);
         }
     }
     
     
-    static Study chooseStudy(JFileChooser chooser){
+    private Study chooseStudy(JFileChooser chooser){
         int returnVal = chooser.showOpenDialog(null);
         if(returnVal!=JFileChooser.APPROVE_OPTION){
             chooser.cancelSelection();

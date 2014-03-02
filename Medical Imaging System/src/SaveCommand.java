@@ -20,10 +20,9 @@ public class SaveCommand {
 	public SaveCommand(Study study, String newName) {
 		this.study = study;
 		this.newName = newName;
-		save();
 	}
-	
-	private void save() {
+
+	public void save() {
 		File currentFile = study.getDirectory();
 		String configPath = currentFile.getAbsolutePath() + "\\study.cfg";
 		File configFile = new File(configPath);
