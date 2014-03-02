@@ -39,8 +39,6 @@ public class Main {
 				if(result == JOptionPane.YES_OPTION) {
 					settings.setDefaultStudy(study);
 				}
-				
-				new ImageViewerWindow(study);
 			} else {
 				study = settings.getDefaultStudy();
 			}
