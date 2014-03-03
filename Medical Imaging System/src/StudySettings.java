@@ -13,16 +13,13 @@ public class StudySettings {
 	private DISPLAY_MODE_VALUE displayMode;
 
 	
-	/**
-	 * 
-	 * @param directory
-		*/
+
 	private int lastImageIndex;
 
 	/**
 	 * Initializes a StudySettings object with a given directory so that
 	 * settings for a study can be properly initialized
-	 * @param directory the directory the study is located in.
+	 * @param directory - the directory the study is located in.
 	 */
 	public StudySettings(File directory) {
 		this.directory = directory;
@@ -93,7 +90,12 @@ public class StudySettings {
 		writeInformationToDisk(this.displayMode, this.lastImageIndex);
 	}
 	
-
+	/**
+	 * writes a new CFG file for a study.
+	 * 
+	 * @param mode - the study's display mode
+	 * @param index - the study's current image index
+	 */
 	private void writeInformationToDisk(DISPLAY_MODE_VALUE mode, int index) {
 		PrintWriter writer = null;
 		try{
