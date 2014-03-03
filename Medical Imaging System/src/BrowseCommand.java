@@ -84,4 +84,8 @@ public class BrowseCommand {
 	public void setDisplayMode(DISPLAY_MODE_VALUE mode) {
 		this.displayMode = mode;
 	}
+	
+	public void setIndex(int newIndex) {
+		this.index = newIndex;
+	}
 }
