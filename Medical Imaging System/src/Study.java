@@ -8,14 +8,21 @@ import java.util.ArrayList;
 /**
  * @author Derek Leung
  *
+ * Concrete model of a Study.
  */
+
+
 public class Study extends Observable {
 	private ArrayList<BufferedImage> images;
 	private File directory; 
 	private StudySettings studySettings;
 	private int index, defaultImageHeight, defaultImageWidth;
 	
-	
+	/**
+	 * Default Constructor.
+	 * 
+	 * @param directory
+	 */
 	public Study(File directory) {
 		this.index = 0;
 		this.defaultImageHeight = 0;
@@ -51,19 +58,39 @@ public class Study extends Observable {
 		}
 	}
 	
+	/**
+	 * returns the Study's current directory
+	 * 
+	 * @return
+	 */
 	public File getDirectory(){
 		return this.directory;
 	}
 	
+	/**
+	 * Override toString() to return the absolute file path of the Study
+	 * 
+	 * @return
+	 */
 	public String toString(){
 		return this.directory == null ?  "null" :
 			this.directory.getAbsolutePath();
 	}
 	
+	/**
+	 * returns this Study's images as an ArrayList of buffered images
+	 * 
+	 * @return
+	 */
 	public ArrayList<BufferedImage> getImages(){
 		return this.images;
 	}
 	
+	/**
+	 * Returns the images for the current index based on display mode.
+	 * 
+	 * @return
+	 */
 	public ArrayList<BufferedImage> getCurrentImages() {
 		ArrayList<BufferedImage> currImgs = new ArrayList<BufferedImage>();
 		int offset =
@@ -77,18 +104,38 @@ public class Study extends Observable {
 		return currImgs;
 	}
 	
+	/**
+	 * returns the current index of the study
+	 * 
+	 * @return
+	 */
 	public int getIndex(){
 		return this.index;
 	}
 	
+	/**
+	 * returns the image width
+	 * 
+	 * @return
+	 */
 	public int getImageWidth() {
 		return this.defaultImageWidth;
 	}
 	
+	/**
+	 * returns the image height
+	 * 
+	 * @return
+	 */
 	public int getImageHeight() {
 		return this.defaultImageHeight;
 	}
 	
+	/**
+	 * sets the Study's index to the given index
+	 * 
+	 * @param newIndex
+	 */
 	public void setIndex(int newIndex){
 		this.index = newIndex;
 		
@@ -96,6 +143,11 @@ public class Study extends Observable {
 		super.notifyObservers();
 	}
 	
+	/**
+	 *Sets the study's display mode as the given display mode
+	 * 
+	 * @param mode
+	 */
 	public void setDisplayMode(DISPLAY_MODE_VALUE mode) {
 		DISPLAY_MODE_VALUE currMode = studySettings.getDisplayMode();
 		this.studySettings.setDisplayMode(mode);
@@ -110,6 +162,11 @@ public class Study extends Observable {
 		}
 	}
 	
+	/**
+	 * returns this study's study settings
+	 * 
+	 * @return
+	 */
 	public StudySettings getStudySettings() {
 		return this.studySettings;
 	}

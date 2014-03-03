@@ -20,6 +20,7 @@ public class SaveCommand {
 	public SaveCommand(Study study, String newName) {
 		this.study = study;
 		this.newName = newName;
+		System.out.println(this.newName);
 	}
 
 	public void save() {

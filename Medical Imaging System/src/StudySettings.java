@@ -13,7 +13,10 @@ public class StudySettings {
 	private File directory;
 	private DISPLAY_MODE_VALUE displayMode;
 	
-	
+	/**
+	 * 
+	 * @param directory
+	 */
 	public StudySettings(File directory) {
 		this.directory = directory;
 		Scanner sc = null;
