@@ -3,7 +3,7 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 
 /**
- * 
+ * This class represents the settings associated with a particular study.
  * @author derek
  *
  */
@@ -12,7 +12,12 @@ public class StudySettings {
 	private File directory;
 	private DISPLAY_MODE_VALUE displayMode;
 	private int lastImageIndex;
-	
+
+	/**
+	 * Initializes a StudySettings object with a given directory so that
+	 * settings for a study can be properly initialized
+	 * @param directory the directory the study is located in.
+	 */
 	public StudySettings(File directory) {
 		this.directory = directory;
 		Scanner sc = null;
@@ -48,19 +53,35 @@ public class StudySettings {
 		
 	}
 	
+	/**
+	 * Gets the index of the last image that was being viewed.
+	 * @return the index of the last image that was being viewed.
+	 */
 	public int getLastImageIndex() {
 		return this.lastImageIndex;
 	}
 
+	/**
+	 * Gets the stored display mode in settings
+	 * @return the stored display mode in settings
+	 */
 	public DISPLAY_MODE_VALUE getDisplayMode() {
 		return displayMode;
 	}
 	
+	/**
+	 * Sets the display mode in settings
+	 * @param newDisplayMode the new display mode
+	 */
 	public void setDisplayMode(DISPLAY_MODE_VALUE newDisplayMode) {
 		this.displayMode = newDisplayMode;
 		writeInformationToDisk(this.displayMode, this.lastImageIndex);
 	}
 	
+	/**
+	 * Sets the index of the last image to be viewed.
+	 * @param newIndex the index of the last image to be viewed.
+	 */
 	public void setLastImageIndex(int newIndex) {
 		this.lastImageIndex = newIndex;
 		writeInformationToDisk(this.displayMode, this.lastImageIndex);

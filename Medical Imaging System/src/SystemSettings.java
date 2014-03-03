@@ -5,7 +5,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.Scanner;
 
 /**
- * 
+ * This class encapsulates all system-wide settings, which for now is only the
+ * default study.
  * @author derek
  *
  */
@@ -15,6 +16,9 @@ public class SystemSettings {
 	private String defaultPath;
 	private Study defaultStudy;
 	
+	/**
+	 * Constructs a SystemSettings object, no args necessary
+	 */
 	public SystemSettings() {
 		Scanner sc = null;
 		try {
@@ -41,10 +45,18 @@ public class SystemSettings {
 		}
 	}
 	
+	/**
+	 * 
+	 * @return true if a default study is initialized, false otherwise.
+	 */
 	public boolean hasDefaultStudy() {
 		return this.defaultStudy != null;
 	}
 	
+	/**
+	 * Sets the default study for the system
+	 * @param study the study to be set as default
+	 */
 	public void setDefaultStudy(Study study) {
 		this.defaultStudy = study;
 		try{
@@ -54,6 +66,10 @@ public class SystemSettings {
 		}
 	}
 	
+	/**
+	 * Sets the directory for the default study.
+	 * @param newPath the new path for the study
+	 */
 	public void setDefaultPath(String newPath) {
 		this.defaultPath = newPath;
 		
@@ -70,10 +86,18 @@ public class SystemSettings {
 		}
 	}
 	
+	/**
+	 * Gets the default study's path
+	 * @return the default study's path
+	 */
 	public String getDefaultPath() {
 		return this.defaultPath;
 	}
 	
+	/**
+	 * gets a referenece to the default study
+	 * @return a referenece to the default study
+	 */
 	public Study getDefaultStudy() {
 		return this.defaultStudy;
 	}
