@@ -12,7 +12,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-
+/**
+ * 
+ * @author Curtis Cali
+ * This class represents the main window for the application/
+ */
 public class ImageViewerWindow extends JFrame {
 	private ImagePanel imagePanel;
 	private ImageViewerMenuBar menuBar;
@@ -21,6 +25,11 @@ public class ImageViewerWindow extends JFrame {
 	private BrowseCommand browseCommand;
 	private Study studyModel;
 
+	/**
+	 * This initializes the window as well as any views/controllers using the
+	 * Study as the model
+	 * @param studyModel the model to initialize the window with
+	 */
 	public ImageViewerWindow(Study studyModel) {
 		this.studyModel = studyModel;
 		this.menuBar = new ImageViewerMenuBar();
@@ -58,18 +67,20 @@ public class ImageViewerWindow extends JFrame {
 		
 		this.setTitle("Medical Image Viewing System");
 	}
-	
+
 	private class ButtonListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(e.getSource() == prevButton) {
 				try {
+					browseCommand.setIndex(studyModel.getIndex());
 					browseCommand.prev();
 				} catch(IndexOutOfBoundsException ex) {
 					JOptionPane.showMessageDialog(null, "First image!");
 				}
 			} else if(e.getSource() == nextButton) {
 				try {
+					browseCommand.setIndex(studyModel.getIndex());
 					browseCommand.next();
 				} catch(IndexOutOfBoundsException ex) {
 					JOptionPane.showMessageDialog(null, "Last image!");
@@ -79,6 +90,10 @@ public class ImageViewerWindow extends JFrame {
 		
 	}
 
+	/**
+	 * This class reinitializes the study model in this window.
+	 * @param study the study to be initializes
+	 */
 	public void setupNewStudy(Study study) {
 		if(this.studyModel != null) {
 			this.studyModel.deleteObserver(imagePanel);
@@ -102,7 +117,7 @@ public class ImageViewerWindow extends JFrame {
 		
 		if(this.studyModel.getImageWidth() == 0 ||
 			this.studyModel.getImageHeight() == 0
-		){
+		) {
 			super.setSize(600, 600);
 		} else {
 			super.setSize(
@@ -114,11 +129,16 @@ public class ImageViewerWindow extends JFrame {
 		this.browseCommand = new BrowseCommand(this.studyModel);
 	}
 	
+	/**
+	 * This method allows for the display mode of the model to be dynamically
+	 * changed
+	 * @param mode the new display mode for the model.
+	 */
 	public void setPanelDisplayMode(DISPLAY_MODE_VALUE mode) {
 		this.studyModel.setDisplayMode(mode);
 		this.browseCommand.setDisplayMode(mode);
 	}
-	
+
 	private static class NumberLabel extends JLabel implements Observer {
 		public NumberLabel() {
 			super.setHorizontalAlignment(JLabel.CENTER);
@@ -146,9 +166,19 @@ public class ImageViewerWindow extends JFrame {
 			}
 		}
 	}
+
+	/**
+	 * This method gets the current display mode for the underlying model
+	 * @return the current display mode for the underlying model
+	 */
 	public DISPLAY_MODE_VALUE getPanelDisplayMode() {
 		return this.studyModel.getStudySettings().getDisplayMode();
 	}
+
+	/**
+	 * Fetches the directory that the current study is located in
+	 * @return the directory that the current study is located in
+	 */
 	public File getDirectory(){
 		return this.studyModel.getDirectory();
 	}

@@ -2,14 +2,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-//import java.util.Arrays;
 import javax.swing.ButtonGroup;
 import javax.swing.JFileChooser;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
-//import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class ImageViewerMenuBar extends JMenuBar {
     
@@ -118,8 +116,8 @@ public class ImageViewerMenuBar extends JMenuBar {
             }
             try{
             	File chFile = chooser.getSelectedFile();
-                Study saveStudy= new Study(chFile);
-                SaveCommand save = new SaveCommand(saveStudy, chFile.getName());
+                //Study saveStudy= new Study(chFile);
+                SaveCommand save = new SaveCommand(parentWin.getDirectory().getAbsolutePath(), chFile.getAbsolutePath());
                 save.save();	
             }catch (NullPointerException i) {
             	

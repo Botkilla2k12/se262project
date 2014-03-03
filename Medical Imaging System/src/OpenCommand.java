@@ -23,10 +23,12 @@ public class OpenCommand {
 
 	private File directory;
 	private ArrayList<BufferedImage> images;
+	private ArrayList<String> imageNames;
 	
 	public OpenCommand(File directory) throws IOException {
 		this.directory = directory;
 		this.images = new ArrayList<BufferedImage>();
+		this.imageNames = new ArrayList<String>();
 		open(directory);
 	}
 	
@@ -45,9 +47,11 @@ public class OpenCommand {
 		for (int i = 0; i < files.length; i++) {
 			if (checkFileType(files[i])) {
 				newFiles.add(files[i]);
+				imageNames.add(files[i].getName());
 			}
 		}
 		Collections.sort(newFiles);
+		Collections.sort(imageNames);
 		
 		for(int i = 0; i < newFiles.size(); i++){
 			try{
@@ -64,5 +68,9 @@ public class OpenCommand {
 	
 	public ArrayList<BufferedImage> getImages() {
 		return images;
+	}
+	
+	public ArrayList<String> getImageNames() {
+		return imageNames;
 	}
 }
