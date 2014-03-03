@@ -11,19 +11,18 @@ public class StudySettings {
 	private static final String CONFIG_FILE = "study.cfg";
 	private File directory;
 	private DISPLAY_MODE_VALUE displayMode;
-<<<<<<< HEAD
+
 	
 	/**
 	 * 
 	 * @param directory
-=======
+		*/
 	private int lastImageIndex;
 
 	/**
 	 * Initializes a StudySettings object with a given directory so that
 	 * settings for a study can be properly initialized
 	 * @param directory the directory the study is located in.
->>>>>>> branch 'master' of https://github.com/Botkilla2k12/se262project.git
 	 */
 	public StudySettings(File directory) {
 		this.directory = directory;
