@@ -8,21 +8,14 @@ import java.util.ArrayList;
 /**
  * @author Derek Leung
  *
- * Concrete model of a Study.
  */
-
-
 public class Study extends Observable {
 	private ArrayList<BufferedImage> images;
 	private File directory; 
 	private StudySettings studySettings;
 	private int index, defaultImageHeight, defaultImageWidth;
 	
-	/**
-	 * Default Constructor.
-	 * 
-	 * @param directory
-	 */
+	
 	public Study(File directory) {
 		this.studySettings = new StudySettings(directory);
 		
@@ -61,18 +54,16 @@ public class Study extends Observable {
 	}
 	
 	/**
-	 * returns the Study's current directory
-	 * 
-	 * @return
+	 * Gets the directory the study is located in
+	 * @return the directory location of the study
 	 */
 	public File getDirectory(){
 		return this.directory;
 	}
 	
 	/**
-	 * Override toString() to return the absolute file path of the Study
-	 * 
-	 * @return
+	 * @return a string representation of a study (the absolute path of the
+	 * study's directory)
 	 */
 	public String toString(){
 		return this.directory == null ?  "null" :
@@ -80,18 +71,17 @@ public class Study extends Observable {
 	}
 	
 	/**
-	 * returns this Study's images as an ArrayList of buffered images
-	 * 
-	 * @return
+	 * Gets all images stored in the study
+	 * @return a list of all images stored in the study
 	 */
 	public ArrayList<BufferedImage> getImages(){
 		return this.images;
 	}
 	
 	/**
-	 * Returns the images for the current index based on display mode.
-	 * 
-	 * @return
+	 * Gets the current images based on where the current index is as well as
+	 * the display mode of the study
+	 * @return the current images for the study
 	 */
 	public ArrayList<BufferedImage> getCurrentImages() {
 		ArrayList<BufferedImage> currImgs = new ArrayList<BufferedImage>();
@@ -107,8 +97,7 @@ public class Study extends Observable {
 	}
 	
 	/**
-	 * returns the current index of the study
-	 * 
+	 * And index representing the currently viewed image(s) in the study
 	 * @return
 	 */
 	public int getIndex(){
@@ -116,27 +105,25 @@ public class Study extends Observable {
 	}
 	
 	/**
-	 * returns the image width
-	 * 
-	 * @return
+	 * Gets the width of one of the studies' images
+	 * @return the standard image width of the study
 	 */
 	public int getImageWidth() {
 		return this.defaultImageWidth;
 	}
 	
 	/**
-	 * returns the image height
-	 * 
-	 * @return
+	 * Gets the height of one of the studies' images
+	 * @return the standard image height of the study
 	 */
 	public int getImageHeight() {
 		return this.defaultImageHeight;
 	}
 	
 	/**
-	 * sets the Study's index to the given index
-	 * 
-	 * @param newIndex
+	 * Sets the index cursor of the study
+	 * Calling this method notifies observers
+	 * @param newIndex the new image position in the study
 	 */
 	public void setIndex(int newIndex){
 		this.index = newIndex;
@@ -148,9 +135,8 @@ public class Study extends Observable {
 	}
 	
 	/**
-	 *Sets the study's display mode as the given display mode
-	 * 
-	 * @param mode
+	 * Changes the display mode of the study
+	 * @param mode the new display mode for the study
 	 */
 	public void setDisplayMode(DISPLAY_MODE_VALUE mode) {
 		DISPLAY_MODE_VALUE currMode = studySettings.getDisplayMode();
@@ -160,23 +146,19 @@ public class Study extends Observable {
 			mode == DISPLAY_MODE_VALUE.FOUR_IMAGE
 		) {
 			this.setIndex((4 * (int)Math.floor((this.index)/4)));
-			System.out.println((4 * (int)Math.floor((this.index)/4)));
 		} else if (currMode == DISPLAY_MODE_VALUE.FOUR_IMAGE &&
 			mode == DISPLAY_MODE_VALUE.ONE_IMAGE
 		) {
 			this.setIndex((4 * (int)Math.floor((this.index)/4)));
-			System.out.println((4 * (int)Math.floor((this.index)/4)));
 		}
-		else {
-			super.setChanged();
-			super.notifyObservers();
-		}
+
+		super.setChanged();
+		super.notifyObservers();
 	}
 	
 	/**
-	 * returns this study's study settings
-	 * 
-	 * @return
+	 * Gets the settings associated with this study
+	 * @return The StudySettings object associated with the study's settings.
 	 */
 	public StudySettings getStudySettings() {
 		return this.studySettings;
