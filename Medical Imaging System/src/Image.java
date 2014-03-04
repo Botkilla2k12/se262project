@@ -10,7 +10,11 @@ import java.io.File;
  */
 public class Image {
 	private File fileName;
-
+	
+	/**
+	 * Creates an Image from a given filename
+	 * @param fileName the file to create the image from
+	 */
 	public Image(File fileName) {
 		// TODO Auto-generated constructor stub
 		this.fileName = fileName;
