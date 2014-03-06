@@ -25,20 +25,30 @@ public class SaveCommand {
 	private String newName;
 	private static final String CONFIG_FILE = "study.cfg";
 	
+	/**
+	 * Initializes a SaveCommand object with the old filepath
+	 * and new filepath
+	 * @param oldName - filepath that is being saved under a new name
+	 * @param newName - new filepath name to be saved
+	 */
 	public SaveCommand(String oldName, String newName) {
 		this.oldName = oldName;
 		this.newName = newName;
-		System.out.println(this.newName);
 	}
-
+	
+	/**
+	 * Makes a new directory and copies the CFG file and all images
+	 * from the old directory into the new directory.
+	 */
 	public void save() {
+		//Makes new directory
 		File newFile = new File(newName);
 		newFile.mkdir();
 		
 		String configPath = oldName + "\\study.cfg";
-		//File configFile = new File(configPath);
-		//String newConfigPath = newFile.getAbsolutePath() + "\\study.cfg";
 		
+		//Reads the old CFG file and makes a new one with all of the
+		//same contents in the new directory
 		PrintWriter writer = null;
 		Scanner sc = null;
 		try{
@@ -62,6 +72,7 @@ public class SaveCommand {
 			writer.close();
 		}
 		
+		//Loops through all images in the old directory and copies them into new directory
 		try {
 			OpenCommand openCommand = new OpenCommand(new File(oldName));
 			ArrayList<BufferedImage> images = openCommand.getImages();
