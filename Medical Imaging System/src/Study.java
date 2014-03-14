@@ -13,7 +13,7 @@ public class Study extends Observable {
 	private ArrayList<BufferedImage> images;
 	private File directory; 
 	private StudySettings studySettings;
-	private int index, defaultImageHeight, defaultImageWidth;
+	private int index, defaultImageHeight, defaultImageWidth;	
 	
 	
 	public Study(File directory) {
@@ -162,5 +162,17 @@ public class Study extends Observable {
 	 */
 	public StudySettings getStudySettings() {
 		return this.studySettings;
+	}
+	
+	public static class Memento {
+		private DISPLAY_MODE_VALUE displayState;
+		
+		public Memento(DISPLAY_MODE_VALUE state) {
+			this.displayState = state;
+		}
+		
+		public DISPLAY_MODE_VALUE getDisplayState() {
+			return this.displayState;
+		}
 	}
 }
