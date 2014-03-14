@@ -121,6 +121,8 @@ public class ImageViewerMenuBar extends JMenuBar {
                 save.save();	
             }catch (NullPointerException i) {
             	
+            }catch (Exception a) {
+            	
             }
             
         }

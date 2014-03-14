@@ -39,8 +39,9 @@ public class SaveCommand {
 	/**
 	 * Makes a new directory and copies the CFG file and all images
 	 * from the old directory into the new directory.
+	 * @throws Exception 
 	 */
-	public void save() {
+	public void save() throws Exception {
 		//Makes new directory
 		File newFile = new File(newName);
 		newFile.mkdir();
@@ -75,14 +76,27 @@ public class SaveCommand {
 		//Loops through all images in the old directory and copies them into new directory
 		try {
 			OpenCommand openCommand = new OpenCommand(new File(oldName));
-			ArrayList<BufferedImage> images = openCommand.getImages();
-			ArrayList<String> imageNames = openCommand.getImageNames();
+			ArrayList<Image> images = openCommand.getImages();
 			
 			for (int i = 0; i < images.size() - 1; i++) {
-				BufferedImage image = images.get(i);
+				Image image = images.get(i);
+				String name = image.getName();
+				File file = new File(name);
+				String fileName = file.getName().toLowerCase();
+				String newImagePath = newFile.getAbsolutePath() + "\\" + name;
 				
-				String newImagePath = newFile.getAbsolutePath() + "\\" + imageNames.get(i);
-				ImageIO.write(image, "jpg", new File(newImagePath));
+				if (fileName.endsWith(".jpg")) {
+					ImageIO.write(image.getImage(), "jpg", new File(newImagePath));
+				}
+				else if (fileName.endsWith(".jpeg")) {
+					ImageIO.write(image.getImage(), "jpeg", new File(newImagePath));
+				}
+				else if (fileName.endsWith(".acr")) {
+					ImageIO.write(image.getImage(), "acr", new File(newImagePath));
+				}
+				else {
+					throw new Exception();
+				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
