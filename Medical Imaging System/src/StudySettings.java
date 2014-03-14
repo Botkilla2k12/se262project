@@ -12,8 +12,6 @@ public class StudySettings {
 	private File directory;
 	private DISPLAY_MODE_VALUE displayMode;
 
-	
-
 	private int lastImageIndex;
 
 	/**
@@ -97,18 +95,20 @@ public class StudySettings {
 	 * @param index - the study's current image index
 	 */
 	private void writeInformationToDisk(DISPLAY_MODE_VALUE mode, int index) {
-		PrintWriter writer = null;
-		try{
-			writer = new PrintWriter(
-				this.directory.getAbsolutePath() + "\\" + CONFIG_FILE, "UTF-8"
-			);
-			writer.println(mode);
-			writer.println(index);
-			writer.flush();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			writer.close();
+		if(this.directory != null) { 
+			PrintWriter writer = null;
+			try{
+				writer = new PrintWriter(
+					this.directory.getAbsolutePath() + "\\" + CONFIG_FILE, "UTF-8"
+				);
+				writer.println(mode);
+				writer.println(index);
+				writer.flush();
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				writer.close();
+			}
 		}
 	}
 }
