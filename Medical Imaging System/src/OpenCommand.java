@@ -1,7 +1,6 @@
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
 import javax.imageio.ImageIO;
@@ -23,7 +22,8 @@ import java.awt.image.BufferedImage;
 public class OpenCommand {
 
 	private File directory;
-	private ArrayList<Image> images;
+	private ArrayList<BufferedImage> images;
+	private ArrayList<String> imageNames;
 	
 	/**
 	 * Initializes an OpenCommand object with a given directory so all
@@ -33,7 +33,8 @@ public class OpenCommand {
 	 */
 	public OpenCommand(File directory) throws IOException {
 		this.directory = directory;
-		this.images = new ArrayList<Image>();
+		this.images = new ArrayList<BufferedImage>();
+		this.imageNames = new ArrayList<String>();
 		open(directory);
 	}
 	
@@ -52,7 +53,7 @@ public class OpenCommand {
 	 */
 	public boolean checkFileType(File f) {
 		String name = f.getName().toLowerCase();
-        return (name.endsWith(".jpg") || name.endsWith(".jpeg") || name.endsWith(".acr"));
+        return (name.endsWith(".jpg") || name.endsWith(".jpeg"));
 	}
 	
 	/**
@@ -63,21 +64,26 @@ public class OpenCommand {
 	 * @return ArrayList of BufferedImage for each .jpg/.jpeg file
 	 * @throws IOException
 	 */
-	private ArrayList<Image> open(File directory) throws IOException {
+	private ArrayList<BufferedImage> open(File directory) throws IOException {
 		File[] files = directory.listFiles();
-		Arrays.sort(files);
+		ArrayList<File> newFiles = new ArrayList<File>();
 		for (int i = 0; i < files.length; i++) {
-			File file = files[i];
-			if (checkFileType(file)) {
-				try {
-					BufferedImage image = ImageIO.read(file);
-					Image newImage = new Image(file.getName(), image);
-					images.add(newImage);
-			    }
-			    catch(IOException e) {
-			    	throw e;
-			    }
+			if (checkFileType(files[i])) {
+				newFiles.add(files[i]);
+				imageNames.add(files[i].getName());
 			}
+		}
+		Collections.sort(newFiles);
+		Collections.sort(imageNames);
+		
+		for(int i = 0; i < newFiles.size(); i++){
+			try{
+				BufferedImage image = ImageIO.read(newFiles.get(i));
+				images.add(image);
+		    }
+		    catch(IOException e) {
+		    	throw e;
+		    }
 		}
 		
 		return images;
@@ -87,7 +93,15 @@ public class OpenCommand {
 	 * Gets the list of all images in this directory
 	 * @return ArrayList of all images in this directory
 	 */
-	public ArrayList<Image> getImages() {
+	public ArrayList<BufferedImage> getImages() {
 		return images;
+	}
+	
+	/**
+	 * Gets the list of image names for all images in this directory
+	 * @return ArrayList of image names for all images in this directory
+	 */
+	public ArrayList<String> getImageNames() {
+		return imageNames;
 	}
 }

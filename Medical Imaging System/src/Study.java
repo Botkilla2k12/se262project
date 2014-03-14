@@ -10,7 +10,7 @@ import java.util.ArrayList;
  *
  */
 public class Study extends Observable {
-	private ArrayList<Image> images;
+	private ArrayList<BufferedImage> images;
 	private File directory; 
 	private StudySettings studySettings;
 	private int index, defaultImageHeight, defaultImageWidth;
@@ -25,7 +25,7 @@ public class Study extends Observable {
 		
 		this.directory = directory;
 		
-		this.images = new ArrayList<Image>();
+		this.images = new ArrayList<BufferedImage>();
 	}
 	
 	/**
@@ -41,8 +41,8 @@ public class Study extends Observable {
 				this.images = openCommandObject.getImages();
 				
 				if(this.images.size() > 0) {
-					this.defaultImageHeight = images.get(0).getImage().getHeight();
-					this.defaultImageWidth = images.get(0).getImage().getWidth();
+					this.defaultImageHeight = images.get(0).getHeight();
+					this.defaultImageWidth = images.get(0).getWidth();
 				}
 				
 				super.setChanged();
@@ -74,7 +74,7 @@ public class Study extends Observable {
 	 * Gets all images stored in the study
 	 * @return a list of all images stored in the study
 	 */
-	public ArrayList<Image> getImages(){
+	public ArrayList<BufferedImage> getImages(){
 		return this.images;
 	}
 	
@@ -83,8 +83,8 @@ public class Study extends Observable {
 	 * the display mode of the study
 	 * @return the current images for the study
 	 */
-	public ArrayList<Image> getCurrentImages() {
-		ArrayList<Image> currImgs = new ArrayList<Image>();
+	public ArrayList<BufferedImage> getCurrentImages() {
+		ArrayList<BufferedImage> currImgs = new ArrayList<BufferedImage>();
 		int offset =
 			this.studySettings.getDisplayMode() == DISPLAY_MODE_VALUE.ONE_IMAGE ?
 			1 : 4;
