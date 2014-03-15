@@ -45,6 +45,9 @@ public class ImageViewerWindow extends JFrame {
 		
 		setupNewStudy(studyModel);
 		setPanelDisplayMode(studyModel.getStudySettings().getDisplayMode());
+		//Get rid of the initial state to avoid duplication when exhausting
+		//undo operations.
+		this.previousModes.pop();
 		
 		this.prevButton = new JButton("Previous");
 		this.prevButton.addActionListener(new ButtonListener());
