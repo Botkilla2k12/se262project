@@ -121,6 +121,14 @@ public class Study extends Observable {
 	}
 	
 	/**
+	 * Gets the settings associated with this study
+	 * @return The StudySettings object associated with the study's settings.
+	 */
+	public StudySettings getStudySettings() {
+		return this.studySettings;
+	}
+	
+	/**
 	 * Sets the index cursor of the study
 	 * Calling this method notifies observers
 	 * @param newIndex the new image position in the study
@@ -156,11 +164,23 @@ public class Study extends Observable {
 		super.notifyObservers();
 	}
 	
-	/**
-	 * Gets the settings associated with this study
-	 * @return The StudySettings object associated with the study's settings.
-	 */
-	public StudySettings getStudySettings() {
-		return this.studySettings;
+	public void restoreFromMemento(Memento memento) {
+		this.setDisplayMode(memento.getDisplayMode());
+	}
+	
+	public Memento saveToMemento() {
+		return new Memento(this.studySettings.getDisplayMode());
+	}
+	
+	public static class Memento {
+		private DISPLAY_MODE_VALUE displayMode;
+		
+		public Memento(DISPLAY_MODE_VALUE displayMode) {
+			this.displayMode = displayMode;
+		}
+		
+		public DISPLAY_MODE_VALUE getDisplayMode() {
+			return this.displayMode;
+		}
 	}
 }
