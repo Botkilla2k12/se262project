@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class BrowseCommand {
 
 	private Study study;
-	private ArrayList<BufferedImage> images;
+	private ArrayList<Image> images;
 	private DISPLAY_MODE_VALUE displayMode;
 	private int index;
 	
@@ -35,10 +35,10 @@ public class BrowseCommand {
 	}
 	
 	/**
-	 * Gets the first image of the study as a BufferedImage
-	 * @return the first image of the study as a BufferedImage
+	 * Gets the first image of the study as a Image
+	 * @return the first image of the study as a Image
 	 */
-	public BufferedImage first() {
+	public Image first() {
 		return images.get(0);
 	}
 	
@@ -74,7 +74,7 @@ public class BrowseCommand {
 	 * Gets the image at the current index
 	 * @return the image at the current index
 	 */
-	public BufferedImage currentItem() {
+	public Image currentItem() {
 		return images.get(index);
 	}
 	
@@ -84,14 +84,14 @@ public class BrowseCommand {
 	 * @return the image at the updated index
 	 * @throws IndexOutOfBoundsException
 	 */
-	public BufferedImage next() throws IndexOutOfBoundsException { //moving to right
+	public Image next() throws IndexOutOfBoundsException { //moving to right
 		if (displayMode == DISPLAY_MODE_VALUE.ONE_IMAGE && !isEnd()) {
-			BufferedImage newImage = images.get(index + 1);
+			Image newImage = images.get(index + 1);
 			study.setIndex(++index);
 			return newImage;
 		}
 		else if (displayMode == DISPLAY_MODE_VALUE.FOUR_IMAGE && !isEnd()) {
-			BufferedImage newImage = images.get(index + 4);
+			Image newImage = images.get(index + 4);
 			study.setIndex(index += 4);
 			return newImage;
 		}
@@ -104,14 +104,14 @@ public class BrowseCommand {
 	 * @return the image at the updated index
 	 * @throws IndexOutOfBoundsException
 	 */
-	public BufferedImage prev() throws IndexOutOfBoundsException { //moving to left
+	public Image prev() throws IndexOutOfBoundsException { //moving to left
 		if (displayMode == DISPLAY_MODE_VALUE.ONE_IMAGE && !isBeginning()) {
-			BufferedImage newImage = images.get(index - 1);
+			Image newImage = images.get(index - 1);
 			study.setIndex(--index);
 			return newImage;
 		}
 		else if (displayMode == DISPLAY_MODE_VALUE.FOUR_IMAGE && !isBeginning()) {
-			BufferedImage newImage = images.get(index - 4);
+			Image newImage = images.get(index - 4);
 			study.setIndex(index -= 4);
 			return newImage;
 		}
