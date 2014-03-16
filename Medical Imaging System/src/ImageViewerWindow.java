@@ -102,6 +102,7 @@ public class ImageViewerWindow extends JFrame {
 	 * @param study the study to be initializes
 	 */
 	public void setupNewStudy(Study study) {
+		this.previousModes.removeAllElements();
 		if(this.studyModel != null) {
 			this.studyModel.deleteObserver(imagePanel);
 			this.studyModel.deleteObserver(numberLabel);
@@ -152,6 +153,7 @@ public class ImageViewerWindow extends JFrame {
 			Study.Memento previousState = this.previousModes.pop();
 			this.studyModel.restoreFromMemento(previousState);
 			this.browseCommand.setDisplayMode(previousState.getDisplayMode());
+			this.menuBar.activateRadioButtonFromDisplayMode(previousState.getDisplayMode());
 		} catch (EmptyStackException e) {
 			JOptionPane.showMessageDialog(this, "All states have been undone");
 		}
