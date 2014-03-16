@@ -1,9 +1,9 @@
 import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import javax.imageio.ImageIO;
@@ -35,7 +35,6 @@ public class SaveCommand implements Command {
 	public SaveCommand(String oldName, String newName) {
 		this.oldName = oldName;
 		this.newName = newName;
-		save();
 	}
 	
 	public void execute() {
@@ -80,8 +79,30 @@ public class SaveCommand implements Command {
 		
 		//Loops through all images in the old directory and copies them into new directory
 		try {
-			OpenCommand openCommand = new OpenCommand(new File(oldName));
-			ArrayList<Object> images = openCommand.getImages();
+			ArrayList<Image> images = new ArrayList<Image>();
+			File oldFile = new File(oldName);
+			File[] files = oldFile.listFiles();
+			Arrays.sort(files);
+			for (int i = 0; i < files.length; i++) {
+				File file = files[i];
+				String name = file.getName().toLowerCase();
+				if (name.endsWith(".jpg") || name.endsWith(".jpeg")) {
+					try {
+						BufferedImage image = ImageIO.read(file);
+						Image newImage = new Image(file.getName(), image);
+						images.add(newImage);
+				    }
+				    catch(IOException e) {
+				    	throw e;
+				    }
+				}
+				else if (name.endsWith(".acr")) {
+					ShowACR acr = new ShowACR(file);
+					BufferedImage image = acr.getImage();
+					Image newImage = new Image(file.getName(), image);
+					images.add(newImage);
+				}
+			}
 			
 			for (int i = 0; i < images.size() - 1; i++) {
 				if (images.get(i) instanceof Image){
@@ -96,7 +117,9 @@ public class SaveCommand implements Command {
 						ImageIO.write((BufferedImage) image.getImages().get(0), "jpeg", new File(newImagePath));
 					}
 					else if (name.endsWith(".acr")) {
-						ImageIO.write((BufferedImage) image.getImages().get(0), "acr", new File(newImagePath));
+						File file = new File(newImagePath);
+						file.createNewFile();
+						SaveACR save = new SaveACR((BufferedImage) image.getImages().get(0), file);
 					}
 				} else {
 					try {
