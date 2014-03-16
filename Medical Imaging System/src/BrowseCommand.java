@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class BrowseCommand {
 
 	private Study study;
-	private ArrayList<Image> images;
+	private ArrayList<Object> images;
 	private DISPLAY_MODE_VALUE displayMode;
 	private int index;
 	
@@ -39,7 +39,18 @@ public class BrowseCommand {
 	 * @return the first image of the study as a Image
 	 */
 	public Image first() {
-		return images.get(0);
+		if (images.get(0) instanceof Image){
+			return (Image)images.get(0);
+		} else {
+			try {
+				throw new TypeException();
+			} catch (TypeException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
+		}
+		
 	}
 	
 	/**
@@ -75,7 +86,18 @@ public class BrowseCommand {
 	 * @return the image at the current index
 	 */
 	public Image currentItem() {
-		return images.get(index);
+		if (images.get(index) instanceof Image){
+			return (Image)images.get(index);
+		} else {
+			try {
+				throw new TypeException();
+			} catch (TypeException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
+		}
+		
 	}
 	
 	/**
@@ -86,14 +108,36 @@ public class BrowseCommand {
 	 */
 	public Image next() throws IndexOutOfBoundsException { //moving to right
 		if (displayMode == DISPLAY_MODE_VALUE.ONE_IMAGE && !isEnd()) {
-			Image newImage = images.get(index + 1);
-			study.setIndex(++index);
-			return newImage;
+			if(images.get(index + 1) instanceof Image){
+				Image newImage = (Image)images.get(index + 1);
+				study.setIndex(++index);
+				return newImage;
+			} else {
+				try {
+					throw new TypeException();
+				} catch (TypeException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				return null;
+			}
+			
 		}
 		else if (displayMode == DISPLAY_MODE_VALUE.FOUR_IMAGE && !isEnd()) {
-			Image newImage = images.get(index + 4);
-			study.setIndex(index += 4);
-			return newImage;
+			if (images.get(index + 4) instanceof Image){
+				Image newImage = (Image)images.get(index + 4);
+				study.setIndex(index += 4);
+				return newImage;
+			} else {
+				try {
+					throw new TypeException();
+				} catch (TypeException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				return null;
+			}
+			
 		}
 		throw new IndexOutOfBoundsException();
 	}
@@ -106,14 +150,36 @@ public class BrowseCommand {
 	 */
 	public Image prev() throws IndexOutOfBoundsException { //moving to left
 		if (displayMode == DISPLAY_MODE_VALUE.ONE_IMAGE && !isBeginning()) {
-			Image newImage = images.get(index - 1);
-			study.setIndex(--index);
-			return newImage;
+			if (images.get(index - 1) instanceof Image){
+				Image newImage = (Image)images.get(index - 1);
+				study.setIndex(--index);
+				return newImage;
+			} else {
+				try {
+					throw new TypeException();
+				} catch (TypeException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				return null;
+			}
+			
 		}
 		else if (displayMode == DISPLAY_MODE_VALUE.FOUR_IMAGE && !isBeginning()) {
-			Image newImage = images.get(index - 4);
-			study.setIndex(index -= 4);
-			return newImage;
+			if (images.get(index -4) instanceof Image){
+				Image newImage = (Image)images.get(index - 4);
+				study.setIndex(index -= 4);
+				return newImage;
+			} else {
+				try {
+					throw new TypeException();
+				} catch (TypeException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				return null;
+			}
+		
 		}
 		throw new IndexOutOfBoundsException();
 	}

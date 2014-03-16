@@ -1,12 +1,13 @@
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 
 public interface StudyComposite {
-	public void open();
+	public void open() throws IOException;
 	public File getDirectory();
-	public ArrayList<Image> getImages();
-	public ArrayList<Image> getCurrentImages();
+	public ArrayList<Object> getImages();
+	public ArrayList<Object> getCurrentImages();
 	public int getIndex();
 	public int getImageWidth();
 	public int getImageHeight();

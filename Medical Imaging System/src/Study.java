@@ -2,20 +2,17 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Observable;
-import java.util.Observer;
 import java.util.ArrayList;
 
 /**
  * @author Derek Leung
  *
  */
-<<<<<<< HEAD
+
 public class Study extends Observable implements StudyComposite {
-	private ArrayList<BufferedImage> images;
-=======
-public class Study extends Observable {
-	private ArrayList<Image> images;
->>>>>>> branch 'master' of https://github.com/Botkilla2k12/se262project.git
+
+	private ArrayList<Object> images;
+
 	private File directory; 
 	private StudySettings studySettings;
 	private int index, defaultImageHeight, defaultImageWidth;
@@ -30,7 +27,7 @@ public class Study extends Observable {
 		
 		this.directory = directory;
 		
-		this.images = new ArrayList<Image>();
+		this.images = new ArrayList<Object>();
 	}
 	
 	/**
@@ -46,8 +43,9 @@ public class Study extends Observable {
 				this.images = openCommandObject.getImages();
 				
 				if(this.images.size() > 0) {
-					this.defaultImageHeight = images.get(0).getImage().getHeight();
-					this.defaultImageWidth = images.get(0).getImage().getWidth();
+					BufferedImage firstImage = (BufferedImage) (((Image) images.get(0)).getImages().get(0));
+					this.defaultImageHeight = firstImage.getHeight();
+					this.defaultImageWidth = firstImage.getWidth();
 				}
 				
 				super.setChanged();
@@ -79,7 +77,7 @@ public class Study extends Observable {
 	 * Gets all images stored in the study
 	 * @return a list of all images stored in the study
 	 */
-	public ArrayList<Image> getImages(){
+	public ArrayList<Object> getImages(){
 		return this.images;
 	}
 	
@@ -88,8 +86,8 @@ public class Study extends Observable {
 	 * the display mode of the study
 	 * @return the current images for the study
 	 */
-	public ArrayList<Image> getCurrentImages() {
-		ArrayList<Image> currImgs = new ArrayList<Image>();
+	public ArrayList<Object> getCurrentImages() {
+		ArrayList<Object> currImgs = new ArrayList<Object>();
 		int offset =
 			this.studySettings.getDisplayMode() == DISPLAY_MODE_VALUE.ONE_IMAGE ?
 			1 : 4;

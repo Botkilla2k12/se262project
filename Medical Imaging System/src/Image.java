@@ -3,20 +3,19 @@
  */
 import java.awt.image.*;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Observable;
 
 /**
  * @author derek
  *
  */
-<<<<<<< HEAD
+
 public class Image extends Observable implements StudyComposite{
-	private File fileName;
-=======
-public class Image {
+
 	private String name;
 	private BufferedImage image;
->>>>>>> branch 'master' of https://github.com/Botkilla2k12/se262project.git
+
 	
 	/**
 	 * Creates an Image from a given filename
@@ -27,11 +26,42 @@ public class Image {
 		this.image = image;
 	}
 
-	public String getName() {
+	public String toString() {
 		return this.name;
 	}
 	
-	public BufferedImage getImage() {
-		return this.image;
+	public ArrayList<Object> getImages() {
+		ArrayList<Object> images = new ArrayList<Object>();
+		if (this.image instanceof BufferedImage){
+			images.add(this.image);
+		} 
+		return images;
+	}
+	public void open(){
+		
+	}
+	public File getDirectory(){
+		return new File(this.name);
+	}
+
+	public ArrayList<Object> getCurrentImages() {
+		return this.getImages();
+	}
+	public int getIndex(){
+		return -1;
+	}
+	public int getImageWidth(){
+		return this.image.getHeight();
+	}
+	public int getImageHeight(){
+		return this.image.getWidth();
+	}
+	public void setIndex(int integer){
+	}
+	public void setDisplayMode(DISPLAY_MODE_VALUE d){
+		
+	}
+	public StudySettings getStudySettings(){
+		return null;
 	}
 }

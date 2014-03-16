@@ -1,4 +1,4 @@
-import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -75,22 +75,32 @@ public class SaveCommand {
 		//Loops through all images in the old directory and copies them into new directory
 		try {
 			OpenCommand openCommand = new OpenCommand(new File(oldName));
-			ArrayList<Image> images = openCommand.getImages();
+			ArrayList<Object> images = openCommand.getImages();
 			
 			for (int i = 0; i < images.size() - 1; i++) {
-				Image image = images.get(i);
-				String name = image.getName().toLowerCase();
-				String newImagePath = newFile.getAbsolutePath() + "\\" + image.getName();
-				
-				if (name.endsWith(".jpg")) {
-					ImageIO.write(image.getImage(), "jpg", new File(newImagePath));
+				if (images.get(i) instanceof Image){
+					Image image = (Image) images.get(i);
+					String name = image.toString().toLowerCase();
+					String newImagePath = newFile.getAbsolutePath() + "\\" + image.toString();
+					
+					if (name.endsWith(".jpg")) {
+						ImageIO.write((RenderedImage) image.getImages(), "jpg", new File(newImagePath));
+					}
+					else if (name.endsWith(".jpeg")) {
+						ImageIO.write((RenderedImage) image.getImages(), "jpeg", new File(newImagePath));
+					}
+					else if (name.endsWith(".acr")) {
+						ImageIO.write((RenderedImage) image.getImages(), "acr", new File(newImagePath));
+					}
+				} else {
+					try {
+						throw new TypeException();
+					} catch (TypeException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
-				else if (name.endsWith(".jpeg")) {
-					ImageIO.write(image.getImage(), "jpeg", new File(newImagePath));
-				}
-				else if (name.endsWith(".acr")) {
-					ImageIO.write(image.getImage(), "acr", new File(newImagePath));
-				}
+
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -47,13 +47,24 @@ public class ImagePanel extends JPanel implements Observer {
 		setDisplayMode(study.getStudySettings().getDisplayMode());
 		int numEntries = DISPLAY_MODE_VALUE.getValue(displayMode);
 		
-		ArrayList<Image> images = study.getCurrentImages();
+		ArrayList<Object> images = study.getCurrentImages();
 		
 		super.removeAll();
 		
 		//for each image, render the image in a JPanel
-		for(Image img: images) {
-			super.add(new JLabel(new ImageIcon(img.getImage())));
+		for(Object img: images) {
+			if (img instanceof Image) {
+				BufferedImage firstImage =  (BufferedImage) ((Image) img).getImages().get(0);
+				super.add(new JLabel(new ImageIcon(firstImage)));
+			} else {
+				try {
+					throw new TypeException();
+				} catch (TypeException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
 		}
 		
 		if(images.size() < numEntries) {
