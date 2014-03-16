@@ -22,36 +22,37 @@ public class StudySettings {
 	public StudySettings(File directory) {
 		this.directory = directory;
 		Scanner sc = null;
-		try {
-			File configFile =
-				new File(directory.getAbsolutePath() + "\\" + CONFIG_FILE);
-			
-			if(!configFile.exists()) {
-				configFile.createNewFile();
+		if(directory != null) {
+			try {
+				File configFile =
+					new File(directory.getAbsolutePath() + "\\" + CONFIG_FILE);
 				
-				this.displayMode = DISPLAY_MODE_VALUE.ONE_IMAGE;
-				setLastImageIndex(0);
-			}
-
-			sc = new Scanner(configFile);
-			if (sc.hasNextLine()){
-				String displayModeVal = sc.nextLine();
-			
-				if(displayModeVal.equals("ONE_IMAGE")) {
+				if(!configFile.exists()) {
+					configFile.createNewFile();
+					
 					this.displayMode = DISPLAY_MODE_VALUE.ONE_IMAGE;
-				} else {
-					this.displayMode = DISPLAY_MODE_VALUE.FOUR_IMAGE;
+					setLastImageIndex(0);
+				}
+	
+				sc = new Scanner(configFile);
+				if (sc.hasNextLine()){
+					String displayModeVal = sc.nextLine();
+				
+					if(displayModeVal.equals("ONE_IMAGE")) {
+						this.displayMode = DISPLAY_MODE_VALUE.ONE_IMAGE;
+					} else {
+						this.displayMode = DISPLAY_MODE_VALUE.FOUR_IMAGE;
+					}
+					
+					this.lastImageIndex = Integer.parseInt(sc.nextLine());
 				}
 				
-				this.lastImageIndex = Integer.parseInt(sc.nextLine());
+			} catch (NullPointerException i) {
+				
+			} catch(Exception e) {
+				e.printStackTrace(); 
 			}
-			
-		} catch (NullPointerException i) {
-			
-		} catch(Exception e) {
-			e.printStackTrace(); 
 		}
-		
 	}
 	
 	/**
