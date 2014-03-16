@@ -75,14 +75,22 @@ public class SaveCommand {
 		//Loops through all images in the old directory and copies them into new directory
 		try {
 			OpenCommand openCommand = new OpenCommand(new File(oldName));
-			ArrayList<BufferedImage> images = openCommand.getImages();
-			ArrayList<String> imageNames = openCommand.getImageNames();
+			ArrayList<Image> images = openCommand.getImages();
 			
 			for (int i = 0; i < images.size() - 1; i++) {
-				BufferedImage image = images.get(i);
+				Image image = images.get(i);
+				String name = image.getName().toLowerCase();
+				String newImagePath = newFile.getAbsolutePath() + "\\" + image.getName();
 				
-				String newImagePath = newFile.getAbsolutePath() + "\\" + imageNames.get(i);
-				ImageIO.write(image, "jpg", new File(newImagePath));
+				if (name.endsWith(".jpg")) {
+					ImageIO.write(image.getImage(), "jpg", new File(newImagePath));
+				}
+				else if (name.endsWith(".jpeg")) {
+					ImageIO.write(image.getImage(), "jpeg", new File(newImagePath));
+				}
+				else if (name.endsWith(".acr")) {
+					ImageIO.write(image.getImage(), "acr", new File(newImagePath));
+				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

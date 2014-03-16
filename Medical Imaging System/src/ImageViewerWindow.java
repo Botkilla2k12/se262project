@@ -3,8 +3,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.EmptyStackException;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Stack;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -24,6 +26,7 @@ public class ImageViewerWindow extends JFrame {
 	private NumberLabel numberLabel;
 	private BrowseCommand browseCommand;
 	private Study studyModel;
+	private Stack<Study.Memento> previousModes;
 
 	/**
 	 * This initializes the window as well as any views/controllers using the
@@ -32,6 +35,7 @@ public class ImageViewerWindow extends JFrame {
 	 */
 	public ImageViewerWindow(Study studyModel) {
 		this.studyModel = studyModel;
+		this.previousModes = new Stack<Study.Memento>();
 		this.menuBar = new ImageViewerMenuBar();
 		this.imagePanel = new ImagePanel(
 			studyModel.getStudySettings().getDisplayMode()
@@ -41,6 +45,9 @@ public class ImageViewerWindow extends JFrame {
 		
 		setupNewStudy(studyModel);
 		setPanelDisplayMode(studyModel.getStudySettings().getDisplayMode());
+		//Get rid of the initial state to avoid duplication when exhausting
+		//undo operations.
+		this.previousModes.pop();
 		
 		this.prevButton = new JButton("Previous");
 		this.prevButton.addActionListener(new ButtonListener());
@@ -135,10 +142,21 @@ public class ImageViewerWindow extends JFrame {
 	 * @param mode the new display mode for the model.
 	 */
 	public void setPanelDisplayMode(DISPLAY_MODE_VALUE mode) {
+		this.previousModes.push(this.studyModel.saveToMemento());
 		this.studyModel.setDisplayMode(mode);
 		this.browseCommand.setDisplayMode(mode);
 	}
 
+	public void undoStateChange() {
+		try {
+			Study.Memento previousState = this.previousModes.pop();
+			this.studyModel.restoreFromMemento(previousState);
+			this.browseCommand.setDisplayMode(previousState.getDisplayMode());
+		} catch (EmptyStackException e) {
+			JOptionPane.showMessageDialog(this, "All states have been undone");
+		}
+	}
+	
 	private static class NumberLabel extends JLabel implements Observer {
 		public NumberLabel() {
 			super.setHorizontalAlignment(JLabel.CENTER);

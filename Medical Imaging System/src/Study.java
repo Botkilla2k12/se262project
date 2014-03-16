@@ -9,8 +9,13 @@ import java.util.ArrayList;
  * @author Derek Leung
  *
  */
+<<<<<<< HEAD
 public class Study extends Observable implements StudyComposite {
 	private ArrayList<BufferedImage> images;
+=======
+public class Study extends Observable {
+	private ArrayList<Image> images;
+>>>>>>> branch 'master' of https://github.com/Botkilla2k12/se262project.git
 	private File directory; 
 	private StudySettings studySettings;
 	private int index, defaultImageHeight, defaultImageWidth;
@@ -25,7 +30,7 @@ public class Study extends Observable implements StudyComposite {
 		
 		this.directory = directory;
 		
-		this.images = new ArrayList<BufferedImage>();
+		this.images = new ArrayList<Image>();
 	}
 	
 	/**
@@ -41,8 +46,8 @@ public class Study extends Observable implements StudyComposite {
 				this.images = openCommandObject.getImages();
 				
 				if(this.images.size() > 0) {
-					this.defaultImageHeight = images.get(0).getHeight();
-					this.defaultImageWidth = images.get(0).getWidth();
+					this.defaultImageHeight = images.get(0).getImage().getHeight();
+					this.defaultImageWidth = images.get(0).getImage().getWidth();
 				}
 				
 				super.setChanged();
@@ -74,7 +79,7 @@ public class Study extends Observable implements StudyComposite {
 	 * Gets all images stored in the study
 	 * @return a list of all images stored in the study
 	 */
-	public ArrayList<BufferedImage> getImages(){
+	public ArrayList<Image> getImages(){
 		return this.images;
 	}
 	
@@ -83,8 +88,8 @@ public class Study extends Observable implements StudyComposite {
 	 * the display mode of the study
 	 * @return the current images for the study
 	 */
-	public ArrayList<BufferedImage> getCurrentImages() {
-		ArrayList<BufferedImage> currImgs = new ArrayList<BufferedImage>();
+	public ArrayList<Image> getCurrentImages() {
+		ArrayList<Image> currImgs = new ArrayList<Image>();
 		int offset =
 			this.studySettings.getDisplayMode() == DISPLAY_MODE_VALUE.ONE_IMAGE ?
 			1 : 4;
@@ -118,6 +123,14 @@ public class Study extends Observable implements StudyComposite {
 	 */
 	public int getImageHeight() {
 		return this.defaultImageHeight;
+	}
+	
+	/**
+	 * Gets the settings associated with this study
+	 * @return The StudySettings object associated with the study's settings.
+	 */
+	public StudySettings getStudySettings() {
+		return this.studySettings;
 	}
 	
 	/**
@@ -156,11 +169,23 @@ public class Study extends Observable implements StudyComposite {
 		super.notifyObservers();
 	}
 	
-	/**
-	 * Gets the settings associated with this study
-	 * @return The StudySettings object associated with the study's settings.
-	 */
-	public StudySettings getStudySettings() {
-		return this.studySettings;
+	public void restoreFromMemento(Memento memento) {
+		this.setDisplayMode(memento.getDisplayMode());
+	}
+	
+	public Memento saveToMemento() {
+		return new Memento(this.studySettings.getDisplayMode());
+	}
+	
+	public static class Memento {
+		private DISPLAY_MODE_VALUE displayMode;
+		
+		public Memento(DISPLAY_MODE_VALUE displayMode) {
+			this.displayMode = displayMode;
+		}
+		
+		public DISPLAY_MODE_VALUE getDisplayMode() {
+			return this.displayMode;
+		}
 	}
 }
