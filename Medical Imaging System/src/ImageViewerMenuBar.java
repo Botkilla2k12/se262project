@@ -150,14 +150,14 @@ public class ImageViewerMenuBar extends JMenuBar {
             try{
                 Study opStudy = chooseStudy(chooser);
                 
-                ImageViewerWindow parentWin =
-                    (ImageViewerWindow) getTopLevelAncestor();
-                
-                parentWin.setupNewStudy(opStudy);   
+                if(opStudy != null) {
+	                ImageViewerWindow parentWin =
+	                    (ImageViewerWindow) getTopLevelAncestor();
+	                
+	                parentWin.setupNewStudy(opStudy);
+                }
             } catch (NullPointerException i) {
             }
-            
-            
         }
     }
     
@@ -219,19 +219,15 @@ public class ImageViewerMenuBar extends JMenuBar {
     }
     
     
-    private Study chooseStudy(JFileChooser chooser)throws NullPointerException{
-
+    private Study chooseStudy(JFileChooser chooser)throws NullPointerException {
         int returnVal = chooser.showOpenDialog(null);
 
-        if(returnVal!=JFileChooser.APPROVE_OPTION){
-            chooser.cancelSelection();
+        if(returnVal == JFileChooser.APPROVE_OPTION) {
+        	String chPath = chooser.getSelectedFile().getAbsolutePath();
+            return new Study(new File(chPath));
+        } else {
+        	return null;
         }
-
-
-        String chPath = chooser.getSelectedFile().getAbsolutePath();
-        Study chStudy= new Study(new File(chPath));
-        return chStudy;
-
     }
     
     static Study SaveNewStudy(JFileChooser chooser) throws NullPointerException{
