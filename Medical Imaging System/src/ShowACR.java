@@ -1,6 +1,3 @@
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
 import java.awt.image.*;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -63,14 +60,7 @@ public class ShowACR {
 		}
 		
 		this.image = sliceBuffer;
-		
-		/*JFrame win = new JFrame( "A Slice" );
-	        win.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	
-		win.getContentPane().add(new JLabel(new ImageIcon(sliceBuffer)));
-	        win.pack();
-	        win.setLocationRelativeTo(null);
-	        win.setVisible(true);*/
+
     }
     
     public BufferedImage getImage() {
