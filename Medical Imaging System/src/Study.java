@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * @author Derek Leung
  *
  */
-public class Study extends Observable {
+public class Study extends Observable implements StudyComposite {
 	private ArrayList<BufferedImage> images;
 	private File directory; 
 	private StudySettings studySettings;

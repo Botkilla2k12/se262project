@@ -3,12 +3,13 @@
  */
 import java.awt.image.*;
 import java.io.File;
+import java.util.Observable;
 
 /**
  * @author derek
  *
  */
-public class Image {
+public class Image extends Observable implements StudyComposite{
 	private File fileName;
 	
 	/**
