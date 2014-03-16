@@ -1,3 +1,4 @@
+import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
@@ -88,13 +89,13 @@ public class SaveCommand implements Command {
 					String newImagePath = newFile.getAbsolutePath() + "\\" + image.toString();
 					
 					if (name.endsWith(".jpg")) {
-						ImageIO.write((RenderedImage) image.getImages(), "jpg", new File(newImagePath));
+						ImageIO.write((BufferedImage) image.getImages().get(i), "jpg", new File(newImagePath));
 					}
 					else if (name.endsWith(".jpeg")) {
-						ImageIO.write((RenderedImage) image.getImages(), "jpeg", new File(newImagePath));
+						ImageIO.write((BufferedImage) image.getImages().get(i), "jpeg", new File(newImagePath));
 					}
 					else if (name.endsWith(".acr")) {
-						ImageIO.write((RenderedImage) image.getImages(), "acr", new File(newImagePath));
+						ImageIO.write((BufferedImage) image.getImages().get(i), "acr", new File(newImagePath));
 					}
 				} else {
 					try {
