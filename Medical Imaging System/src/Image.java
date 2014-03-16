@@ -83,13 +83,10 @@ public class Image extends Observable implements StudyComposite{
 	public StudySettings getStudySettings(){
 		return null;
 	}
-<<<<<<< HEAD
 
-	@Override
+//	@Override
 	public void setImages(ArrayList<Object> images) {
 		// TODO Auto-generated method stub
 		
 	}
-=======
->>>>>>> branch 'master' of https://github.com/Botkilla2k12/se262project.git
 }
