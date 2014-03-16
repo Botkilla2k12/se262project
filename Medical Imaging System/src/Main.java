@@ -6,10 +6,13 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-
 public class Main {
-	public static void main(String[] args) {
+	public static void main(String[] args) {		
 		try {
+			UIManager.setLookAndFeel(
+	        	UIManager.getSystemLookAndFeelClassName()
+	        );
+			
 			SystemSettings settings = new SystemSettings();
 			Study study = null;
 			
@@ -61,14 +64,6 @@ public class Main {
 			} else {
 				study = settings.getDefaultStudy();
 			}
-	
-			try {
-		        UIManager.setLookAndFeel(
-		        	UIManager.getSystemLookAndFeelClassName()
-		        );
-		    } catch (Exception e) {
-		       e.printStackTrace();
-		    }
 
 			new ImageViewerWindow(study);
 		}catch (NullPointerException i) {
