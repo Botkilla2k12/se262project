@@ -16,7 +16,7 @@ public class ImageViewerMenuBar extends JMenuBar {
     private JMenu settingsMenu;
     
     private JRadioButtonMenuItem displayMode1, displayMode4;
-    
+    private JMenu relatedStudies;
     public ImageViewerMenuBar(){
         InitFileMenu();
         InitEditMenu();
@@ -28,14 +28,57 @@ public class ImageViewerMenuBar extends JMenuBar {
     }
 
     public void activateRadioButtonFromDisplayMode(DISPLAY_MODE_VALUE mode) {
-    	if(mode == DISPLAY_MODE_VALUE.ONE_IMAGE) {
-    		this.displayMode1.setSelected(true);
-    		this.displayMode4.setSelected(false);
-    	} else {
-    		this.displayMode4.setSelected(true);
-    		this.displayMode1.setSelected(false);
-    	}
+        if(mode == DISPLAY_MODE_VALUE.ONE_IMAGE) {
+            this.displayMode1.setSelected(true);
+            this.displayMode4.setSelected(false);
+        } else {
+            this.displayMode4.setSelected(true);
+            this.displayMode1.setSelected(false);
+        }
     }
+    
+    public void setRelatedStudies(File currDir){
+        /**
+        ImageViewerWindow parentWin =
+                (ImageViewerWindow) getTopLevelAncestor();
+        System.out.println((parentWin.getDirectory().getName()));
+        File currDir=parentWin.getDirectory();
+        */
+    	if(this.relatedStudies!=null){
+    		this.fileMenu.remove(this.relatedStudies);
+    	}
+        this.relatedStudies = new JMenu("Related Studies...");
+        String[] relFiles=currDir.list();
+        for(String s:relFiles){
+        	if(!s.endsWith(".jpeg") && !s.endsWith(".acr") && !s.endsWith(".jpg") && !s.endsWith(".cfg")){
+        		JMenuItem tempMenuItem= new JMenuItem(s);
+                
+                this.relatedStudies.add(tempMenuItem);
+                Study relStud = new Study(new File(currDir.getName()+'\\'+s));
+                addRelatedListener(relStud, tempMenuItem);
+                
+        	}
+            
+            
+        }
+        this.fileMenu.add(this.relatedStudies);
+    }
+    
+    public void addRelatedListener(Study relStudy, JMenuItem menuItem){
+    	final Study relatedStudy=relStudy;
+    	final JMenuItem menIt=menuItem;
+    	menIt.addActionListener(new ActionListener(){
+        	public void actionPerformed(ActionEvent e){
+        		ImageViewerWindow parentWin =
+                        (ImageViewerWindow) getTopLevelAncestor();
+        		
+                    
+                parentWin.setupNewStudy(relatedStudy);
+        	}
+        });
+    	
+    }
+    
     
     private void InitFileMenu(){
         this.fileMenu=new JMenu("File");
@@ -43,8 +86,12 @@ public class ImageViewerMenuBar extends JMenuBar {
         JMenuItem openImage = new JMenuItem("Open...");
         JMenuItem undoOperation = new JMenuItem("Undo...");
         JMenuItem exitApp=new JMenuItem("Exit");
-
+        
+        //JMenu relatedStudies = new JMenu("Related Studies...");
+        
+        
         fileMenu.add(openImage);
+        //fileMenu.add(relatedStudies);
         fileMenu.add(undoOperation);
         fileMenu.add(exitApp);
 
@@ -88,12 +135,12 @@ public class ImageViewerMenuBar extends JMenuBar {
     }
 
     class UndoOperation implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			ImageViewerWindow parentWin =
-                	(ImageViewerWindow) getTopLevelAncestor();
-			parentWin.undoStateChange();
-		}
+        @Override
+        public void actionPerformed(ActionEvent arg0) {
+            ImageViewerWindow parentWin =
+                    (ImageViewerWindow) getTopLevelAncestor();
+            parentWin.undoStateChange();
+        }
     }
     
     class OpenFile implements ActionListener{
@@ -101,12 +148,12 @@ public class ImageViewerMenuBar extends JMenuBar {
             JFileChooser chooser = new MedicalImageFileChooser();
             chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             try{
-            	Study opStudy = chooseStudy(chooser);
+                Study opStudy = chooseStudy(chooser);
                 
                 ImageViewerWindow parentWin =
-                	(ImageViewerWindow) getTopLevelAncestor();
+                    (ImageViewerWindow) getTopLevelAncestor();
                 
-                parentWin.setupNewStudy(opStudy);	
+                parentWin.setupNewStudy(opStudy);   
             } catch (NullPointerException i) {
             }
             
@@ -116,8 +163,8 @@ public class ImageViewerMenuBar extends JMenuBar {
     
     class SaveStudy implements ActionListener{
         public void actionPerformed(ActionEvent e)throws NullPointerException{
-        	ImageViewerWindow parentWin =
-                	(ImageViewerWindow) getTopLevelAncestor();
+            ImageViewerWindow parentWin =
+                    (ImageViewerWindow) getTopLevelAncestor();
             JFileChooser chooser = new JFileChooser(parentWin.getDirectory());
             chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             chooser.setAcceptAllFileFilterUsed(false);
@@ -127,12 +174,12 @@ public class ImageViewerMenuBar extends JMenuBar {
                 chooser.cancelSelection();
             }
             try{
-            	File chFile = chooser.getSelectedFile();
+                File chFile = chooser.getSelectedFile();
                 //Study saveStudy= new Study(chFile);
                 SaveCommand save = new SaveCommand(parentWin.getDirectory().getAbsolutePath(), chFile.getAbsolutePath());
-                save.save();	
+                save.save();    
             }catch (NullPointerException i) {
-            	
+                
             }
             
         }
@@ -153,8 +200,8 @@ public class ImageViewerMenuBar extends JMenuBar {
     
     class ToDispMode1 implements ActionListener{
         public void actionPerformed(ActionEvent e){
-        	ImageViewerWindow parentWin =
-            	(ImageViewerWindow) getTopLevelAncestor();
+            ImageViewerWindow parentWin =
+                (ImageViewerWindow) getTopLevelAncestor();
             
             parentWin.setPanelDisplayMode(DISPLAY_MODE_VALUE.ONE_IMAGE);
         }
@@ -162,8 +209,8 @@ public class ImageViewerMenuBar extends JMenuBar {
     
     class ToDispMode4 implements ActionListener{
         public void actionPerformed(ActionEvent e){
-        	ImageViewerWindow parentWin =
-            	(ImageViewerWindow) getTopLevelAncestor();
+            ImageViewerWindow parentWin =
+                (ImageViewerWindow) getTopLevelAncestor();
             
             parentWin.setPanelDisplayMode(DISPLAY_MODE_VALUE.FOUR_IMAGE);
         }
@@ -179,7 +226,7 @@ public class ImageViewerMenuBar extends JMenuBar {
         }
 
 
-    	String chPath = chooser.getSelectedFile().getAbsolutePath();
+        String chPath = chooser.getSelectedFile().getAbsolutePath();
         Study chStudy= new Study(new File(chPath));
         return chStudy;
 

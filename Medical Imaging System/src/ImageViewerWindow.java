@@ -115,7 +115,7 @@ public class ImageViewerWindow extends JFrame {
 		this.menuBar.activateRadioButtonFromDisplayMode(
 			study.getStudySettings().getDisplayMode()
 		);
-		
+		this.menuBar.setRelatedStudies(this.getDirectory());
 		try {
 			this.studyModel.open();
 		} catch (IOException e) {
