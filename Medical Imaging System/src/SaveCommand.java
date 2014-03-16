@@ -19,7 +19,7 @@ import javax.imageio.ImageIO;
  *$Log$
  */
 
-public class SaveCommand {
+public class SaveCommand implements Command {
 
 	private String oldName;
 	private String newName;
@@ -34,6 +34,10 @@ public class SaveCommand {
 	public SaveCommand(String oldName, String newName) {
 		this.oldName = oldName;
 		this.newName = newName;
+	}
+	
+	public void execute() {
+		save();
 	}
 	
 	/**
