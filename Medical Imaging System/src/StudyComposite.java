@@ -14,5 +14,6 @@ public interface StudyComposite {
 	public void setIndex(int integer);
 	public void setDisplayMode(DISPLAY_MODE_VALUE d);
 	public StudySettings getStudySettings();
+	void setImages(ArrayList<Object> images);
 	
 }

@@ -197,4 +197,19 @@ public class Study extends Observable implements StudyComposite {
 			return this.displayMode;
 		}
 	}
+
+	@Override
+	public void setImages(ArrayList<Object> images) {
+		// TODO Auto-generated method stub
+		if (images.get(0) instanceof Image){
+			this.images = images;
+		} else {
+			try {
+				throw new TypeException();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+	}
 }

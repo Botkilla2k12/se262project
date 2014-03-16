@@ -20,7 +20,7 @@ import java.awt.image.BufferedImage;
  *$Log$
  */
 
-public class OpenCommand {
+public class OpenCommand implements Command {
 
 	private File directory;
 	private ArrayList<Object> images;
@@ -86,5 +86,16 @@ public class OpenCommand {
 	 */
 	public ArrayList<Object> getImages() {
 		return images;
+	}
+
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+		try {
+			this.open(this.directory);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

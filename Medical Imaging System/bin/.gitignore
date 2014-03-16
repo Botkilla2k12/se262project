@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /Study$Memento.class
 /ImageViewerMenuBar$UndoOperation.class
 /ShowACR.class
@@ -9,3 +10,12 @@
 /StudyIterator.class
 /manipulateImage.class
 /ImageManipulateCommand.class
+=======
+/StudyComposite.class
+/TypeException.class
+/ImageViewerMenuBar$1.class
+/Command.class
+/StudyIterator.class
+/UndoableCommand.class
+/manipulateImage.class
+>>>>>>> refs/remotes/origin/master

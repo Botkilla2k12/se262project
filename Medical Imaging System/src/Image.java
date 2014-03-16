@@ -84,9 +84,9 @@ public class Image extends Observable implements StudyComposite{
 		return null;
 	}
 
+
 //	@Override
 	public void setImages(ArrayList<Object> images) {
 		// TODO Auto-generated method stub
-		
 	}
 }
