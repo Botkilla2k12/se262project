@@ -39,8 +39,8 @@ public class Study extends Observable implements StudyComposite {
 	public void open() throws IOException {
 		if(this.directory != null) {
 			try{
-				OpenCommand openCommandObject = new OpenCommand(this.directory);
-				this.images = openCommandObject.getImages();
+				OpenCommand openCommandObject = new OpenCommand(this);
+				//this.images = openCommandObject.getImages();
 				
 				if(this.images.size() > 0) {
 					BufferedImage firstImage = (BufferedImage) (((Image) images.get(0)).getImages().get(0));
@@ -185,5 +185,20 @@ public class Study extends Observable implements StudyComposite {
 		public DISPLAY_MODE_VALUE getDisplayMode() {
 			return this.displayMode;
 		}
+	}
+
+	@Override
+	public void setImages(ArrayList<Object> images) {
+		if (images.get(0) instanceof Image){
+			this.images = images;
+		} else {
+			try {
+				throw new TypeException();
+			} catch (Exception e){
+				e.printStackTrace();
+			}
+		}
+		
+		
 	}
 }

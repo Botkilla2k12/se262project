@@ -1,8 +1,10 @@
+import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import javax.imageio.ImageIO;
@@ -78,8 +80,32 @@ public class SaveCommand implements Command {
 		
 		//Loops through all images in the old directory and copies them into new directory
 		try {
-			OpenCommand openCommand = new OpenCommand(new File(oldName));
-			ArrayList<Object> images = openCommand.getImages();
+			//OpenCommand openCommand = new OpenCommand(new File(oldName));
+			//ArrayList<Object> images = openCommand.getImages();
+			ArrayList<Image> images = new ArrayList<Image>();
+			File oldFile = new File(oldName);
+			File[] files = oldFile.listFiles();
+			Arrays.sort(files);
+			for (int i = 0; i < files.length; i++) {
+				File file = files[i];
+				String name = file.getName().toLowerCase();
+				if (name.endsWith(".jpg") || name.endsWith(".jpeg")) {
+					try {
+						BufferedImage image = ImageIO.read(file);
+						Image newImage = new Image(file.getName(), image);
+						images.add(newImage);
+				    }
+				    catch(IOException e) {
+				    	throw e;
+				    }
+				}
+				else if (name.endsWith(".acr")) {
+					ShowACR acr = new ShowACR(file);
+					BufferedImage image = acr.getImage();
+					Image newImage = new Image(file.getName(), image);
+					images.add(newImage);
+				}
+			}
 			
 			for (int i = 0; i < images.size() - 1; i++) {
 				if (images.get(i) instanceof Image){
@@ -88,13 +114,13 @@ public class SaveCommand implements Command {
 					String newImagePath = newFile.getAbsolutePath() + "\\" + image.toString();
 					
 					if (name.endsWith(".jpg")) {
-						ImageIO.write((RenderedImage) image.getImages(), "jpg", new File(newImagePath));
+						ImageIO.write((BufferedImage) image.getImages().get(0), "jpg", new File(newImagePath));
 					}
 					else if (name.endsWith(".jpeg")) {
-						ImageIO.write((RenderedImage) image.getImages(), "jpeg", new File(newImagePath));
+						ImageIO.write((BufferedImage) image.getImages().get(0), "jpeg", new File(newImagePath));
 					}
 					else if (name.endsWith(".acr")) {
-						ImageIO.write((RenderedImage) image.getImages(), "acr", new File(newImagePath));
+						ImageIO.write((BufferedImage) image.getImages().get(0), "acr", new File(newImagePath));
 					}
 				} else {
 					try {

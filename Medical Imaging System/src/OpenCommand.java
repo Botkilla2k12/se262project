@@ -20,19 +20,20 @@ import java.awt.image.BufferedImage;
  *$Log$
  */
 
-public class OpenCommand {
+public class OpenCommand implements Command{
 
 	private File directory;
 	private ArrayList<Object> images;
-	
+	private Study study;
 	/**
 	 * Initializes an OpenCommand object with a given directory so all
 	 * JPEG files in the study can be opened for viewing
 	 * @param directory - directory the study is located in
 	 * @throws IOException
 	 */
-	public OpenCommand(File directory) throws IOException {
-		this.directory = directory;
+	public OpenCommand(Study study) throws IOException {
+		this.study = study;
+		this.directory = study.getDirectory();
 		this.images = new ArrayList<Object>();
 		open(directory);
 	}
@@ -41,9 +42,10 @@ public class OpenCommand {
 	 * Gets the directory of the study being opened
 	 * @return the directory of the study being opened
 	 */
+	/*
 	public File getDirectory() {
 		return directory;
-	}
+	}*/
 	
 	/**
 	 * Gets all files in the given directory, weeds out the .jpg and .jpeg
@@ -53,7 +55,7 @@ public class OpenCommand {
 	 * @return ArrayList of BufferedImage for each .jpg/.jpeg file
 	 * @throws IOException
 	 */
-	private ArrayList<Object> open(File directory) throws IOException {
+	private void open(File directory) throws IOException {
 		File[] files = directory.listFiles();
 		Arrays.sort(files);
 		for (int i = 0; i < files.length; i++) {
@@ -77,14 +79,26 @@ public class OpenCommand {
 			}
 		}
 		
-		return images;
+		study.setImages(images);
 	}
 	
 	/**
 	 * Gets the list of all images in this directory
 	 * @return ArrayList of all images in this directory
 	 */
+	/*
 	public ArrayList<Object> getImages() {
 		return images;
+	}*/
+
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+		try {
+			this.open(this.directory);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
