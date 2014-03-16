@@ -36,6 +36,7 @@ public class Study extends Observable implements StudyComposite {
 	 * 
 	 * @throws IOException
 	 */
+	@Override
 	public void open() throws IOException {
 		if(this.directory != null) {
 			try{
@@ -60,6 +61,7 @@ public class Study extends Observable implements StudyComposite {
 	 * Gets the directory the study is located in
 	 * @return the directory location of the study
 	 */
+	@Override
 	public File getDirectory(){
 		return this.directory;
 	}
@@ -68,6 +70,7 @@ public class Study extends Observable implements StudyComposite {
 	 * @return a string representation of a study (the absolute path of the
 	 * study's directory)
 	 */
+	@Override
 	public String toString(){
 		return this.directory == null ?  "null" :
 			this.directory.getAbsolutePath();
@@ -77,6 +80,7 @@ public class Study extends Observable implements StudyComposite {
 	 * Gets all images stored in the study
 	 * @return a list of all images stored in the study
 	 */
+	@Override
 	public ArrayList<Object> getImages(){
 		return this.images;
 	}
@@ -86,6 +90,7 @@ public class Study extends Observable implements StudyComposite {
 	 * the display mode of the study
 	 * @return the current images for the study
 	 */
+	@Override
 	public ArrayList<Object> getCurrentImages() {
 		ArrayList<Object> currImgs = new ArrayList<Object>();
 		int offset =
@@ -103,6 +108,7 @@ public class Study extends Observable implements StudyComposite {
 	 * And index representing the currently viewed image(s) in the study
 	 * @return
 	 */
+	@Override
 	public int getIndex(){
 		return this.index;
 	}
@@ -111,6 +117,7 @@ public class Study extends Observable implements StudyComposite {
 	 * Gets the width of one of the studies' images
 	 * @return the standard image width of the study
 	 */
+	@Override
 	public int getImageWidth() {
 		return this.defaultImageWidth;
 	}
@@ -119,6 +126,7 @@ public class Study extends Observable implements StudyComposite {
 	 * Gets the height of one of the studies' images
 	 * @return the standard image height of the study
 	 */
+	@Override
 	public int getImageHeight() {
 		return this.defaultImageHeight;
 	}
@@ -127,6 +135,7 @@ public class Study extends Observable implements StudyComposite {
 	 * Gets the settings associated with this study
 	 * @return The StudySettings object associated with the study's settings.
 	 */
+	@Override
 	public StudySettings getStudySettings() {
 		return this.studySettings;
 	}
@@ -136,6 +145,7 @@ public class Study extends Observable implements StudyComposite {
 	 * Calling this method notifies observers
 	 * @param newIndex the new image position in the study
 	 */
+	@Override
 	public void setIndex(int newIndex){
 		this.index = newIndex;
 		
@@ -149,6 +159,7 @@ public class Study extends Observable implements StudyComposite {
 	 * Changes the display mode of the study
 	 * @param mode the new display mode for the study
 	 */
+	@Override
 	public void setDisplayMode(DISPLAY_MODE_VALUE mode) {
 		DISPLAY_MODE_VALUE currMode = studySettings.getDisplayMode();
 		this.studySettings.setDisplayMode(mode);
