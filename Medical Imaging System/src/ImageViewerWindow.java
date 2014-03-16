@@ -24,7 +24,7 @@ public class ImageViewerWindow extends JFrame {
 	private ImageViewerMenuBar menuBar;
 	private JButton prevButton, nextButton;
 	private NumberLabel numberLabel;
-	private BrowseCommand browseCommand;
+	private StudyIterator studyIterator;
 	private Study studyModel;
 	private Stack<Study.Memento> previousModes;
 
@@ -80,15 +80,13 @@ public class ImageViewerWindow extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			if(e.getSource() == prevButton) {
 				try {
-					browseCommand.setIndex(studyModel.getIndex());
-					browseCommand.prev();
+					studyIterator.prev();
 				} catch(IndexOutOfBoundsException ex) {
 					JOptionPane.showMessageDialog(null, "First image!");
 				}
 			} else if(e.getSource() == nextButton) {
 				try {
-					browseCommand.setIndex(studyModel.getIndex());
-					browseCommand.next();
+					studyIterator.next();
 				} catch(IndexOutOfBoundsException ex) {
 					JOptionPane.showMessageDialog(null, "Last image!");
 				}
@@ -134,7 +132,7 @@ public class ImageViewerWindow extends JFrame {
 			);
 		}
 		
-		this.browseCommand = new BrowseCommand(this.studyModel);
+		this.studyIterator = new StudyIterator(this.studyModel);
 	}
 	
 	/**
@@ -145,14 +143,14 @@ public class ImageViewerWindow extends JFrame {
 	public void setPanelDisplayMode(DISPLAY_MODE_VALUE mode) {
 		this.previousModes.push(this.studyModel.saveToMemento());
 		this.studyModel.setDisplayMode(mode);
-		this.browseCommand.setDisplayMode(mode);
+		this.studyIterator.setDisplayMode(mode);
 	}
 
 	public void undoStateChange() {
 		try {
 			Study.Memento previousState = this.previousModes.pop();
 			this.studyModel.restoreFromMemento(previousState);
-			this.browseCommand.setDisplayMode(previousState.getDisplayMode());
+			this.studyIterator.setDisplayMode(previousState.getDisplayMode());
 			this.menuBar.activateRadioButtonFromDisplayMode(previousState.getDisplayMode());
 		} catch (EmptyStackException e) {
 			JOptionPane.showMessageDialog(this, "All states have been undone");

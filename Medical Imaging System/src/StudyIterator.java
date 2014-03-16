@@ -16,7 +16,7 @@ import java.util.ArrayList;
  *$Log$
  */
 
-public class BrowseCommand {
+public class StudyIterator {
 
 	private Study study;
 	private ArrayList<Object> images;
@@ -27,7 +27,7 @@ public class BrowseCommand {
 	 * Initializes a BrowseCommand object with the given study
 	 * @param study - the current study the user is looking at
 	 */
-	public BrowseCommand(Study study) {
+	public StudyIterator(Study study) {
 		this.study = study;
 		this.images = study.getImages();
 		this.index = study.getIndex();
@@ -109,6 +109,7 @@ public class BrowseCommand {
 	public Image next() throws IndexOutOfBoundsException { //moving to right
 		if (displayMode == DISPLAY_MODE_VALUE.ONE_IMAGE && !isEnd()) {
 			if(images.get(index + 1) instanceof Image){
+				this.index = study.getIndex();
 				Image newImage = (Image)images.get(index + 1);
 				study.setIndex(++index);
 				return newImage;
@@ -125,6 +126,7 @@ public class BrowseCommand {
 		}
 		else if (displayMode == DISPLAY_MODE_VALUE.FOUR_IMAGE && !isEnd()) {
 			if (images.get(index + 4) instanceof Image){
+				this.index = study.getIndex();
 				Image newImage = (Image)images.get(index + 4);
 				study.setIndex(index += 4);
 				return newImage;
@@ -151,6 +153,7 @@ public class BrowseCommand {
 	public Image prev() throws IndexOutOfBoundsException { //moving to left
 		if (displayMode == DISPLAY_MODE_VALUE.ONE_IMAGE && !isBeginning()) {
 			if (images.get(index - 1) instanceof Image){
+				this.index = study.getIndex();
 				Image newImage = (Image)images.get(index - 1);
 				study.setIndex(--index);
 				return newImage;
@@ -167,6 +170,7 @@ public class BrowseCommand {
 		}
 		else if (displayMode == DISPLAY_MODE_VALUE.FOUR_IMAGE && !isBeginning()) {
 			if (images.get(index -4) instanceof Image){
+				this.index = study.getIndex();
 				Image newImage = (Image)images.get(index - 4);
 				study.setIndex(index -= 4);
 				return newImage;
@@ -190,9 +194,5 @@ public class BrowseCommand {
 	 */
 	public void setDisplayMode(DISPLAY_MODE_VALUE mode) {
 		this.displayMode = mode;
-	}
-	
-	public void setIndex(int newIndex) {
-		this.index = newIndex;
 	}
 }
