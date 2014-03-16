@@ -105,7 +105,7 @@ public class SaveCommand implements Command {
 				}
 			}
 			
-			for (int i = 0; i < images.size() - 1; i++) {
+			for (int i = 0; i < images.size(); i++) {
 				if (images.get(i) instanceof Image){
 					Image image = (Image) images.get(i);
 					String name = image.toString().toLowerCase();
