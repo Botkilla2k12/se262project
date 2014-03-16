@@ -35,6 +35,7 @@ public class SaveCommand implements Command {
 	public SaveCommand(String oldName, String newName) {
 		this.oldName = oldName;
 		this.newName = newName;
+		save();
 	}
 	
 	public void execute() {
@@ -89,13 +90,13 @@ public class SaveCommand implements Command {
 					String newImagePath = newFile.getAbsolutePath() + "\\" + image.toString();
 					
 					if (name.endsWith(".jpg")) {
-						ImageIO.write((BufferedImage) image.getImages().get(i), "jpg", new File(newImagePath));
+						ImageIO.write((BufferedImage) image.getImages().get(0), "jpg", new File(newImagePath));
 					}
 					else if (name.endsWith(".jpeg")) {
-						ImageIO.write((BufferedImage) image.getImages().get(i), "jpeg", new File(newImagePath));
+						ImageIO.write((BufferedImage) image.getImages().get(0), "jpeg", new File(newImagePath));
 					}
 					else if (name.endsWith(".acr")) {
-						ImageIO.write((BufferedImage) image.getImages().get(i), "acr", new File(newImagePath));
+						ImageIO.write((BufferedImage) image.getImages().get(0), "acr", new File(newImagePath));
 					}
 				} else {
 					try {
