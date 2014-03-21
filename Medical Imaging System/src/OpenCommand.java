@@ -34,7 +34,7 @@ public class OpenCommand implements Command {
 	public OpenCommand(File directory) throws IOException {
 		this.directory = directory;
 		this.images = new ArrayList<Object>();
-		open(directory);
+		execute();
 	}
 	
 	/**
