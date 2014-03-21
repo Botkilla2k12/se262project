@@ -6,7 +6,7 @@ import java.util.Arrays;
 import javax.imageio.ImageIO;
 
 /**
- *
+ * ReconstructCommand.java
  *
  *@author Matthew Witte
  *
@@ -20,9 +20,13 @@ import javax.imageio.ImageIO;
 public class ReconstructCommand implements Command {
 
 	private String directory;
+	private String type;
+	private ArrayList<BufferedImage> reconstructImages;
 	
-	public ReconstructCommand(String directory) {
+	public ReconstructCommand(String directory, String type) {
 		this.directory = directory;
+		this.type = type;
+		this.reconstructImages = new ArrayList<BufferedImage>();
 		execute();
 	}
 	
@@ -38,7 +42,7 @@ public class ReconstructCommand implements Command {
 		File oldFile = new File(directory);
 		File[] files = oldFile.listFiles();
 		Arrays.sort(files);
-		ArrayList<Object> images = new ArrayList<Object>();
+		ArrayList<Image> images = new ArrayList<Image>();
 		for (int i = 0; i < files.length; i++) {
 			File file = files[i];
 			String name = file.getName().toLowerCase();
@@ -60,45 +64,45 @@ public class ReconstructCommand implements Command {
 			}
 		}
 		
+		BufferedImage firstImage = (BufferedImage) images.get(0).getImages().get(0);
+		
 		//Y to Z
-		String newDirectoryYZ = directory + "ReconstructYtoZ";
-		File newFileYZ = new File(newDirectoryYZ);
-		newFileYZ.mkdir();
-		for (int height = 0; height < 384; height++) { //pixel row
-			BufferedImage reconstructImage = new BufferedImage(384, images.size(), 5);
-			for (int i = 0; i < images.size(); i++) { //loop through all images
-				if (images.get(i) instanceof Image) {
-					Image image = (Image) images.get(i);
+		if (type == "YZ") {
+			for (int height = 0; height < firstImage.getHeight(); height++) { //pixel row
+				BufferedImage reconstructImage = new BufferedImage(firstImage.getWidth(), images.size(), 5);
+				for (int i = 0; i < images.size(); i++) { //loop through all images
+					Image image = images.get(i);
 					BufferedImage oldImage = (BufferedImage) image.getImages().get(0);
 					for (int width = 0; width < oldImage.getWidth(); width++) { //pixel column
 						int rgb = oldImage.getRGB(width, height);
 						reconstructImage.setRGB(width, i, rgb);
 					}
 				}
+				reconstructImages.add(reconstructImage);
 			}
-			String reconstructImagePath = newFileYZ.getAbsolutePath() + "\\" + height + ".jpg";
-			ImageIO.write(reconstructImage, "jpg", new File(reconstructImagePath));
 		}
 		
 		//X to Z
-				String newDirectoryXZ = directory + "ReconstructXtoZ";
-				File newFileXZ = new File(newDirectoryXZ);
-				newFileXZ.mkdir();
-				for (int width = 0; width < 384; width++) { //pixel row
-					BufferedImage reconstructImage = new BufferedImage(images.size(), 384, 5);
-					for (int i = 0; i < images.size(); i++) { //loop through all images
-						if (images.get(i) instanceof Image) {
-							Image image = (Image) images.get(i);
-							BufferedImage oldImage = (BufferedImage) image.getImages().get(0);
-							for (int height = 0; height < oldImage.getHeight(); height++) { //pixel column
-								int rgb = oldImage.getRGB(width, height);
-								reconstructImage.setRGB(i, height, rgb);
-							}
+		else {
+			for (int width = 0; width < firstImage.getWidth(); width++) { //pixel row
+				BufferedImage reconstructImage = new BufferedImage(images.size(), firstImage.getHeight(), 5);
+				for (int i = 0; i < images.size(); i++) { //loop through all images
+					if (images.get(i) instanceof Image) {
+						Image image = (Image) images.get(i);
+						BufferedImage oldImage = (BufferedImage) image.getImages().get(0);
+						for (int height = 0; height < oldImage.getHeight(); height++) { //pixel column
+							int rgb = oldImage.getRGB(width, height);
+							reconstructImage.setRGB(i, height, rgb);
 						}
 					}
-					String reconstructImagePath = newFileXZ.getAbsolutePath() + "\\" + width + ".jpg";
-					ImageIO.write(reconstructImage, "jpg", new File(reconstructImagePath));
 				}
+				reconstructImages.add(reconstructImage);
+			}
+		}
+	}
+	
+	public ArrayList<BufferedImage> getReconstructImages() {
+		return this.reconstructImages;
 	}
 
 }

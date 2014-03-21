@@ -35,7 +35,6 @@ public class SaveCommand implements Command {
 	public SaveCommand(String oldName, String newName) {
 		this.oldName = oldName;
 		this.newName = newName;
-		ReconstructCommand rc = new ReconstructCommand(oldName);
 		execute();
 	}
 	
