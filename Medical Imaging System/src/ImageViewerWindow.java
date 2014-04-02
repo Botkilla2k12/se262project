@@ -1,8 +1,11 @@
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.Observable;
 import java.util.Observer;
@@ -21,12 +24,14 @@ import javax.swing.JPanel;
  */
 public class ImageViewerWindow extends JFrame {
 	private ImagePanel imagePanel;
+	private JPanel mainPanel;
 	private ImageViewerMenuBar menuBar;
 	private JButton prevButton, nextButton;
 	private NumberLabel numberLabel;
 	private StudyIterator studyIterator;
 	private Study studyModel;
 	private Stack<Study.Memento> previousModes;
+	private boolean inReconstructMode;
 
 	/**
 	 * This initializes the window as well as any views/controllers using the
@@ -37,9 +42,15 @@ public class ImageViewerWindow extends JFrame {
 		this.studyModel = studyModel;
 		this.previousModes = new Stack<Study.Memento>();
 		this.menuBar = new ImageViewerMenuBar();
+		this.mainPanel = new JPanel();
+		this.mainPanel.setLayout(new GridLayout(1, 1));
+		
 		this.imagePanel = new ImagePanel(
 			studyModel.getStudySettings().getDisplayMode()
 		);
+		
+		this.mainPanel.add(imagePanel);
+		this.inReconstructMode = false;
 
 		this.numberLabel = new NumberLabel();
 		
@@ -59,7 +70,7 @@ public class ImageViewerWindow extends JFrame {
 		
 		this.setLayout(new BorderLayout());
 
-		this.add(this.imagePanel, BorderLayout.CENTER);		
+		this.add(this.mainPanel, BorderLayout.CENTER);		
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new BorderLayout());
 		
@@ -197,6 +208,37 @@ public class ImageViewerWindow extends JFrame {
 		return this.studyModel.getStudySettings().getDisplayMode();
 	}
 
+	public void setReconstructMode(boolean isInReconstruction) {
+		this.inReconstructMode = isInReconstruction;
+		
+		this.mainPanel.removeAll();
+		
+		if(this.inReconstructMode) {
+			//Change window layout
+			//Put image panel in upper left hand corner
+			this.mainPanel.setLayout(new GridLayout(2, 2));
+			this.mainPanel.add(this.imagePanel);
+			for(int i = 0; i < 2; i++) {
+				this.mainPanel.add(new JLabel());
+			}
+			//put reconstructed images in lower right hand corner
+			
+			this.numberLabel.setText("Reconstruction Scrolling");
+		} else {
+			this.mainPanel.setLayout(new GridLayout(1, 1));
+			this.mainPanel.add(this.imagePanel);
+			
+			this.numberLabel.update(this.studyModel, null);
+		}
+		
+		this.mainPanel.revalidate();
+		this.mainPanel.repaint();
+	}
+	
+	public void setReconstructImages(ArrayList<BufferedImage> images) {
+		
+	}
+	
 	/**
 	 * Fetches the directory that the current study is located in
 	 * @return the directory that the current study is located in
