@@ -2,6 +2,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
+import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
@@ -58,9 +59,8 @@ public class ImageViewerMenuBar extends JMenuBar {
                 addRelatedListener(relStud, tempMenuItem);
                 
         	}
-            
-            
         }
+
         this.fileMenu.add(this.relatedStudies);
     }
     
@@ -102,9 +102,24 @@ public class ImageViewerMenuBar extends JMenuBar {
     
     private void InitEditMenu(){
         this.editMenu=new JMenu("Edit");
+        
         JMenuItem saveStudy = new JMenuItem("Save Study");
         saveStudy.addActionListener(new SaveStudy());
         editMenu.add(saveStudy);
+        
+        JMenu reconstructStudy = new JMenu("Reconstruct");
+
+        ReconstructStudy eventListener = new ReconstructStudy();
+        
+        JMenuItem xz = new JMenuItem("XZ");
+        xz.addActionListener(eventListener);
+        reconstructStudy.add(xz);
+        
+        JMenuItem yz = new JMenuItem("YZ");
+        yz.addActionListener(eventListener);
+        reconstructStudy.add(yz);
+        
+        this.editMenu.add(reconstructStudy);
     }
     
     private void InitSettingsMenu(){
@@ -187,6 +202,23 @@ public class ImageViewerMenuBar extends JMenuBar {
         }
     }
     
+    class ReconstructStudy implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			ImageViewerWindow parentWin =
+                 (ImageViewerWindow) getTopLevelAncestor();
+			
+			String reconstructionType = ((JMenuItem) e.getSource()).getText();
+			
+			/*ReconstructCommand reconstruct = new ReconstructCommand(
+				parentWin.getDirectory().getAbsolutePath(),
+				reconstructionType
+			);
+			
+			reconstruct.execute();*/
+		}
+    }
     
     class DefaultStudy implements ActionListener{
         public void actionPerformed(ActionEvent e){
