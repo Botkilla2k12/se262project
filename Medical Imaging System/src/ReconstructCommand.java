@@ -35,18 +35,35 @@ public class ReconstructCommand implements Command {
 			reconstruct();
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (TypeException t) {
+			t.printStackTrace();
 		}
 	}
 	
-	public void reconstruct() throws IOException {
+	private ArrayList<BufferedImage> reconstruct() throws IOException, TypeException {
 		File oldFile = new File(directory);
 		File[] files = oldFile.listFiles();
 		Arrays.sort(files);
 		ArrayList<Image> images = new ArrayList<Image>();
+		
+		String first;
+		if (files[0].getName().toLowerCase().endsWith(".jpg")) {
+			first = ".jpg";
+		}
+		else if (files[0].getName().toLowerCase().endsWith(".jpeg")) {
+			first = ".jpeg";
+		}
+		else {
+			first = ".acr";
+		}
+			
 		for (int i = 0; i < files.length; i++) {
 			File file = files[i];
 			String name = file.getName().toLowerCase();
 			if (name.endsWith(".jpg") || name.endsWith(".jpeg")) {
+				if (first == ".acr") {
+					throw new TypeException();
+				}
 				try {
 					BufferedImage image = ImageIO.read(file);
 					Image newImage = new Image(file.getName(), image);
@@ -57,6 +74,9 @@ public class ReconstructCommand implements Command {
 			    }
 			}
 			else if (name.endsWith(".acr")) {
+				if (first == ".jpg" || first == ".jpeg") {
+					throw new TypeException();
+				}
 				ShowACR acr = new ShowACR(file);
 				BufferedImage image = acr.getImage();
 				Image newImage = new Image(file.getName(), image);
@@ -99,9 +119,7 @@ public class ReconstructCommand implements Command {
 				reconstructImages.add(reconstructImage);
 			}
 		}
-	}
-	
-	public ArrayList<BufferedImage> getReconstructImages() {
+		
 		return this.reconstructImages;
 	}
 
