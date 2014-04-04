@@ -1,13 +1,16 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.File;
 
+import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.KeyStroke;
 
 public class ImageViewerMenuBar extends JMenuBar {
     
@@ -58,9 +61,8 @@ public class ImageViewerMenuBar extends JMenuBar {
                 addRelatedListener(relStud, tempMenuItem);
                 
         	}
-            
-            
         }
+
         this.fileMenu.add(this.relatedStudies);
     }
     
@@ -86,9 +88,11 @@ public class ImageViewerMenuBar extends JMenuBar {
         JMenuItem openImage = new JMenuItem("Open...");
         JMenuItem undoOperation = new JMenuItem("Undo...");
         JMenuItem exitApp=new JMenuItem("Exit");
-        
+        openImage.setAccelerator(KeyStroke.getKeyStroke(
+                KeyEvent.VK_O, ActionEvent.CTRL_MASK));
         //JMenu relatedStudies = new JMenu("Related Studies...");
-        
+        undoOperation.setAccelerator(KeyStroke.getKeyStroke(
+                KeyEvent.VK_Z, ActionEvent.CTRL_MASK));
         
         fileMenu.add(openImage);
         //fileMenu.add(relatedStudies);
@@ -102,9 +106,26 @@ public class ImageViewerMenuBar extends JMenuBar {
     
     private void InitEditMenu(){
         this.editMenu=new JMenu("Edit");
+        
         JMenuItem saveStudy = new JMenuItem("Save Study");
+        saveStudy.setAccelerator(KeyStroke.getKeyStroke(
+                KeyEvent.VK_S, ActionEvent.CTRL_MASK));
         saveStudy.addActionListener(new SaveStudy());
         editMenu.add(saveStudy);
+        
+        JMenu reconstructStudy = new JMenu("Reconstruct");
+
+        ReconstructStudy eventListener = new ReconstructStudy();
+        
+        JMenuItem xz = new JMenuItem("XZ");
+        xz.addActionListener(eventListener);
+        reconstructStudy.add(xz);
+        
+        JMenuItem yz = new JMenuItem("YZ");
+        yz.addActionListener(eventListener);
+        reconstructStudy.add(yz);
+        
+        this.editMenu.add(reconstructStudy);
     }
     
     private void InitSettingsMenu(){
@@ -177,9 +198,10 @@ public class ImageViewerMenuBar extends JMenuBar {
                 File chFile = chooser.getSelectedFile();
                 //Study saveStudy= new Study(chFile);
 
-                SaveCommand save = new SaveCommand(parentWin.getDirectory().getAbsolutePath(), chFile.getAbsolutePath());	
-    
-
+                SaveCommand save = new SaveCommand(
+                	parentWin.getDirectory().getAbsolutePath(),
+                	chFile.getAbsolutePath()
+                );	
             }catch (NullPointerException i) {
                 
             }
@@ -187,6 +209,24 @@ public class ImageViewerMenuBar extends JMenuBar {
         }
     }
     
+    class ReconstructStudy implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			ImageViewerWindow parentWin =
+                 (ImageViewerWindow) getTopLevelAncestor();
+			
+			String reconstructionType = ((JMenuItem) e.getSource()).getText();
+			
+			ReconstructCommand reconstructor = new ReconstructCommand(
+				parentWin.getDirectory().getAbsolutePath(),
+				reconstructionType
+			);
+			
+			parentWin.setReconstructImages(reconstructor.getReconstructImages());
+			parentWin.setReconstructMode(true);
+		}
+    }
     
     class DefaultStudy implements ActionListener{
         public void actionPerformed(ActionEvent e){

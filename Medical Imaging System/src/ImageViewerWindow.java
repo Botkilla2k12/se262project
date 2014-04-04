@@ -1,13 +1,19 @@
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.EmptyStackException;
+import java.util.ListIterator;
+import java.util.NoSuchElementException;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Stack;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -20,13 +26,18 @@ import javax.swing.JPanel;
  * This class represents the main window for the application/
  */
 public class ImageViewerWindow extends JFrame {
+	private static final long serialVersionUID = 1L;
+
 	private ImagePanel imagePanel;
+	private JPanel mainPanel, reconstructionPanel;
 	private ImageViewerMenuBar menuBar;
 	private JButton prevButton, nextButton;
 	private NumberLabel numberLabel;
+	private ListIterator<BufferedImage> reconstructionIterator;
 	private StudyIterator studyIterator;
 	private Study studyModel;
 	private Stack<Study.Memento> previousModes;
+	private boolean inReconstructMode;
 
 	/**
 	 * This initializes the window as well as any views/controllers using the
@@ -35,11 +46,19 @@ public class ImageViewerWindow extends JFrame {
 	 */
 	public ImageViewerWindow(Study studyModel) {
 		this.studyModel = studyModel;
+		this.reconstructionIterator = null;
 		this.previousModes = new Stack<Study.Memento>();
 		this.menuBar = new ImageViewerMenuBar();
+		this.mainPanel = new JPanel();
+		this.mainPanel.setLayout(new GridLayout(1, 1));
+		this.reconstructionPanel = new JPanel();
+		
 		this.imagePanel = new ImagePanel(
 			studyModel.getStudySettings().getDisplayMode()
 		);
+		
+		this.mainPanel.add(imagePanel);
+		this.inReconstructMode = false;
 
 		this.numberLabel = new NumberLabel();
 		
@@ -59,7 +78,7 @@ public class ImageViewerWindow extends JFrame {
 		
 		this.setLayout(new BorderLayout());
 
-		this.add(this.imagePanel, BorderLayout.CENTER);		
+		this.add(this.mainPanel, BorderLayout.CENTER);		
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new BorderLayout());
 		
@@ -75,31 +94,13 @@ public class ImageViewerWindow extends JFrame {
 		this.setTitle("Medical Image Viewing System");
 	}
 
-	private class ButtonListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			if(e.getSource() == prevButton) {
-				try {
-					studyIterator.prev();
-				} catch(IndexOutOfBoundsException ex) {
-					JOptionPane.showMessageDialog(null, "First image!");
-				}
-			} else if(e.getSource() == nextButton) {
-				try {
-					studyIterator.next();
-				} catch(IndexOutOfBoundsException ex) {
-					JOptionPane.showMessageDialog(null, "Last image!");
-				}
-			}
-		}
-		
-	}
-
 	/**
 	 * This class reinitializes the study model in this window.
 	 * @param study the study to be initializes
 	 */
 	public void setupNewStudy(Study study) {
+		this.setReconstructMode(false);
+		
 		this.previousModes.removeAllElements();
 		if(this.studyModel != null) {
 			this.studyModel.deleteObserver(imagePanel);
@@ -161,11 +162,109 @@ public class ImageViewerWindow extends JFrame {
 		}
 	}
 	
+	/**
+	 * This method gets the current display mode for the underlying model
+	 * @return the current display mode for the underlying model
+	 */
+	public DISPLAY_MODE_VALUE getPanelDisplayMode() {
+		return this.studyModel.getStudySettings().getDisplayMode();
+	}
+
+	public void setReconstructMode(boolean isInReconstruction) {
+		this.inReconstructMode = isInReconstruction;
+		
+		this.mainPanel.removeAll();
+		
+		if(this.inReconstructMode) {
+			//Change window layout
+			//Put image panel in upper left hand corner
+			this.mainPanel.setLayout(new GridLayout(2, 2));
+			this.mainPanel.add(this.imagePanel);
+			for(int i = 0; i < 2; i++) {
+				this.mainPanel.add(new JLabel());
+			}
+			//put reconstructed images in lower right hand corner
+			this.mainPanel.add(reconstructionPanel);
+			setReconstructionPanelImage(this.reconstructionIterator.next());
+			
+			this.numberLabel.setText("Reconstruction Scrolling");
+		} else {
+			this.mainPanel.setLayout(new GridLayout(1, 1));
+			this.mainPanel.add(this.imagePanel);
+			
+			this.numberLabel.update(this.studyModel, null);
+		}
+		
+		this.mainPanel.revalidate();
+		this.mainPanel.repaint();
+	}
+	
+	private void setReconstructionPanelImage(BufferedImage img) {		
+		this.reconstructionPanel.removeAll();
+		
+		this.reconstructionPanel.add(new JLabel(new ImageIcon(img)));
+	}
+	
+	public void setReconstructImages(ArrayList<BufferedImage> images) {
+		this.reconstructionIterator = images.listIterator();
+	}
+	
+	/**
+	 * Fetches the directory that the current study is located in
+	 * @return the directory that the current study is located in
+	 */
+	public File getDirectory(){
+		return this.studyModel.getDirectory();
+	}
+
+	private class ButtonListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(inReconstructMode) {
+				if(e.getSource() == prevButton) {
+					try {
+						BufferedImage prevImg =
+							reconstructionIterator.previous();
+						setReconstructionPanelImage(prevImg);
+						numberLabel.setText("" + reconstructionIterator.previousIndex());
+					} catch(NoSuchElementException ex) {
+						JOptionPane.showMessageDialog(null, "First image!");
+					}
+				} else if(e.getSource() == nextButton) {
+					try {
+						BufferedImage nextImg =
+								reconstructionIterator.next();
+						setReconstructionPanelImage(nextImg);
+						numberLabel.setText("" + reconstructionIterator.nextIndex());
+					} catch(NoSuchElementException ex) {
+						JOptionPane.showMessageDialog(null, "Last image!");
+					}
+				}
+			} else {
+				if(e.getSource() == prevButton) {
+					try {
+						studyIterator.prev();
+					} catch(IndexOutOfBoundsException ex) {
+						JOptionPane.showMessageDialog(null, "First image!");
+					}
+				} else if(e.getSource() == nextButton) {
+					try {
+						studyIterator.next();
+					} catch(IndexOutOfBoundsException ex) {
+						JOptionPane.showMessageDialog(null, "Last image!");
+					}
+				}
+			}
+		}
+	}
+
 	private static class NumberLabel extends JLabel implements Observer {
+		private static final long serialVersionUID = 1L;
+
 		public NumberLabel() {
 			super.setHorizontalAlignment(JLabel.CENTER);
 		}
-
+	
 		@Override
 		public void update(Observable subj, Object data) {
 			Study study = (Study) subj;
@@ -187,21 +286,5 @@ public class ImageViewerWindow extends JFrame {
 				);
 			}
 		}
-	}
-
-	/**
-	 * This method gets the current display mode for the underlying model
-	 * @return the current display mode for the underlying model
-	 */
-	public DISPLAY_MODE_VALUE getPanelDisplayMode() {
-		return this.studyModel.getStudySettings().getDisplayMode();
-	}
-
-	/**
-	 * Fetches the directory that the current study is located in
-	 * @return the directory that the current study is located in
-	 */
-	public File getDirectory(){
-		return this.studyModel.getDirectory();
 	}
 }
