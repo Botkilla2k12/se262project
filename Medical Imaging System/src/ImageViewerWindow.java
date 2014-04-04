@@ -26,6 +26,8 @@ import javax.swing.JPanel;
  * This class represents the main window for the application/
  */
 public class ImageViewerWindow extends JFrame {
+	private static final long serialVersionUID = 1L;
+
 	private ImagePanel imagePanel;
 	private JPanel mainPanel, reconstructionPanel;
 	private ImageViewerMenuBar menuBar;
@@ -49,6 +51,7 @@ public class ImageViewerWindow extends JFrame {
 		this.menuBar = new ImageViewerMenuBar();
 		this.mainPanel = new JPanel();
 		this.mainPanel.setLayout(new GridLayout(1, 1));
+		this.reconstructionPanel = new JPanel();
 		
 		this.imagePanel = new ImagePanel(
 			studyModel.getStudySettings().getDisplayMode()
@@ -96,6 +99,8 @@ public class ImageViewerWindow extends JFrame {
 	 * @param study the study to be initializes
 	 */
 	public void setupNewStudy(Study study) {
+		this.setReconstructMode(false);
+		
 		this.previousModes.removeAllElements();
 		if(this.studyModel != null) {
 			this.studyModel.deleteObserver(imagePanel);
@@ -179,6 +184,7 @@ public class ImageViewerWindow extends JFrame {
 				this.mainPanel.add(new JLabel());
 			}
 			//put reconstructed images in lower right hand corner
+			this.mainPanel.add(reconstructionPanel);
 			setReconstructionPanelImage(this.reconstructionIterator.next());
 			
 			this.numberLabel.setText("Reconstruction Scrolling");
@@ -193,11 +199,7 @@ public class ImageViewerWindow extends JFrame {
 		this.mainPanel.repaint();
 	}
 	
-	private void setReconstructionPanelImage(BufferedImage img) {
-		if(this.reconstructionPanel == null) {
-			this.reconstructionPanel = new JPanel();
-		}
-		
+	private void setReconstructionPanelImage(BufferedImage img) {		
 		this.reconstructionPanel.removeAll();
 		
 		this.reconstructionPanel.add(new JLabel(new ImageIcon(img)));
@@ -221,13 +223,19 @@ public class ImageViewerWindow extends JFrame {
 			if(inReconstructMode) {
 				if(e.getSource() == prevButton) {
 					try {
-						setReconstructionPanelImage(reconstructionIterator.previous());
+						BufferedImage prevImg =
+							reconstructionIterator.previous();
+						setReconstructionPanelImage(prevImg);
+						numberLabel.setText("" + reconstructionIterator.previousIndex());
 					} catch(NoSuchElementException ex) {
 						JOptionPane.showMessageDialog(null, "First image!");
 					}
 				} else if(e.getSource() == nextButton) {
 					try {
-						setReconstructionPanelImage(reconstructionIterator.next());
+						BufferedImage nextImg =
+								reconstructionIterator.next();
+						setReconstructionPanelImage(nextImg);
+						numberLabel.setText("" + reconstructionIterator.nextIndex());
 					} catch(NoSuchElementException ex) {
 						JOptionPane.showMessageDialog(null, "Last image!");
 					}
@@ -248,10 +256,11 @@ public class ImageViewerWindow extends JFrame {
 				}
 			}
 		}
-		
 	}
 
 	private static class NumberLabel extends JLabel implements Observer {
+		private static final long serialVersionUID = 1L;
+
 		public NumberLabel() {
 			super.setHorizontalAlignment(JLabel.CENTER);
 		}
