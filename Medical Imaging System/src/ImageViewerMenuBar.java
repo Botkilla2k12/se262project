@@ -1,5 +1,6 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.File;
 
 import javax.swing.AbstractButton;
@@ -9,6 +10,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.KeyStroke;
 
 public class ImageViewerMenuBar extends JMenuBar {
     
@@ -86,9 +88,11 @@ public class ImageViewerMenuBar extends JMenuBar {
         JMenuItem openImage = new JMenuItem("Open...");
         JMenuItem undoOperation = new JMenuItem("Undo...");
         JMenuItem exitApp=new JMenuItem("Exit");
-        
+        openImage.setAccelerator(KeyStroke.getKeyStroke(
+                KeyEvent.VK_O, ActionEvent.CTRL_MASK));
         //JMenu relatedStudies = new JMenu("Related Studies...");
-        
+        undoOperation.setAccelerator(KeyStroke.getKeyStroke(
+                KeyEvent.VK_Z, ActionEvent.CTRL_MASK));
         
         fileMenu.add(openImage);
         //fileMenu.add(relatedStudies);
@@ -104,6 +108,8 @@ public class ImageViewerMenuBar extends JMenuBar {
         this.editMenu=new JMenu("Edit");
         
         JMenuItem saveStudy = new JMenuItem("Save Study");
+        saveStudy.setAccelerator(KeyStroke.getKeyStroke(
+                KeyEvent.VK_S, ActionEvent.CTRL_MASK));
         saveStudy.addActionListener(new SaveStudy());
         editMenu.add(saveStudy);
         
