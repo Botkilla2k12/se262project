@@ -6,11 +6,13 @@ import java.util.ArrayList;
 public class ImageWindowCommand extends UndoableCommand implements Command {
 	private ArrayList<Image> imagesToManipulate;
 	private int lowCutoff, highCutoff;
+	private ArrayList<BufferedImage> manipulatedImages;
 	
 	public ImageWindowCommand(int low, int high, ArrayList<Image> images) {
 		this.lowCutoff = low;
 		this.highCutoff = high;
 		this.imagesToManipulate = images;
+		this.manipulatedImages = new ArrayList<BufferedImage>();
 	}
 	
 	@Override
@@ -22,24 +24,45 @@ public class ImageWindowCommand extends UndoableCommand implements Command {
 				for(int y = 0; y < imgData.getHeight(); y++) {
 					Color color = new Color(imgData.getRGB(x, y));
 					
-					int intensity = 0; //TODO: Calculate actual pixel intensity
-					
-					if(intensity < this.lowCutoff) {
-						imgData.setRGB(x, y, 0);
-					} else if(intensity > this.highCutoff) {
-						int white = 255;
-						white = (white << 8) + 255;
-						white = (white << 8) + 255;
-
-						imgData.setRGB(x, y, white);
-					} else {
-						//do a linear scaling
-						//Slope = 255/(hi - lo)
+					int redIntensity = color.getRed();
+					int greenIntensity = color.getGreen();
+					int blueIntensity = color.getBlue();
+					int newRed;
+					int newGreen;
+					int newBlue;
 						
+					if(redIntensity < this.lowCutoff) {
+						newRed = 0;
+					} else if(redIntensity > this.highCutoff) {
+						newRed = 255;
+					} else {
+						newRed = ((this.highCutoff - this.lowCutoff) * (redIntensity / 255)) + this.lowCutoff;
 					}
+					
+					if(greenIntensity < this.lowCutoff) {
+						newGreen = 0;
+					} else if(greenIntensity > this.highCutoff) {
+						newGreen = 255;
+					} else {
+						newGreen = ((this.highCutoff - this.lowCutoff) * (greenIntensity / 255)) + this.lowCutoff;
+					}
+					
+					if(blueIntensity < this.lowCutoff) {
+						newBlue = 0;
+					} else if(blueIntensity > this.highCutoff) {
+						newBlue = 255;
+					} else {
+						newBlue = ((this.highCutoff - this.lowCutoff) * (blueIntensity / 255)) + this.lowCutoff;
+					}
+					
+					Color newColor = new Color(newRed, newGreen, newBlue);
+					int rgb = newColor.getRGB();
+					imgData.setRGB(x, y, rgb);
 				}
 			}
+			manipulatedImages.add(imgData);
 		}
+
 	}
 
 	@Override
@@ -48,7 +71,7 @@ public class ImageWindowCommand extends UndoableCommand implements Command {
 		
 	}
 	
-	public ArrayList<Image> getWindowedImages() {
-		return this.imagesToManipulate;
+	public ArrayList<BufferedImage> getWindowedImages() {
+		return this.manipulatedImages;
 	}
 }
