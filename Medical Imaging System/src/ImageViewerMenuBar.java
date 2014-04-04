@@ -19,6 +19,8 @@ public class ImageViewerMenuBar extends JMenuBar {
     private JMenu settingsMenu;
     
     private JRadioButtonMenuItem displayMode1, displayMode4;
+    private JMenuItem exitReconstructMode;
+    
     private JMenu relatedStudies;
     public ImageViewerMenuBar(){
         InitFileMenu();
@@ -74,7 +76,6 @@ public class ImageViewerMenuBar extends JMenuBar {
         		ImageViewerWindow parentWin =
                         (ImageViewerWindow) getTopLevelAncestor();
         		
-                    
                 parentWin.setupNewStudy(relatedStudy);
         	}
         });
@@ -111,7 +112,22 @@ public class ImageViewerMenuBar extends JMenuBar {
         saveStudy.setAccelerator(KeyStroke.getKeyStroke(
                 KeyEvent.VK_S, ActionEvent.CTRL_MASK));
         saveStudy.addActionListener(new SaveStudy());
-        editMenu.add(saveStudy);
+        this.editMenu.add(saveStudy);
+        
+        this.exitReconstructMode = new JMenuItem("Exit Reconstruction");
+        this.exitReconstructMode.setEnabled(false);
+        this.exitReconstructMode.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		JMenuItem source = (JMenuItem) e.getSource();
+        		ImageViewerWindow parentWin =
+                    (ImageViewerWindow) getTopLevelAncestor();
+        		
+        		parentWin.setReconstructMode(false);
+        		source.setEnabled(false);
+        		
+        	}
+        });
+        this.editMenu.add(this.exitReconstructMode);
         
         JMenu reconstructStudy = new JMenu("Reconstruct");
 
@@ -215,6 +231,8 @@ public class ImageViewerMenuBar extends JMenuBar {
 			// TODO Auto-generated method stub
 			ImageViewerWindow parentWin =
                  (ImageViewerWindow) getTopLevelAncestor();
+			
+			exitReconstructMode.setEnabled(true);
 			
 			String reconstructionType = ((JMenuItem) e.getSource()).getText();
 			

@@ -226,16 +226,14 @@ public class ImageViewerWindow extends JFrame {
 						BufferedImage prevImg =
 							reconstructionIterator.previous();
 						setReconstructionPanelImage(prevImg);
-						numberLabel.setText("" + reconstructionIterator.previousIndex());
 					} catch(NoSuchElementException ex) {
 						JOptionPane.showMessageDialog(null, "First image!");
 					}
 				} else if(e.getSource() == nextButton) {
 					try {
 						BufferedImage nextImg =
-								reconstructionIterator.next();
+							reconstructionIterator.next();
 						setReconstructionPanelImage(nextImg);
-						numberLabel.setText("" + reconstructionIterator.nextIndex());
 					} catch(NoSuchElementException ex) {
 						JOptionPane.showMessageDialog(null, "Last image!");
 					}
