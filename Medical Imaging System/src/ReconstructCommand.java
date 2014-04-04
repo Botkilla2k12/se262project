@@ -123,4 +123,7 @@ public class ReconstructCommand implements Command {
 		return this.reconstructImages;
 	}
 
+	public ArrayList<BufferedImage> getReconstructImages() {
+		return this.reconstructImages;
+	}
 }

@@ -7,10 +7,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.EmptyStackException;
+import java.util.ListIterator;
+import java.util.NoSuchElementException;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Stack;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -24,10 +27,11 @@ import javax.swing.JPanel;
  */
 public class ImageViewerWindow extends JFrame {
 	private ImagePanel imagePanel;
-	private JPanel mainPanel;
+	private JPanel mainPanel, reconstructionPanel;
 	private ImageViewerMenuBar menuBar;
 	private JButton prevButton, nextButton;
 	private NumberLabel numberLabel;
+	private ListIterator<BufferedImage> reconstructionIterator;
 	private StudyIterator studyIterator;
 	private Study studyModel;
 	private Stack<Study.Memento> previousModes;
@@ -40,6 +44,7 @@ public class ImageViewerWindow extends JFrame {
 	 */
 	public ImageViewerWindow(Study studyModel) {
 		this.studyModel = studyModel;
+		this.reconstructionIterator = null;
 		this.previousModes = new Stack<Study.Memento>();
 		this.menuBar = new ImageViewerMenuBar();
 		this.mainPanel = new JPanel();
@@ -84,26 +89,6 @@ public class ImageViewerWindow extends JFrame {
 		super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		this.setTitle("Medical Image Viewing System");
-	}
-
-	private class ButtonListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			if(e.getSource() == prevButton) {
-				try {
-					studyIterator.prev();
-				} catch(IndexOutOfBoundsException ex) {
-					JOptionPane.showMessageDialog(null, "First image!");
-				}
-			} else if(e.getSource() == nextButton) {
-				try {
-					studyIterator.next();
-				} catch(IndexOutOfBoundsException ex) {
-					JOptionPane.showMessageDialog(null, "Last image!");
-				}
-			}
-		}
-		
 	}
 
 	/**
@@ -172,34 +157,6 @@ public class ImageViewerWindow extends JFrame {
 		}
 	}
 	
-	private static class NumberLabel extends JLabel implements Observer {
-		public NumberLabel() {
-			super.setHorizontalAlignment(JLabel.CENTER);
-		}
-
-		@Override
-		public void update(Observable subj, Object data) {
-			Study study = (Study) subj;
-			
-			DISPLAY_MODE_VALUE mode = study.getStudySettings().getDisplayMode();
-			
-			if(mode == DISPLAY_MODE_VALUE.ONE_IMAGE) {
-				super.setText(
-					String.format("Current Image: %d", study.getIndex() + 1)
-				);
-				
-			} else {
-				super.setText(
-					String.format(
-						"Current Images: %d - %d",
-						study.getIndex() + 1,
-						study.getIndex() + study.getCurrentImages().size()
-					)
-				);
-			}
-		}
-	}
-
 	/**
 	 * This method gets the current display mode for the underlying model
 	 * @return the current display mode for the underlying model
@@ -222,6 +179,7 @@ public class ImageViewerWindow extends JFrame {
 				this.mainPanel.add(new JLabel());
 			}
 			//put reconstructed images in lower right hand corner
+			setReconstructionPanelImage(this.reconstructionIterator.next());
 			
 			this.numberLabel.setText("Reconstruction Scrolling");
 		} else {
@@ -235,8 +193,18 @@ public class ImageViewerWindow extends JFrame {
 		this.mainPanel.repaint();
 	}
 	
-	public void setReconstructImages(ArrayList<BufferedImage> images) {
+	private void setReconstructionPanelImage(BufferedImage img) {
+		if(this.reconstructionPanel == null) {
+			this.reconstructionPanel = new JPanel();
+		}
 		
+		this.reconstructionPanel.removeAll();
+		
+		this.reconstructionPanel.add(new JLabel(new ImageIcon(img)));
+	}
+	
+	public void setReconstructImages(ArrayList<BufferedImage> images) {
+		this.reconstructionIterator = images.listIterator();
 	}
 	
 	/**
@@ -245,5 +213,69 @@ public class ImageViewerWindow extends JFrame {
 	 */
 	public File getDirectory(){
 		return this.studyModel.getDirectory();
+	}
+
+	private class ButtonListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(inReconstructMode) {
+				if(e.getSource() == prevButton) {
+					try {
+						setReconstructionPanelImage(reconstructionIterator.previous());
+					} catch(NoSuchElementException ex) {
+						JOptionPane.showMessageDialog(null, "First image!");
+					}
+				} else if(e.getSource() == nextButton) {
+					try {
+						setReconstructionPanelImage(reconstructionIterator.next());
+					} catch(NoSuchElementException ex) {
+						JOptionPane.showMessageDialog(null, "Last image!");
+					}
+				}
+			} else {
+				if(e.getSource() == prevButton) {
+					try {
+						studyIterator.prev();
+					} catch(IndexOutOfBoundsException ex) {
+						JOptionPane.showMessageDialog(null, "First image!");
+					}
+				} else if(e.getSource() == nextButton) {
+					try {
+						studyIterator.next();
+					} catch(IndexOutOfBoundsException ex) {
+						JOptionPane.showMessageDialog(null, "Last image!");
+					}
+				}
+			}
+		}
+		
+	}
+
+	private static class NumberLabel extends JLabel implements Observer {
+		public NumberLabel() {
+			super.setHorizontalAlignment(JLabel.CENTER);
+		}
+	
+		@Override
+		public void update(Observable subj, Object data) {
+			Study study = (Study) subj;
+			
+			DISPLAY_MODE_VALUE mode = study.getStudySettings().getDisplayMode();
+			
+			if(mode == DISPLAY_MODE_VALUE.ONE_IMAGE) {
+				super.setText(
+					String.format("Current Image: %d", study.getIndex() + 1)
+				);
+				
+			} else {
+				super.setText(
+					String.format(
+						"Current Images: %d - %d",
+						study.getIndex() + 1,
+						study.getIndex() + study.getCurrentImages().size()
+					)
+				);
+			}
+		}
 	}
 }

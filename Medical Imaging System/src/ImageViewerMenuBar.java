@@ -211,12 +211,13 @@ public class ImageViewerMenuBar extends JMenuBar {
 			
 			String reconstructionType = ((JMenuItem) e.getSource()).getText();
 			
-			/*ReconstructCommand reconstruct = new ReconstructCommand(
+			ReconstructCommand reconstructor = new ReconstructCommand(
 				parentWin.getDirectory().getAbsolutePath(),
 				reconstructionType
 			);
 			
-			reconstruct.execute();*/
+			parentWin.setReconstructImages(reconstructor.getReconstructImages());
+			parentWin.setReconstructMode(true);
 		}
     }
     
