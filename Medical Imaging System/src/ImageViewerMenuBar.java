@@ -1,9 +1,13 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.ListIterator;
 
-import javax.swing.AbstractButton;
+import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
@@ -236,12 +240,28 @@ public class ImageViewerMenuBar extends JMenuBar {
 			
 			String reconstructionType = ((JMenuItem) e.getSource()).getText();
 			
+			String directory = parentWin.getDirectory().getAbsolutePath();
+			
 			ReconstructCommand reconstructor = new ReconstructCommand(
-				parentWin.getDirectory().getAbsolutePath(),
+				directory,
 				reconstructionType
 			);
+			reconstructor.execute();
 			
-			parentWin.setReconstructImages(reconstructor.getReconstructImages());
+			File imageDir = new File(reconstructor.getFolderPath());
+			ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
+			
+			//read everything
+			for(File f : imageDir.listFiles()) {
+				try {
+					images.add(ImageIO.read(f));
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			
+			parentWin.setReconstructImages(images);
 			parentWin.setReconstructMode(true);
 		}
     }

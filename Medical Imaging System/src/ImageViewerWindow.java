@@ -203,6 +203,9 @@ public class ImageViewerWindow extends JFrame {
 		this.reconstructionPanel.removeAll();
 		
 		this.reconstructionPanel.add(new JLabel(new ImageIcon(img)));
+		
+		this.reconstructionPanel.revalidate();
+		this.reconstructionPanel.repaint();
 	}
 	
 	public void setReconstructImages(ArrayList<BufferedImage> images) {
@@ -223,6 +226,7 @@ public class ImageViewerWindow extends JFrame {
 			if(inReconstructMode) {
 				if(e.getSource() == prevButton) {
 					try {
+						System.out.println("prev");
 						BufferedImage prevImg =
 							reconstructionIterator.previous();
 						setReconstructionPanelImage(prevImg);
@@ -231,6 +235,7 @@ public class ImageViewerWindow extends JFrame {
 					}
 				} else if(e.getSource() == nextButton) {
 					try {
+						System.out.println("next");
 						BufferedImage nextImg =
 							reconstructionIterator.next();
 						setReconstructionPanelImage(nextImg);

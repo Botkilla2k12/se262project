@@ -68,8 +68,7 @@ public class Main {
 			new ImageViewerWindow(study);
 		}catch (NullPointerException i) {
 			System.out.println(i.getMessage() + "NullPointerException");
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}	
 
