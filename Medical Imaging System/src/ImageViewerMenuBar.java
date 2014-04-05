@@ -221,7 +221,8 @@ public class ImageViewerMenuBar extends JMenuBar {
                 SaveCommand save = new SaveCommand(
                 	parentWin.getDirectory().getAbsolutePath(),
                 	chFile.getAbsolutePath()
-                );	
+                );
+                save.execute();
             }catch (NullPointerException i) {
                 
             }

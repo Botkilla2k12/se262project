@@ -106,7 +106,7 @@ public class ReconstructCommand implements Command {
 							reconstructImage.setRGB(width, i, rgb);
 						}
 					}
-					//reconstructImages.add(reconstructImage);
+
 					String reconstructImagePath =
 							newFile.getAbsolutePath() + "\\" + height + ".jpg";
 					ImageIO.write(
@@ -131,7 +131,7 @@ public class ReconstructCommand implements Command {
 							}
 						}
 					}
-					//reconstructImages.add(reconstructImage);
+
 					String reconstructImagePath =
 							newFile.getAbsolutePath() + "\\" + width + ".jpg";
 					ImageIO.write(

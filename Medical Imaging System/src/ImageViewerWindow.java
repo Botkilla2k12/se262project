@@ -29,6 +29,7 @@ public class ImageViewerWindow extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	private ImagePanel imagePanel;
+	private LineOverlayPanel lineOverlay;
 	private JPanel mainPanel, reconstructionPanel;
 	private ImageViewerMenuBar menuBar;
 	private JButton prevButton, nextButton;
@@ -178,14 +179,26 @@ public class ImageViewerWindow extends JFrame {
 		if(this.inReconstructMode) {
 			//Change window layout
 			//Put image panel in upper left hand corner
+			
 			this.mainPanel.setLayout(new GridLayout(2, 2));
-			this.mainPanel.add(this.imagePanel);
+			
+			Image curr = this.studyIterator.currentItem();
+			
+			this.lineOverlay = new LineOverlayPanel(
+				(BufferedImage)curr.getImages().get(0),
+				384
+			);
+			
+			this.lineOverlay.setProgress(1);
+			this.mainPanel.add(this.lineOverlay);
+			
+			//this.mainPanel.add(this.imagePanel);
 			for(int i = 0; i < 2; i++) {
 				this.mainPanel.add(new JLabel());
 			}
 			//put reconstructed images in lower right hand corner
 			this.mainPanel.add(reconstructionPanel);
-			setReconstructionPanelImage(this.reconstructionIterator.next());
+			
 			
 			this.numberLabel.setText("Reconstruction Scrolling");
 		} else {
@@ -226,7 +239,6 @@ public class ImageViewerWindow extends JFrame {
 			if(inReconstructMode) {
 				if(e.getSource() == prevButton) {
 					try {
-						System.out.println("prev");
 						BufferedImage prevImg =
 							reconstructionIterator.previous();
 						setReconstructionPanelImage(prevImg);
@@ -235,7 +247,6 @@ public class ImageViewerWindow extends JFrame {
 					}
 				} else if(e.getSource() == nextButton) {
 					try {
-						System.out.println("next");
 						BufferedImage nextImg =
 							reconstructionIterator.next();
 						setReconstructionPanelImage(nextImg);
@@ -243,6 +254,8 @@ public class ImageViewerWindow extends JFrame {
 						JOptionPane.showMessageDialog(null, "Last image!");
 					}
 				}
+				
+				lineOverlay.setProgress(reconstructionIterator.nextIndex());
 			} else {
 				if(e.getSource() == prevButton) {
 					try {
