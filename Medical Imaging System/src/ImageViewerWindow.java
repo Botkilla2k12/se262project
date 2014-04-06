@@ -31,6 +31,8 @@ import javax.swing.border.EtchedBorder;
 public class ImageViewerWindow extends JFrame {
 	private static final long serialVersionUID = 1L;
 
+	private PanelDecorator panelDecorator;
+	
 	private ImagePanel imagePanel;
 	private JPanel mainPanel, reconstructionPanel, reconstructButtonPanel;
 	private ImageViewerMenuBar menuBar;
@@ -39,6 +41,7 @@ public class ImageViewerWindow extends JFrame {
 	private StudyIterator studyIterator;
 	private Study studyModel;
 	private Stack<Study.Memento> previousModes;
+	
 	private boolean inReconstructMode;
 
 	/**
@@ -48,6 +51,9 @@ public class ImageViewerWindow extends JFrame {
 	 */
 	public ImageViewerWindow(Study studyModel) {
 		this.studyModel = studyModel;
+		
+		this.panelDecorator = null;
+		
 		this.reconstructionIterator = null;
 		this.previousModes = new Stack<Study.Memento>();
 		this.menuBar = new ImageViewerMenuBar();
@@ -73,6 +79,10 @@ public class ImageViewerWindow extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					studyIterator.prev();
+					
+					//check if on original image
+					//if yes, create decorator and wrap it around imagePanel
+					//else "disable" decorator
 				} catch(IndexOutOfBoundsException ex) {
 					JOptionPane.showMessageDialog(null, "First image!");
 				}
@@ -84,6 +94,10 @@ public class ImageViewerWindow extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					studyIterator.next();
+					
+					//check if on original image
+					//if yes, create decorator and wrap it around imagePanel
+					//else "disable" decorator
 				} catch(IndexOutOfBoundsException ex) {
 					JOptionPane.showMessageDialog(null, "Last image!");
 				}
@@ -111,15 +125,7 @@ public class ImageViewerWindow extends JFrame {
 		);
 		
 		JButton reconstructPrevBtn = new JButton("Previous");
-		reconstructPrevBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					setReconstructionPanelImage(reconstructionIterator.previous());
-				} catch(NoSuchElementException ex) {
-					JOptionPane.showMessageDialog(null, "First image!");
-				}
-			}
-		});
+		reconstructPrevBtn.addActionListener(new ReconstructPrev());
 		this.reconstructButtonPanel.add(reconstructPrevBtn, BorderLayout.WEST);
 		
 		this.reconstructButtonPanel.add(
@@ -128,15 +134,7 @@ public class ImageViewerWindow extends JFrame {
 		);
 		
 		JButton reconstructNextBtn = new JButton("Next"); 
-		reconstructNextBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					setReconstructionPanelImage(reconstructionIterator.next());
-				} catch(NoSuchElementException ex) {
-					JOptionPane.showMessageDialog(null, "First image!");
-				}
-			}
-		});
+		reconstructNextBtn.addActionListener(new ReconstructNext());
 		this.reconstructButtonPanel.add(reconstructNextBtn, BorderLayout.EAST);
 		
 		southernPanel.add(this.reconstructButtonPanel, BorderLayout.SOUTH);
@@ -251,13 +249,30 @@ public class ImageViewerWindow extends JFrame {
 				setReconstructionPanelImage(this.reconstructionIterator.next());
 				this.mainPanel.add(reconstructionPanel);
 				this.mainPanel.add(new JLabel());
+				
+				this.panelDecorator = new VerticalLineDecorator(
+					this.imagePanel,
+					384,
+					this.imagePanel.getWidth(),
+					this.studyModel.getIndex()
+				);
+				this.panelDecorator.setProgress(1);
 			} else {
 				setReconstructionPanelImage(this.reconstructionIterator.next());
 				this.mainPanel.add(reconstructionPanel);
 				this.mainPanel.add(new JLabel());
 				this.mainPanel.add(new JLabel());
+				
+				this.panelDecorator = new HorizontalLineDecorator(
+					this.imagePanel,
+					384,
+					this.imagePanel.getHeight(),
+					this.studyModel.getIndex()
+				);
+				this.panelDecorator.setProgress(1);
 			}
 			
+			this.panelDecorator.paint(studyModel.getIndex());
 			this.reconstructionPanel.revalidate();
 			this.reconstructionPanel.repaint();
 			this.reconstructButtonPanel.setVisible(true);
@@ -325,6 +340,38 @@ public class ImageViewerWindow extends JFrame {
 						study.getIndex() + study.getCurrentImages().size()
 					)
 				);
+			}
+		}
+	}
+	
+	private class ReconstructPrev implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			try {				
+				setReconstructionPanelImage(
+					reconstructionIterator.previous()
+				);
+				
+				panelDecorator.setProgress(
+					reconstructionIterator.previousIndex()
+				);
+				
+				panelDecorator.paint(studyModel.getIndex());
+			} catch(NoSuchElementException ex) {
+				JOptionPane.showMessageDialog(null, "First image!");
+			}
+		}
+	}
+	
+	private class ReconstructNext implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			try {
+				setReconstructionPanelImage(reconstructionIterator.next());
+				
+				panelDecorator.setProgress(reconstructionIterator.nextIndex());
+				
+				panelDecorator.paint(studyModel.getIndex());
+			} catch(NoSuchElementException ex) {
+				JOptionPane.showMessageDialog(null, "First image!");
 			}
 		}
 	}

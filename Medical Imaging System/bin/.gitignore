@@ -22,3 +22,8 @@
 /TypeException.class
 /UndoableCommand.class
 /vclog.txt
+/HorizontalLineDecorator.class
+/PanelDecorator.class
+/VerticalLineDecorator.class
+/ImageViewerWindow$ReconstructPrev.class
+/ImageViewerWindow$ReconstructNext.class

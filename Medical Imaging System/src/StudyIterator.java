@@ -1,4 +1,3 @@
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 //TODO: Make browse command's index dependent on Study instead keeping it's
