@@ -109,7 +109,7 @@ public class ImageViewerWindow extends JFrame {
 		reconstructPrevBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					setReconstructionPanelImage(reconstructionIterator.next());
+					setReconstructionPanelImage(reconstructionIterator.previous());
 				} catch(NoSuchElementException ex) {
 					JOptionPane.showMessageDialog(null, "First image!");
 				}
