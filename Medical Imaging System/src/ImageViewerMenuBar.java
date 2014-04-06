@@ -5,8 +5,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.ListIterator;
-
 import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
 import javax.swing.JFileChooser;
@@ -48,21 +46,15 @@ public class ImageViewerMenuBar extends JMenuBar {
     }
     
     public void setRelatedStudies(File currDir){
-        /**
-        ImageViewerWindow parentWin =
-                (ImageViewerWindow) getTopLevelAncestor();
-        System.out.println((parentWin.getDirectory().getName()));
-        File currDir=parentWin.getDirectory();
-        */
-        if(this.relatedStudies!=null){
+        
+        if(this.relatedStudies!=null)
             this.fileMenu.remove(this.relatedStudies);
-        }
+        
         this.relatedStudies = new JMenu("Related Studies...");
         String[] relFiles=currDir.list();
         for(String s:relFiles){
             if(!s.endsWith(".jpeg") && !s.endsWith(".acr") && !s.endsWith(".jpg") && !s.endsWith(".cfg")){
                 JMenuItem tempMenuItem= new JMenuItem(s);
-                
                 this.relatedStudies.add(tempMenuItem);
                 Study relStud = new Study(new File(currDir.getName()+'\\'+s));
                 addRelatedListener(relStud, tempMenuItem);
@@ -96,17 +88,16 @@ public class ImageViewerMenuBar extends JMenuBar {
         JMenuItem exitApp=new JMenuItem("Exit");
         openImage.setAccelerator(KeyStroke.getKeyStroke(
                 KeyEvent.VK_O, ActionEvent.CTRL_MASK));
-        //JMenu relatedStudies = new JMenu("Related Studies...");
         undoOperation.setAccelerator(KeyStroke.getKeyStroke(
                 KeyEvent.VK_Z, ActionEvent.CTRL_MASK));
         JMenuItem saveStudy = new JMenuItem("Save Study");
         saveStudy.setAccelerator(KeyStroke.getKeyStroke(
                 KeyEvent.VK_S, ActionEvent.CTRL_MASK));
         saveStudy.addActionListener(new SaveStudy());
-        this.fileMenu.add(saveStudy);
         
+        
+        fileMenu.add(saveStudy);
         fileMenu.add(openImage);
-        //fileMenu.add(relatedStudies);
         fileMenu.add(undoOperation);
         fileMenu.add(exitApp);
 
@@ -127,13 +118,13 @@ public class ImageViewerMenuBar extends JMenuBar {
                 JMenuItem source = (JMenuItem) e.getSource();
                 ImageViewerWindow parentWin =
                     (ImageViewerWindow) getTopLevelAncestor();
-                
                 parentWin.setReconstructMode(false);
                 source.setEnabled(false);
                 
             }
         });
         this.editMenu.add(this.exitReconstructMode);
+        
         JMenu windowing = new JMenu("Windowing Options...");
         JMenuItem wImage = new JMenuItem("Image");
         wImage.addActionListener(new WindowingModeImage());
@@ -182,6 +173,31 @@ public class ImageViewerMenuBar extends JMenuBar {
         settingsMenu.add(displayMode);
     }
     
+    private boolean checkInput(String low, String high){
+    	if(!(isInteger(low) && isInteger(high))){
+            dispError("Pleas input only numbers");
+            return false;
+        }
+        int iLow=Integer.parseInt(low);
+        if(iLow<0 || iLow>255){
+            dispError("Only use numbers between 0 and 255");
+            return false;
+        }
+        
+        int iHigh = Integer.parseInt(high);
+        if(iHigh<0 || iLow>255){
+            dispError("Only use numbers between 0 and 255");
+            return false;
+        }
+        
+        if(!(iLow<iHigh)){
+            dispError("High must be larger than Low");
+            return false;
+        }
+        return true;
+    	
+    }
+    
     private void dispError(String s){
         ImageViewerWindow parentWin =
                 (ImageViewerWindow) getTopLevelAncestor();
@@ -201,52 +217,26 @@ public class ImageViewerMenuBar extends JMenuBar {
     }
     
     class WindowingModeImage implements ActionListener{
-
-        
         public void actionPerformed(ActionEvent e) {
-            
             String low = JOptionPane.showInputDialog(" Input low value \n 0-255 \n");
             String high = JOptionPane.showInputDialog(" Input high value \n 0-255 \n");
-            if(!(isInteger(low) && isInteger(high))){
-                dispError("Pleas input only numbers");
-                return;
+            if(checkInput(low, high)){
+            	//ImageWindowCommand winComm = new ImageWindowCommand(low, high, parentWin);
+            	//winComm.execute();
             }
-            int iLow=Integer.parseInt(low);
-            if(iLow<0 || iLow>255){
-                dispError("Only use numbers between 0 and 255");
-                return;
-            }
-            
-            
-            int iHigh = Integer.parseInt(high);
-            
-            if(iHigh<0 || iLow>255){
-                dispError("Only use numbers between 0 and 255");
-                return;
-            }
-            
-            if(!(iLow<iHigh)){
-                dispError("High must be larger than Low");
-                return;
-            }
-            //ImageWindowCommand winComm = new ImageWindowCommand(low, high, parentWin);
-            //winComm.execute();
-        }
-        
-        
-        
+        }    
     }
+    
+    
     class WindowingModeStudy implements ActionListener{
-
-        
         public void actionPerformed(ActionEvent e) {
-            
-            
-        }
-        
-        
-        
-        
+        	String low = JOptionPane.showInputDialog(" Input low value \n 0-255 \n");
+            String high = JOptionPane.showInputDialog(" Input high value \n 0-255 \n");
+            if(checkInput(low, high)){
+            	//ImageWindowCommand winComm = new ImageWindowCommand(low, high, parentWin);
+            	//winComm.execute();
+            }
+        } 
     }
     
     class UndoOperation implements ActionListener {
@@ -264,11 +254,9 @@ public class ImageViewerMenuBar extends JMenuBar {
             chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             try{
                 Study opStudy = chooseStudy(chooser);
-                
                 if(opStudy != null) {
                     ImageViewerWindow parentWin =
                         (ImageViewerWindow) getTopLevelAncestor();
-                    
                     parentWin.setupNewStudy(opStudy);
                 }
             } catch (NullPointerException i) {
@@ -290,12 +278,11 @@ public class ImageViewerMenuBar extends JMenuBar {
             }
             try{
                 File chFile = chooser.getSelectedFile();
-                //Study saveStudy= new Study(chFile);
-
                 SaveCommand save = new SaveCommand(
                     parentWin.getDirectory().getAbsolutePath(),
                     chFile.getAbsolutePath()
-                );  
+                );
+                save.execute();
             }catch (NullPointerException i) {
                 
             }
