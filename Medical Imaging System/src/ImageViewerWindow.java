@@ -13,12 +13,14 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Stack;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.border.EtchedBorder;
 
 /**
  * 
@@ -29,10 +31,8 @@ public class ImageViewerWindow extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	private ImagePanel imagePanel;
-	private LineOverlayPanel lineOverlay;
-	private JPanel mainPanel, reconstructionPanel;
+	private JPanel mainPanel, reconstructionPanel, reconstructButtonPanel;
 	private ImageViewerMenuBar menuBar;
-	private JButton prevButton, nextButton;
 	private NumberLabel numberLabel;
 	private ListIterator<BufferedImage> reconstructionIterator;
 	private StudyIterator studyIterator;
@@ -63,36 +63,94 @@ public class ImageViewerWindow extends JFrame {
 
 		this.numberLabel = new NumberLabel();
 		
+		JButton prevButton = new JButton("Previous");
+		prevButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					studyIterator.prev();
+				} catch(IndexOutOfBoundsException ex) {
+					JOptionPane.showMessageDialog(null, "First image!");
+				}
+			}
+		});
+		
+		JButton nextButton = new JButton("Next");
+		nextButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					studyIterator.next();
+				} catch(IndexOutOfBoundsException ex) {
+					JOptionPane.showMessageDialog(null, "Last image!");
+				}
+			}
+		});
+		
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setLayout(new BorderLayout());
+		buttonPanel.setBorder(
+			BorderFactory.createEtchedBorder(EtchedBorder.LOWERED)
+		);
+		buttonPanel.add(prevButton, BorderLayout.WEST);
+		buttonPanel.add(this.numberLabel, BorderLayout.CENTER);
+		buttonPanel.add(nextButton, BorderLayout.EAST);
+		
+		JPanel southernPanel = new JPanel();
+		southernPanel.setLayout(new BorderLayout());
+			
+		southernPanel.add(buttonPanel, BorderLayout.NORTH);		
+		
+		this.reconstructButtonPanel = new JPanel();
+		this.reconstructButtonPanel.setLayout(new BorderLayout());
+		this.reconstructButtonPanel.setBorder(
+			BorderFactory.createEtchedBorder(EtchedBorder.LOWERED)
+		);
+		
+		JButton reconstructPrevBtn = new JButton("Previous");
+		reconstructPrevBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					setReconstructionPanelImage(reconstructionIterator.next());
+				} catch(NoSuchElementException ex) {
+					JOptionPane.showMessageDialog(null, "First image!");
+				}
+			}
+		});
+		this.reconstructButtonPanel.add(reconstructPrevBtn, BorderLayout.WEST);
+		
+		this.reconstructButtonPanel.add(
+			new JLabel("Reconstruction Scrolling", JLabel.CENTER),
+			BorderLayout.CENTER
+		);
+		
+		JButton reconstructNextBtn = new JButton("Next"); 
+		reconstructNextBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					setReconstructionPanelImage(reconstructionIterator.next());
+				} catch(NoSuchElementException ex) {
+					JOptionPane.showMessageDialog(null, "First image!");
+				}
+			}
+		});
+		this.reconstructButtonPanel.add(reconstructNextBtn, BorderLayout.EAST);
+		
+		southernPanel.add(this.reconstructButtonPanel, BorderLayout.SOUTH);
+		this.reconstructButtonPanel.setVisible(false);
+		
+		super.setJMenuBar(this.menuBar);
+		super.setLayout(new BorderLayout());
+		super.add(this.mainPanel, BorderLayout.CENTER);
+		super.add(southernPanel, BorderLayout.SOUTH);
+		
 		setupNewStudy(studyModel);
 		setPanelDisplayMode(studyModel.getStudySettings().getDisplayMode());
 		//Get rid of the initial state to avoid duplication when exhausting
 		//undo operations.
 		this.previousModes.pop();
 		
-		this.prevButton = new JButton("Previous");
-		this.prevButton.addActionListener(new ButtonListener());
-		
-		this.nextButton = new JButton("Next");
-		this.nextButton.addActionListener(new ButtonListener());
-				
-		this.setJMenuBar(this.menuBar);
-		
-		this.setLayout(new BorderLayout());
-
-		this.add(this.mainPanel, BorderLayout.CENTER);		
-		JPanel buttonPanel = new JPanel();
-		buttonPanel.setLayout(new BorderLayout());
-		
-		buttonPanel.add(this.prevButton, BorderLayout.WEST);
-		buttonPanel.add(this.numberLabel, BorderLayout.CENTER);
-		buttonPanel.add(this.nextButton, BorderLayout.EAST);
-		
-		this.add(buttonPanel, BorderLayout.SOUTH);
-		
-		super.setVisible(true);
 		super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
 		this.setTitle("Medical Image Viewing System");
+		super.setVisible(true);
 	}
 
 	/**
@@ -182,16 +240,6 @@ public class ImageViewerWindow extends JFrame {
 			
 			this.mainPanel.setLayout(new GridLayout(2, 2));
 			
-			Image curr = this.studyIterator.currentItem();
-			
-			this.lineOverlay = new LineOverlayPanel(
-				(BufferedImage)curr.getImages().get(0),
-				384
-			);
-			
-			this.lineOverlay.setProgress(1);
-			this.mainPanel.add(this.lineOverlay);
-			
 			//this.mainPanel.add(this.imagePanel);
 			for(int i = 0; i < 2; i++) {
 				this.mainPanel.add(new JLabel());
@@ -199,13 +247,14 @@ public class ImageViewerWindow extends JFrame {
 			//put reconstructed images in lower right hand corner
 			this.mainPanel.add(reconstructionPanel);
 			
-			
-			this.numberLabel.setText("Reconstruction Scrolling");
+			this.reconstructButtonPanel.setVisible(true);
 		} else {
 			this.mainPanel.setLayout(new GridLayout(1, 1));
 			this.mainPanel.add(this.imagePanel);
 			
 			this.numberLabel.update(this.studyModel, null);
+			
+			this.reconstructButtonPanel.setVisible(false);
 		}
 		
 		this.mainPanel.revalidate();
@@ -232,48 +281,7 @@ public class ImageViewerWindow extends JFrame {
 	public File getDirectory(){
 		return this.studyModel.getDirectory();
 	}
-
-	private class ButtonListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			if(inReconstructMode) {
-				if(e.getSource() == prevButton) {
-					try {
-						BufferedImage prevImg =
-							reconstructionIterator.previous();
-						setReconstructionPanelImage(prevImg);
-					} catch(NoSuchElementException ex) {
-						JOptionPane.showMessageDialog(null, "First image!");
-					}
-				} else if(e.getSource() == nextButton) {
-					try {
-						BufferedImage nextImg =
-							reconstructionIterator.next();
-						setReconstructionPanelImage(nextImg);
-					} catch(NoSuchElementException ex) {
-						JOptionPane.showMessageDialog(null, "Last image!");
-					}
-				}
-				
-				lineOverlay.setProgress(reconstructionIterator.nextIndex());
-			} else {
-				if(e.getSource() == prevButton) {
-					try {
-						studyIterator.prev();
-					} catch(IndexOutOfBoundsException ex) {
-						JOptionPane.showMessageDialog(null, "First image!");
-					}
-				} else if(e.getSource() == nextButton) {
-					try {
-						studyIterator.next();
-					} catch(IndexOutOfBoundsException ex) {
-						JOptionPane.showMessageDialog(null, "Last image!");
-					}
-				}
-			}
-		}
-	}
-
+	
 	private static class NumberLabel extends JLabel implements Observer {
 		private static final long serialVersionUID = 1L;
 
