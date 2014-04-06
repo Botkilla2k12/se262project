@@ -135,9 +135,9 @@ public class SaveCommand implements Command {
 			for (int i = 0; i < images.size(); i++) {
 				imagesToManipulate.add(images.get(i));
 			}
-			ImageWindowCommand iwc = new ImageWindowCommand(125, 125, imagesToManipulate);
+			ImageWindowCommand iwc = new ImageWindowCommand(25, 225, imagesToManipulate, oldName);
 			iwc.execute();
-			ArrayList<BufferedImage> manipulatedImages = iwc.getWindowedImages();
+			/*ArrayList<BufferedImage> manipulatedImages = iwc.getWindowedImages();
 			String testName = newName + "manipulated";
 			File testFile = new File(testName);
 			testFile.mkdir();
@@ -146,7 +146,7 @@ public class SaveCommand implements Command {
 				int b = a + 1;
 				String newImagePath = testFile.getAbsolutePath() + "\\" + b + ".jpg";
 				ImageIO.write(image, "jpg", new File(newImagePath));
-			}
+			}*/
 			/*END REMOVE LINES HERE*/
 		} catch (IOException e) {
 			e.printStackTrace();
