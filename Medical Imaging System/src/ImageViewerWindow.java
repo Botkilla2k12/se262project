@@ -262,6 +262,8 @@ public class ImageViewerWindow extends JFrame {
 				this.mainPanel.add(new JLabel());
 			}
 			
+			this.reconstructButtonPanel.revalidate();
+			this.reconstructButtonPanel.repaint();
 			this.reconstructButtonPanel.setVisible(true);
 		} else {
 			this.mainPanel.setLayout(new GridLayout(1, 1));
