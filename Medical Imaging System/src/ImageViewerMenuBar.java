@@ -109,6 +109,8 @@ public class ImageViewerMenuBar extends JMenuBar {
     private void InitEditMenu(){
         this.editMenu=new JMenu("Edit");
         
+        
+        
         this.exitReconstructMode = new JMenuItem("Exit Reconstruction");
         this.exitReconstructMode.setEnabled(false);
         this.exitReconstructMode.addActionListener(new ActionListener() {
@@ -116,7 +118,7 @@ public class ImageViewerMenuBar extends JMenuBar {
                 JMenuItem source = (JMenuItem) e.getSource();
                 ImageViewerWindow parentWin =
                     (ImageViewerWindow) getTopLevelAncestor();
-                parentWin.setReconstructMode(false, "");
+                parentWin.setReconstructMode(false);
                 source.setEnabled(false);
                 
             }
@@ -139,11 +141,11 @@ public class ImageViewerMenuBar extends JMenuBar {
 
         ReconstructStudy eventListener = new ReconstructStudy();
         
-        JMenuItem xz = new JMenuItem("Coronal");
+        JMenuItem xz = new JMenuItem("XZ");
         xz.addActionListener(eventListener);
         reconstructStudy.add(xz);
         
-        JMenuItem yz = new JMenuItem("Sagittal");
+        JMenuItem yz = new JMenuItem("YZ");
         yz.addActionListener(eventListener);
         reconstructStudy.add(yz);
         
@@ -172,7 +174,7 @@ public class ImageViewerMenuBar extends JMenuBar {
     }
     
     private boolean checkInput(String low, String high){
-    	if(!(isInteger(low) && isInteger(high))){
+        if(!(isInteger(low) && isInteger(high))){
             dispError("Pleas input only numbers");
             return false;
         }
@@ -193,7 +195,7 @@ public class ImageViewerMenuBar extends JMenuBar {
             return false;
         }
         return true;
-    	
+        
     }
     
     private void dispError(String s){
@@ -206,14 +208,6 @@ public class ImageViewerMenuBar extends JMenuBar {
                 JOptionPane.ERROR_MESSAGE);
     }
     
-    private String getCode(String input) {
-    	if(input.equals("Coronal")) {
-        	return "XZ";
-        } else {
-        	return "YZ";
-        }
-    }
-    
     
     
     class ExitProgram implements ActionListener{
@@ -224,11 +218,29 @@ public class ImageViewerMenuBar extends JMenuBar {
     
     class WindowingModeImage implements ActionListener{
         public void actionPerformed(ActionEvent e) {
+             ImageViewerWindow parentWin =
+                     (ImageViewerWindow) getTopLevelAncestor();
             String low = JOptionPane.showInputDialog(" Input low value \n 0-255 \n");
             String high = JOptionPane.showInputDialog(" Input high value \n 0-255 \n");
+            int i1 = Integer.parseInt(low);
+            int i2 = Integer.parseInt(high);
+            
             if(checkInput(low, high)){
-            	//ImageWindowCommand winComm = new ImageWindowCommand(low, high, parentWin);
-            	//winComm.execute();
+                ArrayList<Image> images = new ArrayList<Image>();
+                BufferedImage i=null;
+                try {
+                    i = ImageIO.read(parentWin.getDirectory().listFiles()[parentWin.getIndex()]);
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+                Image image = new Image(parentWin.getDirectory().listFiles()[parentWin.getIndex()].getName(), i);
+                images.add(image);
+                ImageWindowCommand winComm = new ImageWindowCommand(i1, 
+                                        i2, 
+                                        images, 
+                                        parentWin.getDirectory().getPath());
+                winComm.execute();
             }
         }    
     }
@@ -236,11 +248,11 @@ public class ImageViewerMenuBar extends JMenuBar {
     
     class WindowingModeStudy implements ActionListener{
         public void actionPerformed(ActionEvent e) {
-        	String low = JOptionPane.showInputDialog(" Input low value \n 0-255 \n");
+            String low = JOptionPane.showInputDialog(" Input low value \n 0-255 \n");
             String high = JOptionPane.showInputDialog(" Input high value \n 0-255 \n");
             if(checkInput(low, high)){
-            	//ImageWindowCommand winComm = new ImageWindowCommand(low, high, parentWin);
-            	//winComm.execute();
+                //ImageWindowCommand winComm = new ImageWindowCommand(low, high, parentWin);
+                //winComm.execute();
             }
         } 
     }
@@ -305,8 +317,7 @@ public class ImageViewerMenuBar extends JMenuBar {
             
             exitReconstructMode.setEnabled(true);
             
-            String reconstructionType =
-            	getCode(((JMenuItem) e.getSource()).getText());
+            String reconstructionType = ((JMenuItem) e.getSource()).getText();
             
             String directory = parentWin.getDirectory().getAbsolutePath();
             
@@ -330,7 +341,7 @@ public class ImageViewerMenuBar extends JMenuBar {
             }
             
             parentWin.setReconstructImages(images);
-            parentWin.setReconstructMode(true, reconstructionType);
+            parentWin.setReconstructMode(true);
         }
     }
     
