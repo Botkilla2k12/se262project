@@ -141,11 +141,11 @@ public class ImageViewerMenuBar extends JMenuBar {
 
         ReconstructStudy eventListener = new ReconstructStudy();
         
-        JMenuItem xz = new JMenuItem("XZ");
+        JMenuItem xz = new JMenuItem("Coronal");
         xz.addActionListener(eventListener);
         reconstructStudy.add(xz);
         
-        JMenuItem yz = new JMenuItem("YZ");
+        JMenuItem yz = new JMenuItem("Sagittal");
         yz.addActionListener(eventListener);
         reconstructStudy.add(yz);
         
@@ -299,7 +299,13 @@ public class ImageViewerMenuBar extends JMenuBar {
             
             exitReconstructMode.setEnabled(true);
             
-            String reconstructionType = ((JMenuItem) e.getSource()).getText();
+            String reconstructionType = "";
+            
+            if(((JMenuItem) e.getSource()).getText().equals("Coronal")) {
+            	reconstructionType = "XZ";
+            } else {
+            	reconstructionType = "YZ";
+            }
             
             String directory = parentWin.getDirectory().getAbsolutePath();
             

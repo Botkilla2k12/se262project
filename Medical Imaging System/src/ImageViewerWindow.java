@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -50,9 +51,13 @@ public class ImageViewerWindow extends JFrame {
 		this.reconstructionIterator = null;
 		this.previousModes = new Stack<Study.Memento>();
 		this.menuBar = new ImageViewerMenuBar();
+
 		this.mainPanel = new JPanel();
 		this.mainPanel.setLayout(new GridLayout(1, 1));
+		this.mainPanel.setBackground(Color.WHITE);
+
 		this.reconstructionPanel = new JPanel();
+		this.reconstructionPanel.setBackground(Color.WHITE);
 		
 		this.imagePanel = new ImagePanel(
 			studyModel.getStudySettings().getDisplayMode()
