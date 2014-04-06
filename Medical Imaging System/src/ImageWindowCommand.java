@@ -1,22 +1,33 @@
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
 
 
 public class ImageWindowCommand extends UndoableCommand implements Command {
 	private ArrayList<Image> imagesToManipulate;
 	private int lowCutoff, highCutoff;
 	private ArrayList<BufferedImage> manipulatedImages;
+	private String directory;
 	
-	public ImageWindowCommand(int low, int high, ArrayList<Image> images) {
+	public ImageWindowCommand(int low, int high, ArrayList<Image> images, String directory) {
 		this.lowCutoff = low;
 		this.highCutoff = high;
 		this.imagesToManipulate = images;
 		this.manipulatedImages = new ArrayList<BufferedImage>();
+		this.directory = directory;
 	}
 	
 	@Override
 	public void execute() {
+		String manipulatedDirectory = directory + "Manipulated";
+		File manipulatedFile = new File(manipulatedDirectory);
+		if (!manipulatedFile.exists()) {
+			manipulatedFile.mkdir();
+		}
 		for (Image img : this.imagesToManipulate) {
 			BufferedImage imgData = (BufferedImage) img.getImages().get(0);
 			
@@ -61,6 +72,12 @@ public class ImageWindowCommand extends UndoableCommand implements Command {
 				}
 			}
 			manipulatedImages.add(imgData);
+			String newImagePath = manipulatedDirectory + "\\" + img.toString();
+			try {
+				ImageIO.write(imgData, "jpg", new File(newImagePath));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 
 	}

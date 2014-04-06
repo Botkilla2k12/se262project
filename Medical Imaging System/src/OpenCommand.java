@@ -56,9 +56,15 @@ public class OpenCommand implements Command {
 	private ArrayList<Object> open(File directory) throws IOException {
 		File[] files = directory.listFiles();
 		Arrays.sort(files);
+		String manipulatedDirectory = directory + "Manipulated";
 		for (int i = 0; i < files.length; i++) {
 			File file = files[i];
 			String name = file.getName().toLowerCase();
+			String manipulatedString = manipulatedDirectory + "\\" + name;
+			File manipulatedFile = new File(manipulatedString);
+			if (manipulatedFile.exists()) {
+				file = manipulatedFile;
+			}
 			if (name.endsWith(".jpg") || name.endsWith(".jpeg")) {
 				try {
 					BufferedImage image = ImageIO.read(file);
