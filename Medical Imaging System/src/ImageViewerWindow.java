@@ -236,15 +236,18 @@ public class ImageViewerWindow extends JFrame {
 		
 		if(this.inReconstructMode) {
 			//Change window layout
-			//Put image panel in upper left hand corner
-			
 			this.mainPanel.setLayout(new GridLayout(2, 2));
+			//Put image panel in upper left hand corner
+			this.mainPanel.add(imagePanel);
 			
 			//this.mainPanel.add(this.imagePanel);
 			for(int i = 0; i < 2; i++) {
 				this.mainPanel.add(new JLabel());
 			}
 			//put reconstructed images in lower right hand corner
+			this.reconstructionPanel.add(
+				new JLabel(new ImageIcon(this.reconstructionIterator.next()))
+			);
 			this.mainPanel.add(reconstructionPanel);
 			
 			this.reconstructButtonPanel.setVisible(true);
