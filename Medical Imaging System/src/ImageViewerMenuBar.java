@@ -109,8 +109,6 @@ public class ImageViewerMenuBar extends JMenuBar {
     private void InitEditMenu(){
         this.editMenu=new JMenu("Edit");
         
-        
-        
         this.exitReconstructMode = new JMenuItem("Exit Reconstruction");
         this.exitReconstructMode.setEnabled(false);
         this.exitReconstructMode.addActionListener(new ActionListener() {
@@ -118,7 +116,7 @@ public class ImageViewerMenuBar extends JMenuBar {
                 JMenuItem source = (JMenuItem) e.getSource();
                 ImageViewerWindow parentWin =
                     (ImageViewerWindow) getTopLevelAncestor();
-                parentWin.setReconstructMode(false);
+                parentWin.setReconstructMode(false, "");
                 source.setEnabled(false);
                 
             }
@@ -206,6 +204,14 @@ public class ImageViewerMenuBar extends JMenuBar {
                 s,
                 "You goofed",
                 JOptionPane.ERROR_MESSAGE);
+    }
+    
+    private String getCode(String input) {
+    	if(input.equals("Coronal")) {
+        	return "XZ";
+        } else {
+        	return "YZ";
+        }
     }
     
     
@@ -299,13 +305,8 @@ public class ImageViewerMenuBar extends JMenuBar {
             
             exitReconstructMode.setEnabled(true);
             
-            String reconstructionType = "";
-            
-            if(((JMenuItem) e.getSource()).getText().equals("Coronal")) {
-            	reconstructionType = "XZ";
-            } else {
-            	reconstructionType = "YZ";
-            }
+            String reconstructionType =
+            	getCode(((JMenuItem) e.getSource()).getText());
             
             String directory = parentWin.getDirectory().getAbsolutePath();
             
@@ -329,7 +330,7 @@ public class ImageViewerMenuBar extends JMenuBar {
             }
             
             parentWin.setReconstructImages(images);
-            parentWin.setReconstructMode(true);
+            parentWin.setReconstructMode(true, reconstructionType);
         }
     }
     

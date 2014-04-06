@@ -163,7 +163,7 @@ public class ImageViewerWindow extends JFrame {
 	 * @param study the study to be initializes
 	 */
 	public void setupNewStudy(Study study) {
-		this.setReconstructMode(false);
+		this.setReconstructMode(false, "");
 		
 		this.previousModes.removeAllElements();
 		if(this.studyModel != null) {
@@ -234,7 +234,7 @@ public class ImageViewerWindow extends JFrame {
 		return this.studyModel.getStudySettings().getDisplayMode();
 	}
 
-	public void setReconstructMode(boolean isInReconstruction) {
+	public void setReconstructMode(boolean isInReconstruction, String mode) {
 		this.inReconstructMode = isInReconstruction;
 		
 		this.mainPanel.removeAll();
@@ -246,14 +246,21 @@ public class ImageViewerWindow extends JFrame {
 			this.mainPanel.add(imagePanel);
 			
 			//this.mainPanel.add(this.imagePanel);
-			for(int i = 0; i < 2; i++) {
+			if(mode.equals("XZ")) {
+				this.mainPanel.add(new JLabel());
+				this.reconstructionPanel.add(
+					new JLabel(new ImageIcon(this.reconstructionIterator.next()))
+				);
+				this.mainPanel.add(reconstructionPanel);
+				this.mainPanel.add(new JLabel());
+			} else {
+				this.reconstructionPanel.add(
+					new JLabel(new ImageIcon(this.reconstructionIterator.next()))
+				);
+				this.mainPanel.add(reconstructionPanel);
+				this.mainPanel.add(new JLabel());
 				this.mainPanel.add(new JLabel());
 			}
-			//put reconstructed images in lower right hand corner
-			this.reconstructionPanel.add(
-				new JLabel(new ImageIcon(this.reconstructionIterator.next()))
-			);
-			this.mainPanel.add(reconstructionPanel);
 			
 			this.reconstructButtonPanel.setVisible(true);
 		} else {
