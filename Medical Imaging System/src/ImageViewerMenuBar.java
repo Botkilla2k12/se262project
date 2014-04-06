@@ -248,6 +248,11 @@ public class ImageViewerMenuBar extends JMenuBar {
                                         images, 
                                         parentWin.getDirectory().getPath());
                 winComm.execute();
+                System.out.println(parentWin.getDirectory().getPath()+"Manipulated");
+                File newF = new File(parentWin.getDirectory().getPath()+"Manipulated");
+                Study st = new Study(newF);
+                
+                parentWin.setupNewStudy(st);
             }
         }    
     }
@@ -255,13 +260,51 @@ public class ImageViewerMenuBar extends JMenuBar {
     
     class WindowingModeStudy implements ActionListener{
         public void actionPerformed(ActionEvent e) {
-            String low = JOptionPane.showInputDialog(" Input low value \n 0-255 \n");
-            String high = JOptionPane.showInputDialog(" Input high value \n 0-255 \n");
-            if(checkInput(low, high)){
-                //ImageWindowCommand winComm = new ImageWindowCommand(low, high, parentWin);
-                //winComm.execute();
-            }
-        } 
+            ImageViewerWindow parentWin =
+                    (ImageViewerWindow) getTopLevelAncestor();
+           String low = JOptionPane.showInputDialog(" Input low value \n 0-255 \n");
+           String high = JOptionPane.showInputDialog(" Input high value \n 0-255 \n");
+           int i1 = Integer.parseInt(low);
+           int i2 = Integer.parseInt(high);
+           ArrayList<Integer> ints= new ArrayList<Integer>();
+           
+           if(checkInput(low, high)){
+               ArrayList<Image> images = new ArrayList<Image>();
+               BufferedImage i=null;
+               for(int k = 0; k<parentWin.getDirectory().listFiles().length; k++){
+            	   if(!(parentWin.getDirectory().listFiles()[k].getName().endsWith(".cfg")))
+            		  ints.add(k);
+               }
+               for(int j:ints){
+            	   System.out.println(j);
+            	   System.out.println(parentWin.getDirectory().listFiles().length);
+            	   try {
+                       i = ImageIO.read(parentWin.getDirectory().listFiles()[j]);
+                   } catch (IOException e1) {
+                       // TODO Auto-generated catch block
+                       e1.printStackTrace();
+                   }
+                   Image image = new Image(parentWin.getDirectory().listFiles()[j].getName(), i);
+                   images.add(image);
+               }
+               
+               ImageWindowCommand winComm = new ImageWindowCommand(i1, 
+                                       i2, 
+                                       images, 
+                                       parentWin.getDirectory().getPath());
+               winComm.execute();
+               System.out.println(parentWin.getDirectory().getPath());
+               File newF = new File(parentWin.getDirectory().getPath());
+               Study st = new Study(newF);
+               try {
+				st.open();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+               parentWin.setupNewStudy(st);
+           }
+       }  
     }
     
     class UndoOperation implements ActionListener {
