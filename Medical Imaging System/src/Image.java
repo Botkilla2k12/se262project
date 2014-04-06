@@ -69,7 +69,7 @@ public class Image extends Observable {
 		
 	}
 	
-	public StudySettings getStudySettings(){
+	public SystemSettings getStudySettings(){
 		return null;
 	}
 

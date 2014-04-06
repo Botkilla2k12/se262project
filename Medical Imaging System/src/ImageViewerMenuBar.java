@@ -118,7 +118,7 @@ public class ImageViewerMenuBar extends JMenuBar {
                 JMenuItem source = (JMenuItem) e.getSource();
                 ImageViewerWindow parentWin =
                     (ImageViewerWindow) getTopLevelAncestor();
-                parentWin.setReconstructMode(false);
+                parentWin.setReconstructMode(false, "");
                 source.setEnabled(false);
                 
             }
@@ -141,11 +141,11 @@ public class ImageViewerMenuBar extends JMenuBar {
 
         ReconstructStudy eventListener = new ReconstructStudy();
         
-        JMenuItem xz = new JMenuItem("XZ");
+        JMenuItem xz = new JMenuItem("Sagittal");
         xz.addActionListener(eventListener);
         reconstructStudy.add(xz);
         
-        JMenuItem yz = new JMenuItem("YZ");
+        JMenuItem yz = new JMenuItem("Coronal");
         yz.addActionListener(eventListener);
         reconstructStudy.add(yz);
         
@@ -208,6 +208,13 @@ public class ImageViewerMenuBar extends JMenuBar {
                 JOptionPane.ERROR_MESSAGE);
     }
     
+    private String getMode(String input) {
+    	if(input.equals("Coronal")) {
+    		return "XZ";
+    	} else {
+    		return "YZ";
+    	}
+    }
     
     
     class ExitProgram implements ActionListener{
@@ -317,7 +324,8 @@ public class ImageViewerMenuBar extends JMenuBar {
             
             exitReconstructMode.setEnabled(true);
             
-            String reconstructionType = ((JMenuItem) e.getSource()).getText();
+            String reconstructionType =
+            	getMode(((JMenuItem) e.getSource()).getText());
             
             String directory = parentWin.getDirectory().getAbsolutePath();
             
@@ -341,7 +349,7 @@ public class ImageViewerMenuBar extends JMenuBar {
             }
             
             parentWin.setReconstructImages(images);
-            parentWin.setReconstructMode(true);
+            parentWin.setReconstructMode(true, reconstructionType);
         }
     }
     

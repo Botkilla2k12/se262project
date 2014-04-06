@@ -248,22 +248,18 @@ public class ImageViewerWindow extends JFrame {
 			//this.mainPanel.add(this.imagePanel);
 			if(mode.equals("XZ")) {
 				this.mainPanel.add(new JLabel());
-				this.reconstructionPanel.add(
-					new JLabel(new ImageIcon(this.reconstructionIterator.next()))
-				);
+				setReconstructionPanelImage(this.reconstructionIterator.next());
 				this.mainPanel.add(reconstructionPanel);
 				this.mainPanel.add(new JLabel());
 			} else {
-				this.reconstructionPanel.add(
-					new JLabel(new ImageIcon(this.reconstructionIterator.next()))
-				);
+				setReconstructionPanelImage(this.reconstructionIterator.next());
 				this.mainPanel.add(reconstructionPanel);
 				this.mainPanel.add(new JLabel());
 				this.mainPanel.add(new JLabel());
 			}
 			
-			this.reconstructButtonPanel.revalidate();
-			this.reconstructButtonPanel.repaint();
+			this.reconstructionPanel.revalidate();
+			this.reconstructionPanel.repaint();
 			this.reconstructButtonPanel.setVisible(true);
 		} else {
 			this.mainPanel.setLayout(new GridLayout(1, 1));
@@ -297,6 +293,10 @@ public class ImageViewerWindow extends JFrame {
 	 */
 	public File getDirectory(){
 		return this.studyModel.getDirectory();
+	}
+	
+	public int getIndex() {
+		return this.studyModel.getIndex();
 	}
 	
 	private static class NumberLabel extends JLabel implements Observer {
