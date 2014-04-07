@@ -11,8 +11,8 @@ public class HorizontalLineDecorator extends ImagePanelDecorator {
 	}
 
 	@Override
-	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
+	public void paint(Graphics g) {
+		super.paint(g);
 		
 		if(isActive()) {
 			double fraction = ((double) getProgress() / getTotal());
@@ -25,5 +25,12 @@ public class HorizontalLineDecorator extends ImagePanelDecorator {
 			g2d.drawLine(0, y, getMaxDim(), y);
 			g2d.setColor(original);
 		}
+	}
+	
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		
+		
 	}
 }

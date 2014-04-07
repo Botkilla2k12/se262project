@@ -250,6 +250,7 @@ public class ImageViewerWindow extends JFrame {
 				((ImagePanelDecorator) this.imagePanel).setProgress(1);
 				this.studyModel.addObserver(imagePanel);
 				this.mainPanel.add(imagePanel);
+				this.imagePanel.update(studyModel, null);
 				
 				this.mainPanel.add(new JLabel());
 				setReconstructionPanelImage(this.reconstructionIterator.next());
