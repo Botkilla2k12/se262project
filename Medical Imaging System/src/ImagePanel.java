@@ -19,14 +19,14 @@ import javax.swing.border.EtchedBorder;
  */
 public class ImagePanel extends JPanel implements Observer {
 	private GridLayout layout;
-	private DISPLAY_MODE_VALUE displayMode;
+	private DisplayMode displayMode;
 	
 	/**
 	 * Initializes an ImagePanel with a given display mode so that the right
 	 * layout can be created.
 	 * @param displayMode the display mode of the panel
 	 */
-	public ImagePanel(DISPLAY_MODE_VALUE displayMode) {
+	public ImagePanel(DisplayMode displayMode) {
 		setDisplayMode(displayMode);
 	
 		this.displayMode = displayMode;
@@ -43,7 +43,7 @@ public class ImagePanel extends JPanel implements Observer {
 		Study study = (Study) subject;
 		
 		setDisplayMode(study.getStudySettings().getDisplayMode());
-		int numEntries = DISPLAY_MODE_VALUE.getValue(displayMode);
+		int numEntries = DisplayMode.getValue(displayMode);
 		
 		ArrayList<Object> images = study.getCurrentImages();
 		
@@ -62,7 +62,6 @@ public class ImagePanel extends JPanel implements Observer {
 					e.printStackTrace();
 				}
 			}
-			
 		}
 		
 		if(images.size() < numEntries) {
@@ -75,10 +74,14 @@ public class ImagePanel extends JPanel implements Observer {
 		super.repaint();
 	}
 	
-	private void setDisplayMode(DISPLAY_MODE_VALUE mode) {
+	public DisplayMode getDisplayMode() {
+		return this.displayMode;
+	}
+	
+	private void setDisplayMode(DisplayMode mode) {
 		this.displayMode = mode;
 		
-		if(mode == DISPLAY_MODE_VALUE.ONE_IMAGE) {
+		if(mode == DisplayMode.ONE_IMAGE) {
 			configLayout(1, 1);
 		} else {
 			configLayout(2, 2);

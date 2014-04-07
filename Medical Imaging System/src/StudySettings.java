@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class StudySettings {
 	private static final String CONFIG_FILE = "study.cfg";
 	private File directory;
-	private DISPLAY_MODE_VALUE displayMode;
+	private DisplayMode displayMode;
 
 	private int lastImageIndex;
 
@@ -29,7 +29,7 @@ public class StudySettings {
 			if(!configFile.exists()) {
 				configFile.createNewFile();
 				
-				this.displayMode = DISPLAY_MODE_VALUE.ONE_IMAGE;
+				this.displayMode = DisplayMode.ONE_IMAGE;
 				setLastImageIndex(0);
 			}
 
@@ -38,9 +38,9 @@ public class StudySettings {
 				String displayModeVal = sc.nextLine();
 			
 				if(displayModeVal.equals("ONE_IMAGE")) {
-					this.displayMode = DISPLAY_MODE_VALUE.ONE_IMAGE;
+					this.displayMode = DisplayMode.ONE_IMAGE;
 				} else {
-					this.displayMode = DISPLAY_MODE_VALUE.FOUR_IMAGE;
+					this.displayMode = DisplayMode.FOUR_IMAGE;
 				}
 				
 				this.lastImageIndex = Integer.parseInt(sc.nextLine());
@@ -65,7 +65,7 @@ public class StudySettings {
 	 * Gets the stored display mode in settings
 	 * @return the stored display mode in settings
 	 */
-	public DISPLAY_MODE_VALUE getDisplayMode() {
+	public DisplayMode getDisplayMode() {
 		return displayMode;
 	}
 	
@@ -73,7 +73,7 @@ public class StudySettings {
 	 * Sets the display mode in settings
 	 * @param newDisplayMode the new display mode
 	 */
-	public void setDisplayMode(DISPLAY_MODE_VALUE newDisplayMode) {
+	public void setDisplayMode(DisplayMode newDisplayMode) {
 		this.displayMode = newDisplayMode;
 		writeInformationToDisk(this.displayMode, this.lastImageIndex);
 	}
@@ -93,7 +93,7 @@ public class StudySettings {
 	 * @param mode - the study's display mode
 	 * @param index - the study's current image index
 	 */
-	private void writeInformationToDisk(DISPLAY_MODE_VALUE mode, int index) {
+	private void writeInformationToDisk(DisplayMode mode, int index) {
 		if(this.directory != null) { 
 			PrintWriter writer = null;
 			try{

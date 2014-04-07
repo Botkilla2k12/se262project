@@ -65,7 +65,7 @@ public class Image extends Observable {
 	public void setIndex(int integer){
 	}
 	
-	public void setDisplayMode(DISPLAY_MODE_VALUE d){
+	public void setDisplayMode(DisplayMode d){
 		
 	}
 	

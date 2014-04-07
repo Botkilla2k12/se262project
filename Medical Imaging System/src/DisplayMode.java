@@ -3,7 +3,7 @@
  * @author Curtis Cal
  *
  */
-public enum DISPLAY_MODE_VALUE {
+public enum DisplayMode {
 	ONE_IMAGE, FOUR_IMAGE;
 	
 	/**
@@ -11,7 +11,7 @@ public enum DISPLAY_MODE_VALUE {
 	 * @param value the value whose integer value will be returned
 	 * @return the integer value of the display Mode
 	 */
-	public static int getValue(DISPLAY_MODE_VALUE value) {
+	public static int getValue(DisplayMode value) {
 		if(value == ONE_IMAGE)
 			return 1;
 		else

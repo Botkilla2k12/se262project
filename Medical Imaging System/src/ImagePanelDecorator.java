@@ -1,13 +1,17 @@
 import java.awt.Graphics;
+import java.util.Observable;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 public abstract class ImagePanelDecorator extends ImagePanel {
+	private boolean isActive;
 	private int progress, total, maxDim, imgIndex;
 	
-	public ImagePanelDecorator(DISPLAY_MODE_VALUE value, int total, int dim, int index) {
+	public ImagePanelDecorator(DisplayMode value, int total, int dim, int index) {
 		super(value);
+		
+		this.isActive = true;
 		
 		progress = 0;
 		this.total = total;
@@ -16,8 +20,21 @@ public abstract class ImagePanelDecorator extends ImagePanel {
 	}
 	
 	@Override
+	public void update(Observable subject, Object data) {
+		Study study = (Study) subject;
+		
+		this.isActive = (study.getIndex() == imgIndex);
+		
+		super.update(subject, data);
+	}
+	
+	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
+	}
+	
+	public boolean isActive() {
+		return isActive;
 	}
 	
 	public int getProgress() {

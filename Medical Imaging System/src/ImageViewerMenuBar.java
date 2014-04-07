@@ -38,8 +38,8 @@ public class ImageViewerMenuBar extends JMenuBar {
         add(settingsMenu);
     }
 
-    public void activateRadioButtonFromDisplayMode(DISPLAY_MODE_VALUE mode) {
-        if(mode == DISPLAY_MODE_VALUE.ONE_IMAGE) {
+    public void activateRadioButtonFromDisplayMode(DisplayMode mode) {
+        if(mode == DisplayMode.ONE_IMAGE) {
             this.displayMode1.setSelected(true);
             this.displayMode4.setSelected(false);
         } else {
@@ -415,7 +415,7 @@ public class ImageViewerMenuBar extends JMenuBar {
             ImageViewerWindow parentWin =
                 (ImageViewerWindow) getTopLevelAncestor();
             
-            parentWin.setPanelDisplayMode(DISPLAY_MODE_VALUE.ONE_IMAGE);
+            parentWin.setPanelDisplayMode(DisplayMode.ONE_IMAGE);
         }
     }
     
@@ -424,7 +424,7 @@ public class ImageViewerMenuBar extends JMenuBar {
             ImageViewerWindow parentWin =
                 (ImageViewerWindow) getTopLevelAncestor();
             
-            parentWin.setPanelDisplayMode(DISPLAY_MODE_VALUE.FOUR_IMAGE);
+            parentWin.setPanelDisplayMode(DisplayMode.FOUR_IMAGE);
         }
     }
     

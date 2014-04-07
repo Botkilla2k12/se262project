@@ -91,7 +91,7 @@ public class Study extends Observable {
 	public ArrayList<Object> getCurrentImages() {
 		ArrayList<Object> currImgs = new ArrayList<Object>();
 		int offset =
-			this.studySettings.getDisplayMode() == DISPLAY_MODE_VALUE.ONE_IMAGE ?
+			this.studySettings.getDisplayMode() == DisplayMode.ONE_IMAGE ?
 			1 : 4;
 		
 		for(int i = index; i < this.images.size() && i < index + offset; i++) {
@@ -153,16 +153,16 @@ public class Study extends Observable {
 	 * Changes the display mode of the study
 	 * @param mode the new display mode for the study
 	 */
-	public void setDisplayMode(DISPLAY_MODE_VALUE mode) {
-		DISPLAY_MODE_VALUE currMode = studySettings.getDisplayMode();
+	public void setDisplayMode(DisplayMode mode) {
+		DisplayMode currMode = studySettings.getDisplayMode();
 		this.studySettings.setDisplayMode(mode);
 		
-		if(currMode == DISPLAY_MODE_VALUE.ONE_IMAGE &&
-			mode == DISPLAY_MODE_VALUE.FOUR_IMAGE
+		if(currMode == DisplayMode.ONE_IMAGE &&
+			mode == DisplayMode.FOUR_IMAGE
 		) {
 			this.setIndex((4 * (int)Math.floor((this.index)/4)));
-		} else if (currMode == DISPLAY_MODE_VALUE.FOUR_IMAGE &&
-			mode == DISPLAY_MODE_VALUE.ONE_IMAGE
+		} else if (currMode == DisplayMode.FOUR_IMAGE &&
+			mode == DisplayMode.ONE_IMAGE
 		) {
 			this.setIndex((4 * (int)Math.floor((this.index)/4)));
 		}
@@ -180,13 +180,13 @@ public class Study extends Observable {
 	}
 	
 	public static class Memento {
-		private DISPLAY_MODE_VALUE displayMode;
+		private DisplayMode displayMode;
 		
-		public Memento(DISPLAY_MODE_VALUE displayMode) {
+		public Memento(DisplayMode displayMode) {
 			this.displayMode = displayMode;
 		}
 		
-		public DISPLAY_MODE_VALUE getDisplayMode() {
+		public DisplayMode getDisplayMode() {
 			return this.displayMode;
 		}
 	}

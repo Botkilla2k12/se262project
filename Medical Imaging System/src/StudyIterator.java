@@ -19,7 +19,7 @@ public class StudyIterator {
 
 	private Study study;
 	private ArrayList<Object> images;
-	private DISPLAY_MODE_VALUE displayMode;
+	private DisplayMode displayMode;
 	private int index;
 	
 	/**
@@ -58,7 +58,7 @@ public class StudyIterator {
 	 * 	false if they can
 	 */
 	public boolean isEnd() { //moving to right
-		if (displayMode == DISPLAY_MODE_VALUE.ONE_IMAGE) {
+		if (displayMode == DisplayMode.ONE_IMAGE) {
 			return (index >= images.size() - 1) ;
 		}
 		else {
@@ -72,7 +72,7 @@ public class StudyIterator {
 	 * 	false if they can
 	 */
 	public boolean isBeginning() { //moving to left
-		if (displayMode == DISPLAY_MODE_VALUE.ONE_IMAGE) {
+		if (displayMode == DisplayMode.ONE_IMAGE) {
 			return (index <= 0);
 		}
 		else {
@@ -106,7 +106,7 @@ public class StudyIterator {
 	 * @throws IndexOutOfBoundsException
 	 */
 	public Image next() throws IndexOutOfBoundsException { //moving to right
-		if (displayMode == DISPLAY_MODE_VALUE.ONE_IMAGE && !isEnd()) {
+		if (displayMode == DisplayMode.ONE_IMAGE && !isEnd()) {
 			if(images.get(index + 1) instanceof Image){
 				this.index = study.getIndex();
 				Image newImage = (Image)images.get(index + 1);
@@ -123,7 +123,7 @@ public class StudyIterator {
 			}
 			
 		}
-		else if (displayMode == DISPLAY_MODE_VALUE.FOUR_IMAGE && !isEnd()) {
+		else if (displayMode == DisplayMode.FOUR_IMAGE && !isEnd()) {
 			if (images.get(index + 4) instanceof Image){
 				this.index = study.getIndex();
 				Image newImage = (Image)images.get(index + 4);
@@ -150,7 +150,7 @@ public class StudyIterator {
 	 * @throws IndexOutOfBoundsException
 	 */
 	public Image prev() throws IndexOutOfBoundsException { //moving to left
-		if (displayMode == DISPLAY_MODE_VALUE.ONE_IMAGE && !isBeginning()) {
+		if (displayMode == DisplayMode.ONE_IMAGE && !isBeginning()) {
 			if (images.get(index - 1) instanceof Image){
 				this.index = study.getIndex();
 				Image newImage = (Image)images.get(index - 1);
@@ -167,7 +167,7 @@ public class StudyIterator {
 			}
 			
 		}
-		else if (displayMode == DISPLAY_MODE_VALUE.FOUR_IMAGE && !isBeginning()) {
+		else if (displayMode == DisplayMode.FOUR_IMAGE && !isBeginning()) {
 			if (images.get(index -4) instanceof Image){
 				this.index = study.getIndex();
 				Image newImage = (Image)images.get(index - 4);
@@ -191,7 +191,7 @@ public class StudyIterator {
 	 * Sets the display mode that the user is viewing in
 	 * @param mode - the display mode that the user is viewing in
 	 */
-	public void setDisplayMode(DISPLAY_MODE_VALUE mode) {
+	public void setDisplayMode(DisplayMode mode) {
 		this.displayMode = mode;
 	}
 }

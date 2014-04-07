@@ -31,8 +31,6 @@ import javax.swing.border.EtchedBorder;
 public class ImageViewerWindow extends JFrame {
 	private static final long serialVersionUID = 1L;
 
-	private ImagePanelDecorator panelDecorator;
-	
 	private ImagePanel imagePanel;
 	private JPanel mainPanel, reconstructionPanel, reconstructButtonPanel;
 	private ImageViewerMenuBar menuBar;
@@ -51,8 +49,6 @@ public class ImageViewerWindow extends JFrame {
 	 */
 	public ImageViewerWindow(Study studyModel) {
 		this.studyModel = studyModel;
-		
-		this.panelDecorator = null;
 		
 		this.reconstructionIterator = null;
 		this.previousModes = new Stack<Study.Memento>();
@@ -207,7 +203,7 @@ public class ImageViewerWindow extends JFrame {
 	 * changed
 	 * @param mode the new display mode for the model.
 	 */
-	public void setPanelDisplayMode(DISPLAY_MODE_VALUE mode) {
+	public void setPanelDisplayMode(DisplayMode mode) {
 		this.previousModes.push(this.studyModel.saveToMemento());
 		this.studyModel.setDisplayMode(mode);
 		this.studyIterator.setDisplayMode(mode);
@@ -228,7 +224,7 @@ public class ImageViewerWindow extends JFrame {
 	 * This method gets the current display mode for the underlying model
 	 * @return the current display mode for the underlying model
 	 */
-	public DISPLAY_MODE_VALUE getPanelDisplayMode() {
+	public DisplayMode getPanelDisplayMode() {
 		return this.studyModel.getStudySettings().getDisplayMode();
 	}
 
@@ -241,30 +237,27 @@ public class ImageViewerWindow extends JFrame {
 			//Change window layout
 			this.mainPanel.setLayout(new GridLayout(2, 2));
 			//Put image panel in upper left hand corner
-			this.mainPanel.add(imagePanel);
+			
 			
 			//this.mainPanel.add(this.imagePanel);
 			if(mode.equals("XZ")) {
-				this.mainPanel.add(new JLabel());
-				setReconstructionPanelImage(this.reconstructionIterator.next());
-				this.mainPanel.add(reconstructionPanel);
-				this.mainPanel.add(new JLabel());
-				
-				/*this.panelDecorator = new VerticalLineDecorator(
-					this.imagePanel,
+				this.imagePanel = new VerticalLineDecorator(
+					this.imagePanel.getDisplayMode(),
 					384,
 					Math.min(imagePanel.getWidth(), studyModel.getImageWidth()),
 					this.studyModel.getIndex()
 				);
-				this.panelDecorator.setProgress(1);*/
-			} else {
+				((ImagePanelDecorator) this.imagePanel).setProgress(1);
+				this.studyModel.addObserver(imagePanel);
+				this.mainPanel.add(imagePanel);
+				
+				this.mainPanel.add(new JLabel());
 				setReconstructionPanelImage(this.reconstructionIterator.next());
 				this.mainPanel.add(reconstructionPanel);
 				this.mainPanel.add(new JLabel());
-				this.mainPanel.add(new JLabel());
-				
-				/*this.panelDecorator = new HorizontalLineDecorator(
-					this.imagePanel,
+			} else {
+				this.imagePanel = new HorizontalLineDecorator(
+					this.imagePanel.getDisplayMode(),
 					384,
 					Math.min(
 						imagePanel.getHeight(),
@@ -272,10 +265,18 @@ public class ImageViewerWindow extends JFrame {
 					),
 					this.studyModel.getIndex()
 				);
-				this.panelDecorator.setProgress(1);*/
+				((ImagePanelDecorator) this.imagePanel).setProgress(1);
+				this.studyModel.addObserver(imagePanel);
+				this.mainPanel.add(imagePanel);
+				
+				setReconstructionPanelImage(this.reconstructionIterator.next());
+				this.mainPanel.add(reconstructionPanel);
+				this.mainPanel.add(new JLabel());
+				this.mainPanel.add(new JLabel());
 			}
 			
-			//this.panelDecorator.paint(studyModel.getIndex());
+			this.imagePanel.revalidate();
+			this.imagePanel.repaint();
 
 			this.reconstructionPanel.revalidate();
 			this.reconstructionPanel.repaint();
@@ -329,9 +330,9 @@ public class ImageViewerWindow extends JFrame {
 		public void update(Observable subj, Object data) {
 			Study study = (Study) subj;
 			
-			DISPLAY_MODE_VALUE mode = study.getStudySettings().getDisplayMode();
+			DisplayMode mode = study.getStudySettings().getDisplayMode();
 			
-			if(mode == DISPLAY_MODE_VALUE.ONE_IMAGE) {
+			if(mode == DisplayMode.ONE_IMAGE) {
 				super.setText(
 					String.format("Current Image: %d", study.getIndex() + 1)
 				);
@@ -355,11 +356,11 @@ public class ImageViewerWindow extends JFrame {
 					reconstructionIterator.previous()
 				);
 				
-				/*panelDecorator.setProgress(
+				((ImagePanelDecorator) imagePanel).setProgress(
 					reconstructionIterator.previousIndex() + 1
 				);
 				
-				panelDecorator.paint(studyModel.getIndex());*/
+				imagePanel.repaint();
 			} catch(NoSuchElementException ex) {
 				JOptionPane.showMessageDialog(null, "First image!");
 			}
@@ -371,11 +372,11 @@ public class ImageViewerWindow extends JFrame {
 			try {
 				setReconstructionPanelImage(reconstructionIterator.next());
 				
-				/*panelDecorator.setProgress(
+				((ImagePanelDecorator) imagePanel).setProgress(
 					reconstructionIterator.nextIndex() - 1
 				);
 				
-				panelDecorator.paint(studyModel.getIndex());*/
+				imagePanel.repaint();
 			} catch(NoSuchElementException ex) {
 				JOptionPane.showMessageDialog(null, "First image!");
 			}
