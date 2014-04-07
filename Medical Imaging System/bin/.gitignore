@@ -27,3 +27,6 @@
 /VerticalLineDecorator.class
 /ImageViewerWindow$ReconstructPrev.class
 /ImageViewerWindow$ReconstructNext.class
+/ImageViewerMenuBar$WindowingModeImage.class
+/ImageViewerMenuBar$WindowingModeStudy.class
+/ImagePanelDecorator.class

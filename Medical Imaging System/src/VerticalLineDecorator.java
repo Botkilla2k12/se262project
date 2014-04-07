@@ -5,25 +5,23 @@ import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
 
-public class VerticalLineDecorator extends PanelDecorator {
-	public VerticalLineDecorator(JPanel panel, int total, int dim, int index) {
-		super(panel, total, dim, index);
+public class VerticalLineDecorator extends ImagePanelDecorator {
+	public VerticalLineDecorator(DISPLAY_MODE_VALUE value, int total, int dim, int index) {
+		super(value, total, dim, index);
 	}
 
 	@Override
-	public void paint(int currIdx) {		
-		if(currIdx == this.getImageIndex()) {
-			double fraction = 0.5;//(double) getProgress() / (double) getTotal();
-			int x = (int) (fraction * getMaxDim());
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		
+		double fraction = (double) getProgress() / (double) getTotal();
+		int x = (int) (fraction * getMaxDim());
 
-			Graphics2D g2d = (Graphics2D) getGraphics();
-			
-			Color original = g2d.getColor();
-			g2d.setColor(new Color(218, 165, 32));
-			g2d.drawLine(x, 0, x, getMaxDim());
-			g2d.setColor(original);
-		}
-
-		super.paint(currIdx);
+		Graphics2D g2d = (Graphics2D) g;
+		
+		Color original = g2d.getColor();
+		g2d.setColor(new Color(218, 165, 32));
+		g2d.drawRect(0, 0, x, getMaxDim());
+		g2d.setColor(original);
 	}
 }

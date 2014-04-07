@@ -5,6 +5,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+
 import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
 import javax.swing.JFileChooser;
@@ -16,7 +20,6 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
 
 public class ImageViewerMenuBar extends JMenuBar {
-    
     private JMenu fileMenu;
     private JMenu editMenu;
     private JMenu settingsMenu;
@@ -109,8 +112,6 @@ public class ImageViewerMenuBar extends JMenuBar {
     private void InitEditMenu(){
         this.editMenu=new JMenu("Edit");
         
-        
-        
         this.exitReconstructMode = new JMenuItem("Exit Reconstruction");
         this.exitReconstructMode.setEnabled(false);
         this.exitReconstructMode.addActionListener(new ActionListener() {
@@ -129,8 +130,6 @@ public class ImageViewerMenuBar extends JMenuBar {
         JMenuItem wImage = new JMenuItem("Image");
         wImage.addActionListener(new WindowingModeImage());
         
-        
-        
         JMenuItem wStudy = new JMenuItem("Study");
         wStudy.addActionListener(new WindowingModeStudy());
         
@@ -141,11 +140,11 @@ public class ImageViewerMenuBar extends JMenuBar {
 
         ReconstructStudy eventListener = new ReconstructStudy();
         
-        JMenuItem xz = new JMenuItem("Sagittal");
+        JMenuItem xz = new JMenuItem("Coronal");
         xz.addActionListener(eventListener);
         reconstructStudy.add(xz);
         
-        JMenuItem yz = new JMenuItem("Coronal");
+        JMenuItem yz = new JMenuItem("Sagittal");
         yz.addActionListener(eventListener);
         reconstructStudy.add(yz);
         
@@ -209,7 +208,7 @@ public class ImageViewerMenuBar extends JMenuBar {
     }
     
     private String getMode(String input) {
-    	if(input.equals("Coronal")) {
+    	if(input.equals("Sagittal")) {
     		return "XZ";
     	} else {
     		return "YZ";
@@ -381,8 +380,11 @@ public class ImageViewerMenuBar extends JMenuBar {
             File imageDir = new File(reconstructor.getFolderPath());
             ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
             
+            File[] files = imageDir.listFiles();
+            Arrays.sort(files);
+            
             //read everything
-            for(File f : imageDir.listFiles()) {
+            for(File f : files) {
                 try {
                     images.add(ImageIO.read(f));
                 } catch (IOException e1) {
