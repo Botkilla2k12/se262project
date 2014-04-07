@@ -268,6 +268,7 @@ public class ImageViewerWindow extends JFrame {
 				((ImagePanelDecorator) this.imagePanel).setProgress(1);
 				this.studyModel.addObserver(imagePanel);
 				this.mainPanel.add(imagePanel);
+				this.imagePanel.update(studyModel, null);
 				
 				setReconstructionPanelImage(this.reconstructionIterator.next());
 				this.mainPanel.add(reconstructionPanel);
@@ -336,7 +337,6 @@ public class ImageViewerWindow extends JFrame {
 				super.setText(
 					String.format("Current Image: %d", study.getIndex() + 1)
 				);
-				
 			} else {
 				super.setText(
 					String.format(

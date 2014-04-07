@@ -28,11 +28,6 @@ public abstract class ImagePanelDecorator extends ImagePanel {
 		super.update(subject, data);
 	}
 	
-	@Override
-	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
-	}
-	
 	public boolean isActive() {
 		return isActive;
 	}

@@ -9,11 +9,12 @@ public class VerticalLineDecorator extends ImagePanelDecorator {
 	public VerticalLineDecorator(DisplayMode value, int total, int dim, int index) {
 		super(value, total, dim, index);
 	}
-
+	
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
+		System.out.println(isActive());
 		if(isActive()) {
 			double fraction = (double) getProgress() / (double) getTotal();
 			int x = (int) (fraction * getMaxDim());
