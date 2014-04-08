@@ -285,7 +285,10 @@ public class ImageViewerWindow extends JFrame {
 			this.reconstructButtonPanel.setVisible(true);
 		} else {
 			this.mainPanel.setLayout(new GridLayout(1, 1));
-			this.mainPanel.add(this.imagePanel);
+			this.imagePanel = new ImagePanel(this.imagePanel.getDisplayMode());
+			this.studyModel.addObserver(imagePanel);
+			this.mainPanel.add(imagePanel);
+			this.imagePanel.update(studyModel, null);
 			
 			this.numberLabel.update(this.studyModel, null);
 			
