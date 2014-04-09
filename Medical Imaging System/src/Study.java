@@ -178,14 +178,23 @@ public class Study extends Observable {
 	}
 	
 	public Memento saveToMemento() {
-		return new Memento(this.studySettings.getDisplayMode());
+		return new Memento(
+			this.studySettings.getDisplayMode(),
+			this.images
+		);
 	}
 	
 	public static class Memento {
+		private ArrayList<Image> images;
 		private DisplayMode displayMode;
 		
-		public Memento(DisplayMode displayMode) {
+		public Memento(DisplayMode displayMode, ArrayList<Image> images) {
 			this.displayMode = displayMode;
+			this.images = images;
+		}
+		
+		public ArrayList<Image> getImages() {
+			return this.images;
 		}
 		
 		public DisplayMode getDisplayMode() {
@@ -194,11 +203,9 @@ public class Study extends Observable {
 	}
 
 	public void setImages(ArrayList<Image> images) {
-		// TODO Auto-generated method stub
 		this.images = images;
 		this.setChanged();
 		this.notifyObservers();
-		
 	}
 	
 	public boolean getSaved() {
