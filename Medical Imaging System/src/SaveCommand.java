@@ -141,13 +141,14 @@ public class SaveCommand implements Command {
 			}
 			
 			/*REMOVE THESE LINES AFTER TESTING*/
+			/*
 			ArrayList<Image> imagesToManipulate = new ArrayList<Image>();
 			for (int i = 0; i < images.size(); i++) {
 				imagesToManipulate.add(images.get(i));
 			}
-			ImageWindowCommand iwc = new ImageWindowCommand(25, 225, imagesToManipulate, oldName);
+			ImageWindowCommand iwc = new ImageWindowCommand(25, 225, imagesToManipulate);
 			iwc.execute();
-			/*ArrayList<BufferedImage> manipulatedImages = iwc.getWindowedImages();
+			ArrayList<BufferedImage> manipulatedImages = iwc.getWindowedImages();
 			String testName = newName + "manipulated";
 			File testFile = new File(testName);
 			testFile.mkdir();

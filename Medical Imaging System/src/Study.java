@@ -80,6 +80,7 @@ public class Study extends Observable {
 	 * @return a list of all images stored in the study
 	 */
 	public ArrayList<Image> getImages(){
+		System.out.println("Original" + this.images.size());
 		return this.images;
 	}
 	
@@ -193,15 +194,9 @@ public class Study extends Observable {
 
 	public void setImages(ArrayList<Image> images) {
 		// TODO Auto-generated method stub
-		if (images.get(0) instanceof Image){
-			this.images = images;
-		} else {
-			try {
-				throw new TypeException();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+		this.images = images;
+		this.setChanged();
+		this.notifyObservers();
 		
 	}
 }

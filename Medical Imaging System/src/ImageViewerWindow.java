@@ -154,6 +154,10 @@ public class ImageViewerWindow extends JFrame {
 		
 	}
 
+	public void setDisplayedStudyImages(ArrayList<Image> newImages){
+		this.studyModel.setImages(newImages);
+	}
+	
 	public ArrayList<Image> getDisplayedStudyImages() {
 		return this.studyModel.getImages();
 	}

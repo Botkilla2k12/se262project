@@ -10,24 +10,25 @@ import javax.imageio.ImageIO;
 public class ImageWindowCommand extends UndoableCommand implements Command {
 	private ArrayList<Image> imagesToManipulate;
 	private int lowCutoff, highCutoff;
-	private ArrayList<BufferedImage> manipulatedImages;
-	private String directory;
+	private ArrayList<Image> manipulatedImages;
+	//private String directory;
 	
-	public ImageWindowCommand(int low, int high, ArrayList<Image> images, String directory) {
+	public ImageWindowCommand(int low, int high, ArrayList<Image> images) {
 		this.lowCutoff = low;
 		this.highCutoff = high;
 		this.imagesToManipulate = images;
-		this.manipulatedImages = new ArrayList<BufferedImage>();
-		this.directory = directory;
+		this.manipulatedImages = new ArrayList<Image>();
+		//this.directory = directory;
 	}
 	
 	@Override
 	public void execute() {
+		/*
 		String manipulatedDirectory = directory + "Manipulated";
 		File manipulatedFile = new File(manipulatedDirectory);
 		if (!manipulatedFile.exists()) {
 			manipulatedFile.mkdir();
-		}
+		}*/
 		for (Image img : this.imagesToManipulate) {
 			BufferedImage imgData = (BufferedImage) img.getImages().get(0);
 			
@@ -71,13 +72,15 @@ public class ImageWindowCommand extends UndoableCommand implements Command {
 					imgData.setRGB(x, y, rgb);
 				}
 			}
-			manipulatedImages.add(imgData);
+			Image newImg = new Image(img.toString(), imgData);
+			manipulatedImages.add(newImg);
+			/*
 			String newImagePath = manipulatedDirectory + "\\" + img.toString();
 			try {
 				ImageIO.write(imgData, "jpg", new File(newImagePath));
 			} catch (IOException e) {
 				e.printStackTrace();
-			}
+			}*/
 		}
 
 	}
@@ -88,7 +91,7 @@ public class ImageWindowCommand extends UndoableCommand implements Command {
 		
 	}
 	
-	public ArrayList<BufferedImage> getWindowedImages() {
+	public ArrayList<Image> getWindowedImages() {
 		return this.manipulatedImages;
 	}
 }

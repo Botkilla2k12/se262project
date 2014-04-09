@@ -27,6 +27,7 @@ public class StudySettings {
 				new File(directory.getAbsolutePath() + "\\" + CONFIG_FILE);
 			
 			if(!configFile.exists()) {
+				//System.out.println(configFile);
 				configFile.createNewFile();
 				
 				this.displayMode = DisplayMode.ONE_IMAGE;

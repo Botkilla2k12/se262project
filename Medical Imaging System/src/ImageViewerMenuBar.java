@@ -244,14 +244,20 @@ public class ImageViewerMenuBar extends JMenuBar {
                 images.add(image);
                 ImageWindowCommand winComm = new ImageWindowCommand(i1, 
                                         i2, 
-                                        images, 
-                                        parentWin.getDirectory().getPath());
+                                        images 
+                                        );
                 winComm.execute();
-                System.out.println(parentWin.getDirectory().getPath()+"Manipulated");
-                File newF = new File(parentWin.getDirectory().getPath()+"Manipulated");
+                //System.out.println(parentWin.getDirectory().getPath()+"Manipulated");
+                File newF = new File(parentWin.getDirectory().getPath());
                 Study st = new Study(newF);
                 
                 parentWin.setupNewStudy(st);
+                ArrayList<Image> windowedImages = winComm.getWindowedImages();
+                System.out.println(windowedImages.size());
+                ArrayList<Image> originalImages = parentWin.getDisplayedStudyImages();
+                System.out.println(originalImages.size());
+                originalImages.set(parentWin.getIndex(), windowedImages.get(0));
+                parentWin.setDisplayedStudyImages(originalImages);
             }
         }    
     }
@@ -289,8 +295,8 @@ public class ImageViewerMenuBar extends JMenuBar {
                
                ImageWindowCommand winComm = new ImageWindowCommand(i1, 
                                        i2, 
-                                       images, 
-                                       parentWin.getDirectory().getPath());
+                                       images 
+                                       );
                winComm.execute();
                System.out.println(parentWin.getDirectory().getPath());
                File newF = new File(parentWin.getDirectory().getPath());
@@ -302,6 +308,8 @@ public class ImageViewerMenuBar extends JMenuBar {
 				e1.printStackTrace();
 			}
                parentWin.setupNewStudy(st);
+               ArrayList<Image> windowedImages = winComm.getWindowedImages();
+               parentWin.setDisplayedStudyImages(windowedImages);
            }
        }  
     }
