@@ -65,6 +65,7 @@ public class OpenCommand implements Command {
 			if (manipulatedFile.exists()) {
 				file = manipulatedFile;
 			}
+			
 			if (name.endsWith(".jpg") || name.endsWith(".jpeg")) {
 				try {
 					BufferedImage image = ImageIO.read(file);

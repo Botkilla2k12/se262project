@@ -2,3 +2,11 @@
 /ImageViewerWindow$2.class
 /DisplayModeValue.class
 /DisplayMode.class
+/HorizontalLineDecorator.class
+/ImagePanelDecorator.class
+/ImageViewerMenuBar$WindowingModeImage.class
+/ImageViewerMenuBar$WindowingModeStudy.class
+/ImageViewerWindow$ReconstructNext.class
+/ImageViewerWindow$ReconstructPrev.class
+/ReconstructImageDecorator.class
+/VerticalLineDecorator.class
