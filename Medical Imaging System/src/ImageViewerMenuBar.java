@@ -258,7 +258,6 @@ public class ImageViewerMenuBar extends JMenuBar {
                 System.out.println(originalImages.size());
                 originalImages.set(parentWin.getIndex(), windowedImages.get(0));
                 parentWin.setDisplayedStudyImages(originalImages);
-                parentWin.setSaved(false);
             }
         }    
     }
@@ -266,24 +265,25 @@ public class ImageViewerMenuBar extends JMenuBar {
     
     class WindowingModeStudy implements ActionListener{
         public void actionPerformed(ActionEvent e) {
-            ImageViewerWindow parentWin =
-                    (ImageViewerWindow) getTopLevelAncestor();
+        	ImageViewerWindow parentWin =
+        		(ImageViewerWindow) getTopLevelAncestor();
+
            String low = JOptionPane.showInputDialog(" Input low value \n 0-255 \n");
            String high = JOptionPane.showInputDialog(" Input high value \n 0-255 \n");
            int i1 = Integer.parseInt(low);
            int i2 = Integer.parseInt(high);
            ArrayList<Integer> ints= new ArrayList<Integer>();
-           
+
            if(checkInput(low, high)){
                ArrayList<Image> images = new ArrayList<Image>();
-               BufferedImage i=null;
+               BufferedImage i = null;
+
                for(int k = 0; k<parentWin.getDirectory().listFiles().length; k++){
             	   if(!(parentWin.getDirectory().listFiles()[k].getName().endsWith(".cfg")))
             		  ints.add(k);
                }
+
                for(int j:ints){
-            	   System.out.println(j);
-            	   System.out.println(parentWin.getDirectory().listFiles().length);
             	   try {
                        i = ImageIO.read(parentWin.getDirectory().listFiles()[j]);
                    } catch (IOException e1) {
@@ -295,24 +295,23 @@ public class ImageViewerMenuBar extends JMenuBar {
                }
                
                ImageWindowCommand winComm = new ImageWindowCommand(i1, 
-                                       i2, 
-                                       images 
-                                       );
+	               i2, 
+	               images
+               );
                winComm.execute();
-               System.out.println(parentWin.getDirectory().getPath());
+
                File newF = new File(parentWin.getDirectory().getPath());
                Study st = new Study(newF);
-               try {
-				st.open();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-               parentWin.setupNewStudy(st);
-               ArrayList<Image> windowedImages = winComm.getWindowedImages();
-               parentWin.setDisplayedStudyImages(windowedImages);
+               	try {
+               		st.open();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+               	
+               	parentWin.setupNewStudy(st);
+               	ArrayList<Image> windowedImages = winComm.getWindowedImages();
+               	parentWin.setDisplayedStudyImages(windowedImages);
            }
-           parentWin.setSaved(false);
        }  
     }
     
@@ -356,16 +355,16 @@ public class ImageViewerMenuBar extends JMenuBar {
             try{
                 File chFile = chooser.getSelectedFile();
                 SaveCommand save = new SaveCommand(
-                		parentWin.getDisplayedStudyImages(),
-                		parentWin.getDirectory().getAbsolutePath(),
-                		chFile.getAbsolutePath(),
-                		parentWin.getSaved()
+            		parentWin.getDisplayedStudyImages(),
+            		parentWin.getDirectory().getAbsolutePath(),
+            		chFile.getAbsolutePath(),
+            		parentWin.getSaved()
                 );
                 save.execute();
             }catch (NullPointerException i) {
                 
             }
-            parentWin.setSaved(true);
+            
         }
     }
     

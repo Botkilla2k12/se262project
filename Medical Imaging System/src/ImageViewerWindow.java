@@ -3,6 +3,8 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -38,7 +40,6 @@ public class ImageViewerWindow extends JFrame {
 	private ListIterator<BufferedImage> reconstructionIterator;
 	private StudyIterator studyIterator;
 	private Study studyModel;
-	private Stack<Study.Memento> previousModes;
 	
 	private boolean inReconstructMode;
 
@@ -51,7 +52,6 @@ public class ImageViewerWindow extends JFrame {
 		this.studyModel = studyModel;
 		
 		this.reconstructionIterator = null;
-		this.previousModes = new Stack<Study.Memento>();
 		this.menuBar = new ImageViewerMenuBar();
 
 		this.mainPanel = new JPanel();
@@ -143,15 +143,13 @@ public class ImageViewerWindow extends JFrame {
 		
 		setupNewStudy(studyModel);
 		setPanelDisplayMode(studyModel.getStudySettings().getDisplayMode());
-		//Get rid of the initial state to avoid duplication when exhausting
-		//undo operations.
-		this.previousModes.pop();
+		this.studyModel.clearAllSavedStates();
 		
 		super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setTitle("Medical Image Viewing System");
 		super.setVisible(true);
 		
-		
+		//super.addWindowListener();
 	}
 
 	public void setDisplayedStudyImages(ArrayList<Image> newImages){
@@ -169,7 +167,6 @@ public class ImageViewerWindow extends JFrame {
 	public void setupNewStudy(Study study) {
 		this.setReconstructMode(false, "");
 		
-		this.previousModes.removeAllElements();
 		if(this.studyModel != null) {
 			this.studyModel.deleteObserver(imagePanel);
 			this.studyModel.deleteObserver(numberLabel);
@@ -214,20 +211,18 @@ public class ImageViewerWindow extends JFrame {
 	 * @param mode the new display mode for the model.
 	 */
 	public void setPanelDisplayMode(DisplayMode mode) {
-		this.previousModes.push(this.studyModel.saveToMemento());
 		this.studyModel.setDisplayMode(mode);
 		this.studyIterator.setDisplayMode(mode);
 	}
 
 	public void undoStateChange() {
-		try {
-			Study.Memento previousState = this.previousModes.pop();
-			this.studyModel.restoreFromMemento(previousState);
-			this.studyIterator.setDisplayMode(previousState.getDisplayMode());
-			this.menuBar.activateRadioButtonFromDisplayMode(previousState.getDisplayMode());
-		} catch (EmptyStackException e) {
-			JOptionPane.showMessageDialog(this, "All states have been undone");
-		}
+		this.studyModel.restoreFromMemento();
+		this.menuBar.activateRadioButtonFromDisplayMode(
+			this.studyModel.getStudySettings().getDisplayMode()
+		);
+		this.studyIterator.setDisplayMode(
+			this.studyModel.getStudySettings().getDisplayMode()
+		);
 	}
 	
 	/**

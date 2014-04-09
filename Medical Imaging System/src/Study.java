@@ -1,8 +1,12 @@
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Observable;
 import java.util.ArrayList;
+import java.util.EmptyStackException;
+import java.util.Observable;
+import java.util.Stack;
+
+import javax.swing.JOptionPane;
 
 /**
  * @author Derek Leung
@@ -12,6 +16,7 @@ import java.util.ArrayList;
 public class Study extends Observable {
 
 	private ArrayList<Image> images;
+	private Stack<Memento> previousModes;
 
 	private File directory; 
 	private StudySettings studySettings;
@@ -21,6 +26,8 @@ public class Study extends Observable {
 	
 	public Study(File directory) {
 		this.studySettings = new StudySettings(directory);
+		
+		this.previousModes = new Stack<Memento>();
 		
 		this.index = this.studySettings.getLastImageIndex();
 		this.defaultImageHeight = 0;
@@ -157,7 +164,12 @@ public class Study extends Observable {
 	 */
 	public void setDisplayMode(DisplayMode mode) {
 		DisplayMode currMode = studySettings.getDisplayMode();
+		
+		this.previousModes.push(this.saveToMemento());
+		
 		this.studySettings.setDisplayMode(mode);
+		
+		
 		
 		if(currMode == DisplayMode.ONE_IMAGE &&
 			mode == DisplayMode.FOUR_IMAGE
@@ -173,8 +185,20 @@ public class Study extends Observable {
 		super.notifyObservers();
 	}
 	
-	public void restoreFromMemento(Memento memento) {
-		this.setDisplayMode(memento.getDisplayMode());
+	public void restoreFromMemento() {		
+		try {
+			Study.Memento memento = this.previousModes.pop();
+			
+			System.out.println(this.previousModes.size());
+			
+			this.studySettings.setDisplayMode(memento.getDisplayMode());
+			this.images = memento.getImages();
+			
+			super.setChanged();
+			super.notifyObservers();
+		} catch (EmptyStackException e) {
+			JOptionPane.showMessageDialog(null, "All states have been undone");
+		}
 	}
 	
 	public Memento saveToMemento() {
@@ -203,9 +227,12 @@ public class Study extends Observable {
 	}
 
 	public void setImages(ArrayList<Image> images) {
+		this.previousModes.push(this.saveToMemento());
+		
 		this.images = images;
-		this.setChanged();
-		this.notifyObservers();
+		
+		super.setChanged();
+		super.notifyObservers();
 	}
 	
 	public boolean getSaved() {
@@ -214,5 +241,9 @@ public class Study extends Observable {
 	
 	public void setSaved(boolean newSaved) {
 		this.saved = newSaved;
+	}
+	
+	public void clearAllSavedStates() {
+		this.previousModes.removeAllElements();
 	}
 }
