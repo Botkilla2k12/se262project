@@ -33,15 +33,16 @@ public class SaveCommand implements Command {
 	 * @param oldName - filepath that is being saved under a new name
 	 * @param newName - new filepath name to be saved
 	 */
-	public SaveCommand(ArrayList<Image> images, String newName) {
+	public SaveCommand(ArrayList<Image> images, String oldName, String newName) {
+		this.oldName = oldName;
 		this.images = images;
 		this.newName = newName;
 	}
-	
+	/*
 	public SaveCommand(String oldName, String newName) {
 		this.oldName = oldName;
 		this.newName = newName;
-	}
+	}*/
 	
 	public void execute() {
 		save();
@@ -85,7 +86,9 @@ public class SaveCommand implements Command {
 		
 		//Loops through all images in the old directory and copies them into new directory
 		try {
+			/*
 			ArrayList<Image> images = new ArrayList<Image>();
+			
 			File oldFile = new File(oldName);
 			File[] files = oldFile.listFiles();
 			Arrays.sort(files);
@@ -109,8 +112,9 @@ public class SaveCommand implements Command {
 					images.add(newImage);
 				}
 			}
-			
+			*/
 			for (int i = 0; i < images.size(); i++) {
+				//System.out.println("I'm here");
 				if (images.get(i) instanceof Image){
 					Image image = (Image) images.get(i);
 					String name = image.toString().toLowerCase();
