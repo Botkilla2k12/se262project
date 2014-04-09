@@ -23,7 +23,7 @@ import java.awt.image.BufferedImage;
 public class OpenCommand implements Command {
 
 	private File directory;
-	private ArrayList<Object> images;
+	private ArrayList<Image> images;
 	
 	/**
 	 * Initializes an OpenCommand object with a given directory so all
@@ -33,7 +33,7 @@ public class OpenCommand implements Command {
 	 */
 	public OpenCommand(File directory) throws IOException {
 		this.directory = directory;
-		this.images = new ArrayList<Object>();
+		this.images = new ArrayList<Image>();
 		execute();
 	}
 	
@@ -53,7 +53,7 @@ public class OpenCommand implements Command {
 	 * @return ArrayList of BufferedImage for each .jpg/.jpeg file
 	 * @throws IOException
 	 */
-	private ArrayList<Object> open(File directory) throws IOException {
+	private ArrayList<Image> open(File directory) throws IOException {
 		File[] files = directory.listFiles();
 		Arrays.sort(files);
 		String manipulatedDirectory = directory + "Manipulated";
@@ -90,7 +90,7 @@ public class OpenCommand implements Command {
 	 * Gets the list of all images in this directory
 	 * @return ArrayList of all images in this directory
 	 */
-	public ArrayList<Object> getImages() {
+	public ArrayList<Image> getImages() {
 		return images;
 	}
 

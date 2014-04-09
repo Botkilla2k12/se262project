@@ -150,8 +150,14 @@ public class ImageViewerWindow extends JFrame {
 		super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setTitle("Medical Image Viewing System");
 		super.setVisible(true);
+		
+		
 	}
 
+	public ArrayList<Image> getDisplayedStudyImages() {
+		return this.studyModel.getImages();
+	}
+	
 	/**
 	 * This class reinitializes the study model in this window.
 	 * @param study the study to be initializes
@@ -386,4 +392,5 @@ public class ImageViewerWindow extends JFrame {
 			}
 		}
 	}
+	
 }

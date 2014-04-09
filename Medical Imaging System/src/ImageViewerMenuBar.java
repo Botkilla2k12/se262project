@@ -346,8 +346,11 @@ public class ImageViewerMenuBar extends JMenuBar {
             try{
                 File chFile = chooser.getSelectedFile();
                 SaveCommand save = new SaveCommand(
+                		parentWin.getDisplayedStudyImages(),
+                		chFile.getAbsolutePath()
+                		/*
                     parentWin.getDirectory().getAbsolutePath(),
-                    chFile.getAbsolutePath()
+                    chFile.getAbsolutePath()*/
                 );
                 save.execute();
             }catch (NullPointerException i) {

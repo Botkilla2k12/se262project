@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class StudyIterator {
 
 	private Study study;
-	private ArrayList<Object> images;
+	private ArrayList<Image> images;
 	private DisplayMode displayMode;
 	private int index;
 	

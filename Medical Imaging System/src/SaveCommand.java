@@ -24,6 +24,7 @@ public class SaveCommand implements Command {
 
 	private String oldName;
 	private String newName;
+	private ArrayList<Image> images;
 	private static final String CONFIG_FILE = "study.cfg";
 	
 	/**
@@ -32,6 +33,11 @@ public class SaveCommand implements Command {
 	 * @param oldName - filepath that is being saved under a new name
 	 * @param newName - new filepath name to be saved
 	 */
+	public SaveCommand(ArrayList<Image> images, String newName) {
+		this.images = images;
+		this.newName = newName;
+	}
+	
 	public SaveCommand(String oldName, String newName) {
 		this.oldName = oldName;
 		this.newName = newName;

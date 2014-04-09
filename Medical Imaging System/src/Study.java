@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class Study extends Observable {
 
-	private ArrayList<Object> images;
+	private ArrayList<Image> images;
 
 	private File directory; 
 	private StudySettings studySettings;
@@ -27,7 +27,7 @@ public class Study extends Observable {
 		
 		this.directory = directory;
 		
-		this.images = new ArrayList<Object>();
+		this.images = new ArrayList<Image>();
 	}
 	
 	/**
@@ -79,7 +79,7 @@ public class Study extends Observable {
 	 * Gets all images stored in the study
 	 * @return a list of all images stored in the study
 	 */
-	public ArrayList<Object> getImages(){
+	public ArrayList<Image> getImages(){
 		return this.images;
 	}
 	
@@ -191,7 +191,7 @@ public class Study extends Observable {
 		}
 	}
 
-	public void setImages(ArrayList<Object> images) {
+	public void setImages(ArrayList<Image> images) {
 		// TODO Auto-generated method stub
 		if (images.get(0) instanceof Image){
 			this.images = images;
