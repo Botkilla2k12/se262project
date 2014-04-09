@@ -16,6 +16,7 @@ public class Study extends Observable {
 	private File directory; 
 	private StudySettings studySettings;
 	private int index, defaultImageHeight, defaultImageWidth;
+	private boolean saved;
 	
 	
 	public Study(File directory) {
@@ -28,6 +29,7 @@ public class Study extends Observable {
 		this.directory = directory;
 		
 		this.images = new ArrayList<Image>();
+		this.saved = true;
 	}
 	
 	/**
@@ -80,7 +82,6 @@ public class Study extends Observable {
 	 * @return a list of all images stored in the study
 	 */
 	public ArrayList<Image> getImages(){
-		System.out.println("Original" + this.images.size());
 		return this.images;
 	}
 	
@@ -198,5 +199,13 @@ public class Study extends Observable {
 		this.setChanged();
 		this.notifyObservers();
 		
+	}
+	
+	public boolean getSaved() {
+		return this.saved;
+	}
+	
+	public void setSaved(boolean newSaved) {
+		this.saved = newSaved;
 	}
 }

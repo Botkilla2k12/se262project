@@ -26,6 +26,7 @@ public class SaveCommand implements Command {
 	private String newName;
 	private ArrayList<Image> images;
 	private static final String CONFIG_FILE = "study.cfg";
+	private boolean saved;
 	
 	/**
 	 * Initializes a SaveCommand object with the old filepath
@@ -33,16 +34,12 @@ public class SaveCommand implements Command {
 	 * @param oldName - filepath that is being saved under a new name
 	 * @param newName - new filepath name to be saved
 	 */
-	public SaveCommand(ArrayList<Image> images, String oldName, String newName) {
+	public SaveCommand(ArrayList<Image> images, String oldName, String newName, boolean saved) {
 		this.oldName = oldName;
 		this.images = images;
 		this.newName = newName;
+		this.saved = saved;
 	}
-	/*
-	public SaveCommand(String oldName, String newName) {
-		this.oldName = oldName;
-		this.newName = newName;
-	}*/
 	
 	public void execute() {
 		save();
@@ -54,9 +51,14 @@ public class SaveCommand implements Command {
 	 */
 	public void save() {
 		//Makes new directory
-		File newFile = new File(newName);
+		File newFile;
+		if (saved) {
+			newFile = new File(newName);
+		}
+		else {
+			newFile = new File(newName+"Manipulated");
+		}
 		newFile.mkdir();
-		
 		String configPath = oldName + "\\study.cfg";
 		
 		//Reads the old CFG file and makes a new one with all of the
@@ -86,35 +88,8 @@ public class SaveCommand implements Command {
 		
 		//Loops through all images in the old directory and copies them into new directory
 		try {
-			/*
-			ArrayList<Image> images = new ArrayList<Image>();
-			
-			File oldFile = new File(oldName);
-			File[] files = oldFile.listFiles();
-			Arrays.sort(files);
-			for (int i = 0; i < files.length; i++) {
-				File file = files[i];
-				String name = file.getName().toLowerCase();
-				if (name.endsWith(".jpg") || name.endsWith(".jpeg")) {
-					try {
-						BufferedImage image = ImageIO.read(file);
-						Image newImage = new Image(file.getName(), image);
-						images.add(newImage);
-				    }
-				    catch(IOException e) {
-				    	throw e;
-				    }
-				}
-				else if (name.endsWith(".acr")) {
-					ShowACR acr = new ShowACR(file);
-					BufferedImage image = acr.getImage();
-					Image newImage = new Image(file.getName(), image);
-					images.add(newImage);
-				}
-			}
-			*/
+
 			for (int i = 0; i < images.size(); i++) {
-				//System.out.println("I'm here");
 				if (images.get(i) instanceof Image){
 					Image image = (Image) images.get(i);
 					String name = image.toString().toLowerCase();
@@ -139,26 +114,6 @@ public class SaveCommand implements Command {
 					}
 				}
 			}
-			
-			/*REMOVE THESE LINES AFTER TESTING*/
-			/*
-			ArrayList<Image> imagesToManipulate = new ArrayList<Image>();
-			for (int i = 0; i < images.size(); i++) {
-				imagesToManipulate.add(images.get(i));
-			}
-			ImageWindowCommand iwc = new ImageWindowCommand(25, 225, imagesToManipulate);
-			iwc.execute();
-			ArrayList<BufferedImage> manipulatedImages = iwc.getWindowedImages();
-			String testName = newName + "manipulated";
-			File testFile = new File(testName);
-			testFile.mkdir();
-			for (int a = 0; a < manipulatedImages.size(); a++) {
-				BufferedImage image = manipulatedImages.get(a);
-				int b = a + 1;
-				String newImagePath = testFile.getAbsolutePath() + "\\" + b + ".jpg";
-				ImageIO.write(image, "jpg", new File(newImagePath));
-			}*/
-			/*END REMOVE LINES HERE*/
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

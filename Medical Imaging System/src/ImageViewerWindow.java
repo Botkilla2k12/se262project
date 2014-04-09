@@ -334,6 +334,14 @@ public class ImageViewerWindow extends JFrame {
 		return this.studyModel.getIndex();
 	}
 	
+	public boolean getSaved() {
+		return this.studyModel.getSaved();
+	}
+	
+	public void setSaved(boolean newSaved) {
+		this.studyModel.setSaved(newSaved);
+	}
+	
 	private static class NumberLabel extends JLabel implements Observer {
 		private static final long serialVersionUID = 1L;
 

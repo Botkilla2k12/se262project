@@ -258,6 +258,7 @@ public class ImageViewerMenuBar extends JMenuBar {
                 System.out.println(originalImages.size());
                 originalImages.set(parentWin.getIndex(), windowedImages.get(0));
                 parentWin.setDisplayedStudyImages(originalImages);
+                parentWin.setSaved(false);
             }
         }    
     }
@@ -311,6 +312,7 @@ public class ImageViewerMenuBar extends JMenuBar {
                ArrayList<Image> windowedImages = winComm.getWindowedImages();
                parentWin.setDisplayedStudyImages(windowedImages);
            }
+           parentWin.setSaved(false);
        }  
     }
     
@@ -356,13 +358,14 @@ public class ImageViewerMenuBar extends JMenuBar {
                 SaveCommand save = new SaveCommand(
                 		parentWin.getDisplayedStudyImages(),
                 		parentWin.getDirectory().getAbsolutePath(),
-                		chFile.getAbsolutePath()
+                		chFile.getAbsolutePath(),
+                		parentWin.getSaved()
                 );
                 save.execute();
             }catch (NullPointerException i) {
                 
             }
-            
+            parentWin.setSaved(true);
         }
     }
     
