@@ -253,11 +253,13 @@ public class ImageViewerMenuBar extends JMenuBar {
                 
                 parentWin.setupNewStudy(st);
                 ArrayList<Image> windowedImages = winComm.getWindowedImages();
-                System.out.println(windowedImages.size());
+
                 ArrayList<Image> originalImages = parentWin.getDisplayedStudyImages();
-                System.out.println(originalImages.size());
+
                 originalImages.set(parentWin.getIndex(), windowedImages.get(0));
                 parentWin.setDisplayedStudyImages(originalImages);
+                
+                parentWin.setSaved(false);
             }
         }    
     }
@@ -311,6 +313,8 @@ public class ImageViewerMenuBar extends JMenuBar {
                	parentWin.setupNewStudy(st);
                	ArrayList<Image> windowedImages = winComm.getWindowedImages();
                	parentWin.setDisplayedStudyImages(windowedImages);
+               	
+               	parentWin.setSaved(false);
            }
        }  
     }
@@ -341,7 +345,7 @@ public class ImageViewerMenuBar extends JMenuBar {
     }
     
     class SaveStudy implements ActionListener{
-        public void actionPerformed(ActionEvent e)throws NullPointerException{
+        public void actionPerformed(ActionEvent e) throws NullPointerException{
             ImageViewerWindow parentWin =
                     (ImageViewerWindow) getTopLevelAncestor();
             JFileChooser chooser = new JFileChooser(parentWin.getDirectory());
@@ -361,10 +365,11 @@ public class ImageViewerMenuBar extends JMenuBar {
             		parentWin.getSaved()
                 );
                 save.execute();
+                
+                parentWin.setSaved(true);
             }catch (NullPointerException i) {
                 
             }
-            
         }
     }
     
@@ -460,13 +465,13 @@ public class ImageViewerMenuBar extends JMenuBar {
         Study chStudy= new Study(chFile);
         return chStudy;    
     }
-    public boolean isInteger(String integerString){
 
-           try{
-              Integer.parseInt(integerString);
-              return true;
-           } catch (NumberFormatException nfe) {
-              return false;
-           }
-        }
+    public boolean isInteger(String integerString){
+    	try {
+    		Integer.parseInt(integerString);
+    		return true;
+       	} catch (NumberFormatException nfe) {
+       		return false;
+       	}
+    }
 }

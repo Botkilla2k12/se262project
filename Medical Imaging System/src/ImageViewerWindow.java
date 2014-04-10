@@ -9,16 +9,15 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.EmptyStackException;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Stack;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -149,7 +148,7 @@ public class ImageViewerWindow extends JFrame {
 		this.setTitle("Medical Image Viewing System");
 		super.setVisible(true);
 		
-		//super.addWindowListener();
+		super.addWindowListener(new ImageWindowAdapter());
 	}
 
 	public void setDisplayedStudyImages(ArrayList<Image> newImages){
@@ -400,4 +399,42 @@ public class ImageViewerWindow extends JFrame {
 		}
 	}
 	
+	private class ImageWindowAdapter extends WindowAdapter {
+		public void windowClosing(WindowEvent e) {
+			if(!studyModel.getSaved()) {
+			    int confirmed = JOptionPane.showConfirmDialog(null, 
+			        "Are you sure you want to exit the program?",
+			        "Study Not Saved",
+			        JOptionPane.OK_CANCEL_OPTION
+			    );
+		
+			    if (confirmed == JOptionPane.OK_OPTION) {
+			    	JFileChooser chooser = new JFileChooser(
+			    		studyModel.getDirectory()
+			    	);
+		            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		            chooser.setAcceptAllFileFilterUsed(false);
+		            
+		            int returnVal = chooser.showSaveDialog(null);
+		            if(returnVal!=JFileChooser.APPROVE_OPTION){
+		                chooser.cancelSelection();
+		            }
+		            try{
+		                File chFile = chooser.getSelectedFile();
+		                SaveCommand save = new SaveCommand(
+		            		getDisplayedStudyImages(),
+		            		getDirectory().getAbsolutePath(),
+		            		chFile.getAbsolutePath(),
+		            		studyModel.getSaved()
+		                );
+		                save.execute();
+		                
+		                studyModel.setSaved(true);
+		            } catch (NullPointerException i) {
+		                
+		            }			    	
+			    }
+			}
+		}
+	}
 }
