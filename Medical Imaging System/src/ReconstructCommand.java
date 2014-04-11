@@ -44,6 +44,15 @@ public class ReconstructCommand implements Command {
 		}
 	}
 	
+	/**
+	 * Checks that all image files in a study are of the same file type and
+	 * throws an error if they're not. Depending on the type of reconstruction,
+	 * it either loops through each row then image then column and creates a new
+	 * image for each row, or it loops though each column then image then row
+	 * and creates a new image for each column.
+	 * @throws IOException - thrown if there's an error reading in an image
+	 * @throws TypeException - thrown if multiple image file types in same study
+	 */
 	private void reconstruct() throws IOException, TypeException {
 		File oldFile = new File(directory);
 		File[] files = oldFile.listFiles();
@@ -119,13 +128,13 @@ public class ReconstructCommand implements Command {
 		
 		//X to Z
 		else {
-			for (int width = 0; width < firstImage.getWidth(); width++) { //pixel row
+			for (int width = 0; width < firstImage.getWidth(); width++) { //pixel column
 				BufferedImage reconstructImage = new BufferedImage(images.size(), firstImage.getHeight(), 5);
 				for (int i = 0; i < images.size(); i++) { //loop through all images
 					if (images.get(i) instanceof Image) {
 						Image image = (Image) images.get(i);
 						BufferedImage oldImage = (BufferedImage) image.getImages().get(0);
-						for (int height = 0; height < oldImage.getHeight(); height++) { //pixel column
+						for (int height = 0; height < oldImage.getHeight(); height++) { //pixel row
 							int rgb = oldImage.getRGB(width, height);
 							reconstructImage.setRGB(i, height, rgb);
 						}

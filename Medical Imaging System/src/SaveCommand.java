@@ -28,12 +28,6 @@ public class SaveCommand implements Command {
 	private static final String CONFIG_FILE = "study.cfg";
 	private boolean saved;
 	
-	/**
-	 * Initializes a SaveCommand object with the old filepath
-	 * and new filepath
-	 * @param oldName - filepath that is being saved under a new name
-	 * @param newName - new filepath name to be saved
-	 */
 	public SaveCommand(ArrayList<Image> images, String oldName, String newName, boolean saved) {
 		this.oldName = oldName;
 		this.images = images;
@@ -47,7 +41,10 @@ public class SaveCommand implements Command {
 	
 	/**
 	 * Makes a new directory and copies the CFG file and all images
-	 * from the old directory into the new directory.
+	 * from the given ArrayList into it. If saved is true then it
+	 * goes with the name given, but if it's false (manipulations
+	 * have been performed) then it takes the name given and appends
+	 * Manipulated to the end of it.
 	 */
 	public void save() {
 		//Makes new directory

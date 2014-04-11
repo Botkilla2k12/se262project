@@ -8,6 +8,9 @@ public class ShowACR {
     public static final int HEADER_OFFSET = 0x2000;
     private BufferedImage image;
 
+    /**
+     * Takes in an .acr file and converts it into a BufferedImage.
+     */
     public ShowACR(File file) {
 
 		FileImageInputStream imageFile = null;
