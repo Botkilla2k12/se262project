@@ -4,10 +4,20 @@ import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
-
+/**
+ * This class Decorates an ImagePanel with a Goldenrod Horizontal line that
+ * displays based on where the user is in the study.
+ * @author Curtis
+ */
 public class HorizontalLineDecorator extends ImagePanelDecorator {
-	public HorizontalLineDecorator(DisplayMode value, int total, int dim, int index) {
-		super(value, total, dim, index);
+	/**
+	 * Creates a new HorizontalLineDecorator based on parameters
+	 * @param value the initial display mode of the ImagePanel
+	 * @param total The maximum possible progress through the Reconstruction.
+	 * @param dim the size of the object to be decorated
+	 */
+	public HorizontalLineDecorator(DisplayMode value, int total, int dim) {
+		super(value, total, dim);
 	}
 
 	@Override

@@ -266,8 +266,7 @@ public class ImageViewerWindow extends JFrame {
 				this.imagePanel = new VerticalLineDecorator(
 					this.imagePanel.getDisplayMode(),
 					384,
-					Math.min(imagePanel.getWidth(), studyModel.getImageWidth()),
-					this.studyModel.getIndex()
+					Math.min(imagePanel.getWidth(), studyModel.getImageWidth())
 				);
 				((ImagePanelDecorator) this.imagePanel).setProgress(1);
 				this.studyModel.addObserver(imagePanel);
@@ -285,8 +284,7 @@ public class ImageViewerWindow extends JFrame {
 					Math.min(
 						imagePanel.getHeight(),
 						studyModel.getImageHeight()
-					),
-					this.studyModel.getIndex()
+					)
 				);
 				((ImagePanelDecorator) this.imagePanel).setProgress(1);
 				this.studyModel.addObserver(imagePanel);

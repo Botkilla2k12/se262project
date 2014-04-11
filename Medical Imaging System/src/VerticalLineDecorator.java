@@ -4,12 +4,23 @@ import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
-
+/**
+ * This class Decorates an ImagePanel with a Goldenrod Vertical line that
+ * displays based on where the user is in the study.
+ * @author Curtis
+ */
 public class VerticalLineDecorator extends ImagePanelDecorator {
-	public VerticalLineDecorator(DisplayMode value, int total, int dim, int index) {
-		super(value, total, dim, index);
+	/**
+	 * Creates a new VerticalLineDecorator based on parameters
+	 * @param value the initial display mode of the ImagePanel
+	 * @param total The maximum possible progress through the Reconstruction.
+	 * @param dim the size of the object to be decorated
+	 */
+	public VerticalLineDecorator(DisplayMode value, int total, int dim) {
+		super(value, total, dim);
 	}
 	
+	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
 		

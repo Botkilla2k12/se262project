@@ -23,7 +23,10 @@ public class Study extends Observable {
 	private int index, defaultImageHeight, defaultImageWidth;
 	private boolean saved;
 	
-	
+	/**
+	 * Creates a Study using a given directory.
+	 * @param directory the directory containing the study.
+	 */
 	public Study(File directory) {
 		this.studySettings = new StudySettings(directory);
 		
@@ -123,7 +126,6 @@ public class Study extends Observable {
 	 * Gets the width of one of the studies' images
 	 * @return the standard image width of the study
 	 */
-
 	public int getImageWidth() {
 		return this.defaultImageWidth;
 	}
@@ -185,6 +187,10 @@ public class Study extends Observable {
 		super.notifyObservers();
 	}
 	
+	/**
+	 * Uses the inner Memento class to restore the Study object back to a 
+	 * previous state based on the data in the memento Object
+	 */
 	public void restoreFromMemento() {		
 		try {
 			Study.Memento memento = this.previousModes.pop();
@@ -201,6 +207,11 @@ public class Study extends Observable {
 		}
 	}
 	
+	/**
+	 * This method creates a Memento Object containing the Study's current
+	 * state.
+	 * @return The Study's current state.
+	 */
 	public Memento saveToMemento() {
 		return new Memento(
 			this.studySettings.getDisplayMode(),
@@ -208,24 +219,46 @@ public class Study extends Observable {
 		);
 	}
 	
+	/**
+	 * This class encapsulates the state data "snapshot" using Images and 
+	 * Display Mode information
+	 * @author Curtis
+	 */
 	public static class Memento {
 		private ArrayList<Image> images;
 		private DisplayMode displayMode;
 		
+		/**
+		 * Creates a Memento Snapshot using a list of Images and a DisplayMode
+		 * @param displayMode the current DisplayMode to be remembered
+		 * @param images the Current Images being displayed in the Study
+		 */
 		public Memento(DisplayMode displayMode, ArrayList<Image> images) {
 			this.displayMode = displayMode;
 			this.images = images;
 		}
 		
+		/**
+		 * Gets the images contained in this Memento Snapshot
+		 * @return A list of the images contained in this Memento Snapshot
+		 */
 		public ArrayList<Image> getImages() {
 			return this.images;
 		}
 		
+		/**
+		 * Gets the Display Mode Stored
+		 * @return
+		 */
 		public DisplayMode getDisplayMode() {
 			return this.displayMode;
 		}
 	}
 
+	/**
+	 * Sets the images that this study contains
+	 * @param images the set of new images to replace the current set.
+	 */
 	public void setImages(ArrayList<Image> images) {
 		this.previousModes.push(this.saveToMemento());
 		
@@ -235,14 +268,27 @@ public class Study extends Observable {
 		super.notifyObservers();
 	}
 	
+	/**
+	 * Gets the saved state of the Study
+	 * @return true if the study has been saved, false otherwise.
+	 */
 	public boolean getSaved() {
 		return this.saved;
 	}
 	
+	/**
+	 * Sets the saved state of the study
+	 * @param newSaved the new saved state of the study: true if the study has 
+	 * been saved, false otherwise.
+	 */
 	public void setSaved(boolean newSaved) {
 		this.saved = newSaved;
 	}
 	
+	/**
+	 * Clears the undo stack of all previous memento snapshots.
+	 * Use this method with caution
+	 */
 	public void clearAllSavedStates() {
 		this.previousModes.removeAllElements();
 	}
