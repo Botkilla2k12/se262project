@@ -26,8 +26,11 @@ public class ImageViewerMenuBar extends JMenuBar {
     
     private JRadioButtonMenuItem displayMode1, displayMode4;
     private JMenuItem exitReconstructMode;
-    
     private JMenu relatedStudies;
+    
+    /**
+     * constructs and initalizes most basic functionality of the menu bar
+     */
     public ImageViewerMenuBar(){
         InitFileMenu();
         InitEditMenu();
@@ -38,6 +41,11 @@ public class ImageViewerMenuBar extends JMenuBar {
         add(settingsMenu);
     }
 
+    /**
+     * initializes the radio-buttons selection based on the option
+     * assigned to the study
+     * @param mode : represents the display mode of the study
+     */
     public void activateRadioButtonFromDisplayMode(DisplayMode mode) {
         if(mode == DisplayMode.ONE_IMAGE) {
             this.displayMode1.setSelected(true);
@@ -48,8 +56,12 @@ public class ImageViewerMenuBar extends JMenuBar {
         }
     }
     
+    /**
+     * creates a menu item for each child-directory of the current directory
+     * and initializes an open listener for each
+     * @param currDir : the current directory
+     */
     public void setRelatedStudies(File currDir){
-        
         if(this.relatedStudies!=null)
             this.fileMenu.remove(this.relatedStudies);
         
@@ -68,6 +80,12 @@ public class ImageViewerMenuBar extends JMenuBar {
         this.fileMenu.add(this.relatedStudies);
     }
     
+    /**
+     * creates an action listener for a provided study to be associated with
+     * the provided menuItem
+     * @param relStudy : study to be opened
+     * @param menuItem : item to be connected to the study
+     */
     public void addRelatedListener(Study relStudy, JMenuItem menuItem){
         final Study relatedStudy=relStudy;
         final JMenuItem menIt=menuItem;
@@ -82,7 +100,10 @@ public class ImageViewerMenuBar extends JMenuBar {
         
     }
     
-    
+    /**
+     * initializes the menu items under "file"
+     * 
+     */
     private void InitFileMenu(){
         this.fileMenu=new JMenu("File");
 
@@ -109,6 +130,9 @@ public class ImageViewerMenuBar extends JMenuBar {
         exitApp.addActionListener(new ExitProgram());
     }
     
+    /**
+     * initializes the menu items under "edit"
+     */
     private void InitEditMenu(){
         this.editMenu=new JMenu("Edit");
         
@@ -151,6 +175,10 @@ public class ImageViewerMenuBar extends JMenuBar {
         this.editMenu.add(reconstructStudy);
     }
     
+    /**
+     * initializes the menu items under settings
+     * 
+     */
     private void InitSettingsMenu(){
         this.settingsMenu=new JMenu("Settings");
         JMenuItem defaultStudy = new JMenuItem("Choose Default Study");
@@ -172,6 +200,13 @@ public class ImageViewerMenuBar extends JMenuBar {
         settingsMenu.add(displayMode);
     }
     
+    /**
+     * ensures the input provided for windowing mode is correct
+     *  if so return true
+     * @param low : user input of the "low" value
+     * @param high : user input of the "high" value
+     * @return boolean, true if input is correct, else false
+     */
     private boolean checkInput(String low, String high){
         if(!(isInteger(low) && isInteger(high))){
             dispError("Pleas input only numbers");
@@ -197,6 +232,11 @@ public class ImageViewerMenuBar extends JMenuBar {
         
     }
     
+    /**
+     * displays an error message, s, depending on the error caused
+     * by the user
+     * @param s : string representing error message
+     */
     private void dispError(String s){
         ImageViewerWindow parentWin =
                 (ImageViewerWindow) getTopLevelAncestor();
@@ -207,6 +247,11 @@ public class ImageViewerMenuBar extends JMenuBar {
                 JOptionPane.ERROR_MESSAGE);
     }
     
+    /**
+     * getter for the reconstruction axis
+     * @param input : terminology used by UI
+     * @return string representing current reconstruction axis
+     */
     private String getMode(String input) {
     	if(input.equals("Sagittal")) {
     		return "XZ";
@@ -215,13 +260,23 @@ public class ImageViewerMenuBar extends JMenuBar {
     	}
     }
     
-    
+    /**
+     * action listener for exitting the 
+     * program
+     *
+     */
     class ExitProgram implements ActionListener{
         public void actionPerformed(ActionEvent e){
             System.exit(0);
         }
     }
     
+    /**
+     * takes a single image and prompts the user for information relating
+     * to windowing.  Once this information is checked, a windowing command
+     * object is instantiated and executed
+     * 
+     */
     class WindowingModeImage implements ActionListener{
         public void actionPerformed(ActionEvent e) {
              ImageViewerWindow parentWin =
@@ -264,7 +319,12 @@ public class ImageViewerMenuBar extends JMenuBar {
         }    
     }
     
-    
+    /**
+     * takes the current study and prompts the user to enter information
+     * Relating to windowing.  Once this information is checked, it is used to
+     * construct a windowing command object, which is then executed.
+     *
+     */
     class WindowingModeStudy implements ActionListener{
         public void actionPerformed(ActionEvent e) {
         	ImageViewerWindow parentWin =
@@ -319,6 +379,10 @@ public class ImageViewerMenuBar extends JMenuBar {
        }  
     }
     
+    /**
+     * calls undo operation on the parent
+     * image viewer window
+     */
     class UndoOperation implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent arg0) {
@@ -328,6 +392,12 @@ public class ImageViewerMenuBar extends JMenuBar {
         }
     }
     
+    /**
+     * prompts the user to choose a file and
+     * uses this to call setupNewStudy, so the 
+     * parent image viewer window can open it
+     * 
+     */
     class OpenFile implements ActionListener{
         public void actionPerformed(ActionEvent e){
             JFileChooser chooser = new MedicalImageFileChooser();
@@ -344,6 +414,13 @@ public class ImageViewerMenuBar extends JMenuBar {
         }
     }
     
+    /**
+     * prompts the user to choose a location and 
+     * name for the current study to be copied to
+     * this information is used to instantiate a
+     * save command, which is then executed to save it
+     *
+     */
     class SaveStudy implements ActionListener{
         public void actionPerformed(ActionEvent e) throws NullPointerException{
             ImageViewerWindow parentWin =
@@ -373,6 +450,12 @@ public class ImageViewerMenuBar extends JMenuBar {
         }
     }
     
+    /**
+     * creates a reconstruct command from information provided by the user
+     * and parent window and executes, making the reconstruction appear
+     * in the image viewer window
+     *
+     */
     class ReconstructStudy implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -414,6 +497,10 @@ public class ImageViewerMenuBar extends JMenuBar {
         }
     }
     
+    /**
+     * sets default study to the currently open
+     * directory
+     */
     class DefaultStudy implements ActionListener{
         public void actionPerformed(ActionEvent e){
             JFileChooser chooser = new JFileChooser();
@@ -426,6 +513,9 @@ public class ImageViewerMenuBar extends JMenuBar {
         }
     }
     
+    /**
+     * changes display mode to single image viewing
+     */
     class ToDispMode1 implements ActionListener{
         public void actionPerformed(ActionEvent e){
             ImageViewerWindow parentWin =
@@ -435,6 +525,10 @@ public class ImageViewerMenuBar extends JMenuBar {
         }
     }
     
+    /**
+     * changes display mode to 2x2 grid
+     * 
+     */
     class ToDispMode4 implements ActionListener{
         public void actionPerformed(ActionEvent e){
             ImageViewerWindow parentWin =
@@ -444,7 +538,13 @@ public class ImageViewerMenuBar extends JMenuBar {
         }
     }
     
-    
+    /**
+     * prompts the user to choose a file and handles errors,
+     *  returns selected study's path
+     * @param chooser JFileChooser
+     * @return directory of selected study
+     * @throws NullPointerException
+     */
     private Study chooseStudy(JFileChooser chooser)throws NullPointerException {
         int returnVal = chooser.showOpenDialog(null);
 
@@ -456,6 +556,12 @@ public class ImageViewerMenuBar extends JMenuBar {
         }
     }
     
+    /**
+     * creates a new study from the path selected by the user
+     * @param chooser : JFileChooser
+     * @return chStudy : newly created study
+     * @throws NullPointerException
+     */
     static Study SaveNewStudy(JFileChooser chooser) throws NullPointerException{
         int returnVal = chooser.showSaveDialog(null);
         if(returnVal!=JFileChooser.APPROVE_OPTION){
@@ -466,6 +572,12 @@ public class ImageViewerMenuBar extends JMenuBar {
         return chStudy;    
     }
 
+    /**
+     * determines whether the string provided by the user
+     * is only digits.  If so, return true, else false
+     * @param integerString : string representing user input
+     * @return : boolean representing whether string is numbers
+     */
     public boolean isInteger(String integerString){
     	try {
     		Integer.parseInt(integerString);
