@@ -7,28 +7,26 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 
-public class ImageWindowCommand extends UndoableCommand implements Command {
+public class ImageWindowCommand implements Command {
 	private ArrayList<Image> imagesToManipulate;
 	private int lowCutoff, highCutoff;
 	private ArrayList<Image> manipulatedImages;
-	//private String directory;
 	
 	public ImageWindowCommand(int low, int high, ArrayList<Image> images) {
 		this.lowCutoff = low;
 		this.highCutoff = high;
 		this.imagesToManipulate = images;
 		this.manipulatedImages = new ArrayList<Image>();
-		//this.directory = directory;
 	}
 	
 	@Override
+	/**
+	 * Loops through all images in the given ArrayList and goes pixel by pixel,
+	 * gets the red, green, and blue intensities, changes each based on the
+	 * given low and high cutoffs, and updates the original image with the new
+	 * color.
+	 */
 	public void execute() {
-		/*
-		String manipulatedDirectory = directory + "Manipulated";
-		File manipulatedFile = new File(manipulatedDirectory);
-		if (!manipulatedFile.exists()) {
-			manipulatedFile.mkdir();
-		}*/
 		for (Image img : this.imagesToManipulate) {
 			BufferedImage imgData = (BufferedImage) img.getImages().get(0);
 			
@@ -74,21 +72,8 @@ public class ImageWindowCommand extends UndoableCommand implements Command {
 			}
 			Image newImg = new Image(img.toString(), imgData);
 			manipulatedImages.add(newImg);
-			/*
-			String newImagePath = manipulatedDirectory + "\\" + img.toString();
-			try {
-				ImageIO.write(imgData, "jpg", new File(newImagePath));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}*/
 		}
 
-	}
-
-	@Override
-	public void undo() {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	public ArrayList<Image> getWindowedImages() {

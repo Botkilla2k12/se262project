@@ -8,6 +8,10 @@ public class SaveACR {
     public static final int HEADER_OFFSET = 0x2000;
     private BufferedImage image;
 
+    /**
+     * Takes in a BufferedImage and converts it to an .acr file
+     * with the given file name.
+     */
     public SaveACR(BufferedImage image, File file) {
     	
     	this.image = image;
