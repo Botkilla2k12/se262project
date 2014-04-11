@@ -151,10 +151,20 @@ public class ImageViewerWindow extends JFrame {
 		super.addWindowListener(new ImageWindowAdapter());
 	}
 
+	/**
+	 * This changes the images that are displayed in the study.
+	 * @param newImages The list of new Images to be displayed.
+	 */
 	public void setDisplayedStudyImages(ArrayList<Image> newImages){
 		this.studyModel.setImages(newImages);
 	}
 	
+	
+	/**
+	 * This method allows access to the images currently being displayed by the 
+	 * study.
+	 * @return The images currently being displayed by the study.
+	 */
 	public ArrayList<Image> getDisplayedStudyImages() {
 		return this.studyModel.getImages();
 	}
@@ -214,6 +224,10 @@ public class ImageViewerWindow extends JFrame {
 		this.studyIterator.setDisplayMode(mode);
 	}
 
+	/**
+	 * Undoes any state changes (which include Display Mode Changes and Image 
+	 * Manipulations)
+	 */
 	public void undoStateChange() {
 		this.studyModel.restoreFromMemento();
 		this.menuBar.activateRadioButtonFromDisplayMode(
@@ -232,6 +246,13 @@ public class ImageViewerWindow extends JFrame {
 		return this.studyModel.getStudySettings().getDisplayMode();
 	}
 
+	/**
+	 * Allows the current Study to go in/out of reconstruction mode
+	 * @param isInReconstruction true if entering reconstruction, 
+	 * false otherwise.
+	 * @param mode "XZ" for sagittal reconstruction, "YZ" 
+	 * for coronal reconstruction.
+	 */
 	public void setReconstructMode(boolean isInReconstruction, String mode) {
 		this.inReconstructMode = isInReconstruction;
 		
@@ -240,10 +261,7 @@ public class ImageViewerWindow extends JFrame {
 		if(this.inReconstructMode) {
 			//Change window layout
 			this.mainPanel.setLayout(new GridLayout(2, 2));
-			//Put image panel in upper left hand corner
-			
-			
-			//this.mainPanel.add(this.imagePanel);
+
 			if(mode.equals("XZ")) {
 				this.imagePanel = new VerticalLineDecorator(
 					this.imagePanel.getDisplayMode(),
@@ -303,6 +321,10 @@ public class ImageViewerWindow extends JFrame {
 		this.mainPanel.repaint();
 	}
 	
+	/**
+	 * Updates the reconstruction panel with a given Image
+	 * @param img the new image to put on the panel.
+	 */
 	private void setReconstructionPanelImage(BufferedImage img) {		
 		this.reconstructionPanel.removeAll();
 		
@@ -312,6 +334,10 @@ public class ImageViewerWindow extends JFrame {
 		this.reconstructionPanel.repaint();
 	}
 	
+	/**
+	 * Changes the collection from which reconstruction images will be displayed.
+	 * @param images the collection of images to create an iterator from.
+	 */
 	public void setReconstructImages(ArrayList<BufferedImage> images) {
 		this.reconstructionIterator = images.listIterator();
 	}
@@ -324,18 +350,36 @@ public class ImageViewerWindow extends JFrame {
 		return this.studyModel.getDirectory();
 	}
 	
+	/**
+	 * Gets the current index the study is at.
+	 * @return The current index the study is at.
+	 */
 	public int getIndex() {
 		return this.studyModel.getIndex();
 	}
 	
+	/**
+	 * Tells whether or not the study has been saved.
+	 * @return True if the study's been saved, otherwise false
+	 */
 	public boolean getSaved() {
 		return this.studyModel.getSaved();
 	}
-	
+
+	/**
+	 * Sets the study to saved or not saved
+	 * @param newSaved true if the study has been saved, flase otherwise
+	 */
 	public void setSaved(boolean newSaved) {
 		this.studyModel.setSaved(newSaved);
 	}
-	
+
+	/**
+	 * This label encapsulates the readout at the bottom of the window when
+	 * iterating through a study
+	 * @author Curtis
+	 *
+	 */
 	private static class NumberLabel extends JLabel implements Observer {
 		private static final long serialVersionUID = 1L;
 
@@ -365,6 +409,11 @@ public class ImageViewerWindow extends JFrame {
 		}
 	}
 	
+	/**
+	 * This class is an ActionListener that allows for reverse iteration through
+	 * a reconstruction
+	 * @author Curtis
+	 */
 	private class ReconstructPrev implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			try {				
@@ -383,6 +432,11 @@ public class ImageViewerWindow extends JFrame {
 		}
 	}
 	
+	/**
+	 * This class is an ActionListener that allows for forward iteration through
+	 * a reconstruction
+	 * @author Curtis
+	 */
 	private class ReconstructNext implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			try {
@@ -399,6 +453,11 @@ public class ImageViewerWindow extends JFrame {
 		}
 	}
 	
+	/**
+	 * This class encapsulates custom code that prompts for display of a save
+	 * prompt if the study hasn't been saved yet.
+	 * @author Curtis
+	 */
 	private class ImageWindowAdapter extends WindowAdapter {
 		public void windowClosing(WindowEvent e) {
 			if(!studyModel.getSaved()) {
